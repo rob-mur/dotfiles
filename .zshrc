@@ -1,7 +1,7 @@
 # Change to home directory on launch (useful in WSL)
 cd $HOME
 # If you come from bash you might have to change your $PATH.
-export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:$PATH
+export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:/nix/var/nix/profiles/default/bin/:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -73,7 +73,7 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git aliases alias-finder autojump branch command-not-found copybuffer copyfile copypath dircycle direnv emoji eza fzf gcloud docker docker-compose git-auto-fetch git-prompt helm npm python pip virtualenv ssh sudo tmux
-	zsh-autosuggestions nerd-font-check)
+	zsh-autosuggestions )
 
 
 source $ZSH/oh-my-zsh.sh
@@ -117,4 +117,3 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
-export NERD_FONT_CHECK_AUTO=1
