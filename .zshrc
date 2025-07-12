@@ -1,5 +1,7 @@
+# Change to home directory on launch (useful in WSL)
+cd $HOME
 # If you come from bash you might have to change your $PATH.
-export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
+export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -107,3 +109,9 @@ export LANG=en_GB.UTF-8
 
 eval $(ssh-agent -s) > /dev/null
 eval $(keychain -q --eval id_ed25519_github) >/dev/null
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
