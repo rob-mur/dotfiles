@@ -1,5 +1,8 @@
 # Change to home directory on launch (useful in WSL)
-cd $HOME
+if [[ $(pwd) == /mnt/c/Windows/System32  ]]
+then
+    cd ~
+fi
 # If you come from bash you might have to change your $PATH.
 export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:/nix/var/nix/profiles/default/bin/:$PATH
 
@@ -117,3 +120,4 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
+export PATH=$PATH:$HOME/.maestro/bin
