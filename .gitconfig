@@ -1,0 +1,11 @@
+[user]
+	name = Rob Murphy
+	email = robert.murphy@descartesunderwriting.com
+[pull]
+	rebase = true
+
+[mergetool "nvimdiff"]
+  layout = "LOCAL,BASE,REMOTE / MERGED"
+[push]
+	autoSetupRemote = true
+	default = current
