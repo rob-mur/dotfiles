@@ -111,7 +111,7 @@ export LANG=en_GB.UTF-8
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 eval $(ssh-agent -s) > /dev/null
-eval $(keychain -q --eval id_ed25519_github) >/dev/null
+ssh-add ~/.ssh/id_ed25519_github &> /dev/null
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
