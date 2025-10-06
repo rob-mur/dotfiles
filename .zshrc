@@ -76,7 +76,7 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git aliases alias-finder autojump branch command-not-found copybuffer copyfile copypath dircycle direnv emoji eza fzf gcloud docker docker-compose git-auto-fetch git-prompt helm npm python pip virtualenv ssh sudo tmux
-	zsh-autosuggestions )
+	zsh-autosuggestions zsh-system-clipboard)
 
 
 source $ZSH/oh-my-zsh.sh
@@ -121,3 +121,12 @@ export NVM_DIR="$HOME/.nvm"
 
 
 export PATH=$PATH:$HOME/.maestro/bin
+
+
+setxkbmap -option caps:escape
+bindkey -v
+bind 'set show-mode-in-prompt on' 2>/dev/null
+bind 'set vi-ins-mode-string \1\e[6 q\2' 2>/dev/null
+bind 'set vi-cmd-mode-string \1\e[2 q\2' 2>/dev/null
+bindkey '^x^e' edit-command-line
+export EDITOR=nvim
