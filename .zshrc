@@ -4,7 +4,7 @@ then
     cd ~
 fi
 # If you come from bash you might have to change your $PATH.
-export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:/nix/var/nix/profiles/default/bin/:$PATH
+export PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:/nix/var/nix/profiles/default/bin/:$HOME/.local/bin/:$PATH
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -86,7 +86,8 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-export LANG=en_GB.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
