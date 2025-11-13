@@ -1,7 +1,0 @@
-alias vim="nvim"
-alias v="nvim"
-alias cl="clear"
-alias gcm="git commit"
-alias tmux-sa="$HOME/.oh-my-zsh/custom/scripts/tmux-sa.sh"
-alias rebuild="zsh -c 'cd ~/Documents/nixos-config ; sudo nixos-rebuild switch --flake .#dev'"
-alias updateHomeManage="zsh -c 'cd ~/Documents/nixos-config ; sudo -u rob home-manager switch --flake .#rob@dev'"

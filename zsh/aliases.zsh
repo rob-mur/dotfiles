@@ -1,0 +1,6 @@
+alias vim="nvim"
+alias v="nvim"
+alias cl="clear"
+alias gcm="git commit"
+alias rebuild="zsh -c 'cd ~/Documents/nixos-config ; sudo nixos-rebuild switch --flake .#dev'"
+alias rebuild-home="zsh -c 'cd ~/repos/dotfiles/home-manager/ ; home-manager switch -b backup --flake .#rmurphy@dev'"
