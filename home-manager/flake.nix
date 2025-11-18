@@ -39,6 +39,7 @@
         alacritty
         autojump
         devenv
+        uv
         # Languages/Runtimes
         python3
         nodejs_24
@@ -48,11 +49,7 @@
         jujutsu
         lazyjj
         # Language Servers
-        typescript-language-server
-        bash-language-server
-        lua-language-server
-        nil
-        pyright
+        basedpyright
         # Formatters/Linters
         nixfmt-classic
         stylua
@@ -65,6 +62,8 @@
         devbox
         jq
         lsof
+        # LLM
+        gemini-cli
       ];
 
       programs.zsh = {

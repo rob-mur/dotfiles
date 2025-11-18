@@ -1,0 +1,2 @@
+export UV_KEYRING_PROVIDER=subprocess
+export GOOGLE_CLOUD_PROJECT=duet-assistant
