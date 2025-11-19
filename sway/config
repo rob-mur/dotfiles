@@ -200,6 +200,8 @@ bindsym $mod+r mode "resize"
 bar {
     position top
     swaybar_command waybar
+    mode hide
+    modifier Mod4
 }
 
 include /etc/sway/config.d/*
