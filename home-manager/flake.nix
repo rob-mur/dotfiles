@@ -62,6 +62,7 @@
         jq
         lsof
         wl-clipboard
+        qwerty-fr
         # LLM
         gemini-cli
         # sway
