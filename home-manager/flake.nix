@@ -28,15 +28,14 @@
       nix.package = pkgs.nix;
       nix.settings = {
         extra-substituters = ["https://devenv.cachix.org"];
-
         extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
+        experimental-features = ["nix-command" "flakes"];
       };
       home.packages = with pkgs; [
-        git
+        # git
         gh
         neovim
         tmux
-        alacritty
         autojump
         devenv
         uv
@@ -62,8 +61,11 @@
         devbox
         jq
         lsof
+        wl-clipboard
         # LLM
         gemini-cli
+        # sway
+        wofi
       ];
 
       programs.zsh = {
@@ -86,17 +88,18 @@
         EDITOR = "nvim";
       };
 
-      home.username = "rmurphy";
-      home.homeDirectory = "/home/rmurphy";
+      home.username = "robert.murphy";
+      home.homeDirectory = "/home/robert.murphy";
       programs.home-manager.enable = true;
-
       home.stateVersion = "25.05";
     };
   in {
     homeConfigurations = {
       "rmurphy@dev" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [devModule];
+        modules = [
+          devModule
+        ];
       };
     };
 
