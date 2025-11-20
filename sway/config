@@ -221,3 +221,6 @@ input type:keyboard {
     xkb_layout "us_qwerty-fr"
     xkb_options "lv3:ralt_switch,caps:escape"
 }
+
+
+bindsym $mod+Delete exec swaylock

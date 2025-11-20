@@ -63,6 +63,7 @@
         lsof
         wl-clipboard
         qwerty-fr
+        openssh
         # LLM
         gemini-cli
         # sway
