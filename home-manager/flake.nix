@@ -68,6 +68,7 @@
         gemini-cli
         # sway
         wofi
+        kanshi
       ];
 
       programs.zsh = {
