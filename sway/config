@@ -230,3 +230,7 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 
 
 exec_always $HOME/.nix-profile/bin/kanshi
+
+
+bindsym $mod+greater move workspace to output right
+bindsym $mod+less move workspace to output left

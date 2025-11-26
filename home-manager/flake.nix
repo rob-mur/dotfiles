@@ -31,6 +31,10 @@
         extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
         experimental-features = ["nix-command" "flakes"];
       };
+
+      # For application shortcuts
+      targets.genericLinux.enable = true;
+
       home.packages = with pkgs; [
         # git
         gh
@@ -64,6 +68,8 @@
         wl-clipboard
         qwerty-fr
         openssh
+        gnumake
+        blueberry
         # LLM
         gemini-cli
         # sway
@@ -74,7 +80,11 @@
       programs.zsh = {
         enable = true;
         initContent = ''
-          source "${config.home.homeDirectory}/zsh/.zshrc"
+                 source "${config.home.homeDirectory}/zsh/.zshrc"
+
+          if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+                   . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+                 fi
         '';
       };
 
