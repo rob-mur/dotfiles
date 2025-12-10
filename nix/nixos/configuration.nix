@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ../hardware-configuration.nix # Assuming this is in the root
+    ./hardware-configuration.nix # Assuming this is in the root
   ];
 
   # --- Boot & Hardware ---
@@ -14,7 +14,7 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.efiSupport = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.loader.grub.useOSProber = true;
   boot.kernelModules = ["nouveau"];
 
@@ -22,8 +22,15 @@
     enable = true;
     enable32Bit = true;
   };
-  services.xserver.videoDrivers = ["modesetting"];
+  services.xserver.videoDrivers = ["nvidia"];
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = true;
+    nvidiaSettings = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
   # --- Networking ---
   networking.hostName = "dev";
   networking.networkmanager.enable = true;
@@ -97,6 +104,9 @@
       "steam-original"
       "steam-unwrapped"
       "steam-run"
+      "nvidia-x11"
+      "nvidia-settings"
+      "vivaldi"
     ];
 
   nix = let
@@ -225,7 +235,6 @@
       signal-desktop-bin
       discord
       slack
-      simplex-chat-desktop
 
       # Media & Creative
       spotify
@@ -272,7 +281,7 @@
     programs.git = {
       enable = true;
       userName = "Rob Murphy";
-      userEmail = "your-email@example.com";
+      userEmail = "rmurphyswimmer@gmail.com";
     };
   };
 }

@@ -49,6 +49,8 @@
     # sway utils
     wofi
     kanshi
+    # Applications
+    vivaldi
   ];
 
   programs.zsh = {
