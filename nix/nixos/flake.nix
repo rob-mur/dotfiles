@@ -27,6 +27,11 @@
         config.allowUnfree = true;
       };
     };
+    pkgs = import nixpkgs {
+      inherit system;
+      config.cudaSupport = true;
+      config.cudnnSupport = true;
+    };
 
     inherit (self) outputs;
   in {
