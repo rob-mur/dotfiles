@@ -403,14 +403,29 @@ require("lazy").setup({
 
 			-- [[ Configure Telescope ]]
 			-- See `:help telescope` and `:help telescope.setup()`
+			local actions = require("telescope.actions")
 			require("telescope").setup({
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
 				--
 				defaults = {
-					file_ignore_patterns = { "^%.git/", "^node_modules/", "%.mypy_cache/", "__pycache__/", "build/" },
+					file_ignore_patterns = { "^%.git/", "^node_modules/", "%.mypy_cache/", "__pycache__/" },
 					mappings = {
-						i = { ["<c-enter>"] = "to_fuzzy_refine" },
+						i = {
+							["<S-q>"] = function(prompt_bufnr)
+								-- Send selected items to the quickfix list
+								actions.send_to_qflist(prompt_bufnr)
+								-- Open the quickfix window
+								vim.cmd("copen")
+							end,
+
+							["<C-q>"] = function(prompt_bufnr)
+								-- Send selected items to the quickfix list
+								actions.send_selected_to_qflist(prompt_bufnr)
+								-- Open the quickfix window
+								vim.cmd("copen")
+							end,
+						},
 					},
 				},
 				-- pickers = {}
