@@ -4,13 +4,18 @@
   pkgs,
   ...
 }: {
-  # Nix Settings (User level)
+  nix.package = pkgs.nix;
   nix.settings = {
     extra-substituters = ["https://devenv.cachix.org"];
     extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
+    experimental-features = ["nix-command" "flakes"];
   };
 
+  # For application shortcuts
+  targets.genericLinux.enable = true;
+
   home.packages = with pkgs; [
+    # git
     gh
     neovim
     tmux
@@ -46,27 +51,25 @@
     blueberry
     # LLM
     gemini-cli
-    # sway utils
+    # sway
     wofi
     kanshi
-    # Applications
-    vivaldi
   ];
 
   programs.zsh = {
     enable = true;
-    # Adjusted to ensure it integrates with your existing zshrc setup if needed
-    initExtra = ''
-      if [ -f "${config.home.homeDirectory}/zsh/.zshrc" ]; then
-         source "${config.home.homeDirectory}/zsh/.zshrc"
-      fi
+    initContent = ''
+             source "${config.home.homeDirectory}/zsh/.zshrc"
+
+      if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+               . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+             fi
     '';
   };
 
   programs.fzf.enable = true;
   programs.fzf.enableZshIntegration = true;
   programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
 
   home.sessionVariables = {
     OPENSSL_DIR = "${pkgs.openssl.dev}";
@@ -77,6 +80,8 @@
     EDITOR = "nvim";
   };
 
-  # Ensure state version is consistent
-  home.stateVersion = "23.05";
+  home.username = "robert.murphy";
+  home.homeDirectory = "/home/robert.murphy";
+  programs.home-manager.enable = true;
+  home.stateVersion = "25.05";
 }
