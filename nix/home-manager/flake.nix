@@ -19,7 +19,7 @@
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
 
-    devModule = import ../../nix/dev-module.nix;
+    devModule = import ../dev-module.nix;
   in {
     homeConfigurations = {
       "rmurphy@dev" = home-manager.lib.homeManagerConfiguration {
