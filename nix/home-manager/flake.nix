@@ -29,7 +29,6 @@
         ];
       };
     };
-
     # Expose the module so it can be used in other flakes
     homeManagerModules.dev = devModule;
   };

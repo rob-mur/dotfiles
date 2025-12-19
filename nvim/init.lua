@@ -409,7 +409,15 @@ require("lazy").setup({
 				--  All the info you're looking for is in `:help telescope.setup()`
 				--
 				defaults = {
-					file_ignore_patterns = { "^%.git/", "^node_modules/", "%.mypy_cache/", "__pycache__/" },
+					file_ignore_patterns = {
+						"^%.git/",
+						"node_modules/",
+						"%.mypy_cache/",
+						"__pycache__/",
+						".venv/",
+						".bmad/",
+						".devenv.*/",
+					},
 					mappings = {
 						i = {
 							["<S-q>"] = function(prompt_bufnr)
@@ -792,6 +800,18 @@ require("lazy").setup({
 			})
 
 			-- Non mason managed servers (nix issues)
+			vim.lsp.config("basedpyright", {
+				settings = {
+					basedpyright = {
+						analysis = {
+							-- This remains the key to getting project-wide diagnostics
+							diagnosticMode = "workspace",
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+						},
+					},
+				},
+			})
 			vim.lsp.enable("basedpyright")
 		end,
 	},

@@ -235,6 +235,7 @@
       signal-desktop-bin
       discord
       slack
+      vivaldi
 
       # Media & Creative
       spotify

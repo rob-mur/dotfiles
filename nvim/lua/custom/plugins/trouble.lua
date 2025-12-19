@@ -1,4 +1,4 @@
-return{ 
+return {
 	"folke/trouble.nvim",
 	opts = {}, -- for default options, refer to the configuration section for custom setup.
 	cmd = "Trouble",
@@ -15,7 +15,7 @@ return{
 		},
 		{
 			"<leader>cs",
-			"<cmd>Trouble symbols toggle focus=false<cr>",
+			"<cmd>Trouble symbols toggle focus=true<cr>",
 			desc = "Symbols (Trouble)",
 		},
 		{
