@@ -1,0 +1,7 @@
+{ ... }: {
+  programs = {
+    corectrl = {
+      enable = false;
+    };
+  };
+}

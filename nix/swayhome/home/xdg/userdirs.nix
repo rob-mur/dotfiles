@@ -1,0 +1,24 @@
+{ ... }: let
+
+  profile = import ./../../user/profile {};
+
+in {
+  home-manager = {
+    users.${profile.name} = {
+      xdg = {
+        userDirs = {
+          enable = true;
+          createDirectories = true;
+          desktop = "\$HOME/desktop";
+          documents = "\$HOME/documents";
+          download = "\$HOME/downloads";
+          music = "\$HOME/music";
+          pictures = "\$HOME/pictures";
+          publicShare = "\$HOME/public";
+          templates = "\$HOME/templates";
+          videos = "\$HOME/videos";
+        };
+      };
+    };
+  };
+}
