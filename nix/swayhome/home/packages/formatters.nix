@@ -1,24 +1,14 @@
-{
-  pkgs,
-  ...
-}:
-with pkgs;
-let
-
+{pkgs, ...}: let
   profile = import ./../../../user/profile {};
-
 in {
   home-manager = {
     users.${profile.name} = {
       home = {
         packages = [
-          gcc
-          gnumake
-
-          ## Optional:
-          # clazy
-          # cppcheck
-          # gdb
+          alejandra
+          stylua
+          nodePackages.prettier
+          black
         ];
       };
     };
