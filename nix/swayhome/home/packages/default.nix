@@ -1,8 +1,8 @@
-{ ... }: {
+{...}: {
   imports = [
     ./basic
     ./desktop
-    ./lang
     ./keyboard
+    ./formatters.nix
   ];
 }

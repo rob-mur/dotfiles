@@ -1,7 +1,5 @@
-{ ... }: let
-
+{...}: let
   profile = import ./../../user/profile {};
-
 in {
   home-manager = {
     users.${profile.name} = {
@@ -11,12 +9,12 @@ in {
           settings = [
             {
               profile = {
-                name = "laptop";
+                name = "work laptop";
                 outputs = [
                   {
                     adaptiveSync = true;
-                    criteria = "eDP-1";
-                    mode = "1366x768@60.00Hz";
+                    criteria = "AU Optronics 0x18A7 Unknown";
+                    mode = "1920x1200@60.00Hz";
                     position = "0,0";
                     scale = 1.0;
                     status = "enable";
@@ -27,7 +25,32 @@ in {
             }
             {
               profile = {
-                name = "workstation";
+                name = "work laptop plugged in";
+                outputs = [
+                  {
+                    adaptiveSync = true;
+                    criteria = "AU Optronics 0x18A7 Unknown";
+                    mode = "1920x1200@60.00Hz";
+                    position = "7860,960";
+                    scale = 1.0;
+                    status = "enable";
+                    transform = "normal";
+                  }
+                  {
+                    adaptiveSync = true;
+                    criteria = "Dell Inc. DELL S2721QS C1Z6M43";
+                    mode = "3840x2160@60.00Hz";
+                    position = "3840,0";
+                    scale = 1.0;
+                    status = "enable";
+                    transform = "normal";
+                  }
+                ];
+              };
+            }
+            {
+              profile = {
+                name = "home laptop plugged in";
                 outputs = [
                   {
                     adaptiveSync = true;
@@ -35,14 +58,23 @@ in {
                     mode = "1366x768@60.00Hz";
                     position = "0,0";
                     scale = 1.0;
+                    status = "disable";
+                    transform = "normal";
+                  }
+                  {
+                    adaptiveSync = true;
+                    criteria = "AOC 24G2W1G5 0x000001B0";
+                    mode = "1920x1080@60.00Hz";
+                    position = "6400,0";
+                    scale = 1.0;
                     status = "enable";
                     transform = "normal";
                   }
                   {
                     adaptiveSync = true;
-                    criteria = "HDMI-A-1";
-                    mode = "1366x768@60.00Hz";
-                    position = "0,0";
+                    criteria = "Samsung Electric Company C27JG5x H4ZN301397";
+                    mode = "2560x1440@60.00Hz";
+                    position = "3840,0";
                     scale = 1.0;
                     status = "enable";
                     transform = "normal";

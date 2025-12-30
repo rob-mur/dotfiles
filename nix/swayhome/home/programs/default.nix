@@ -1,9 +1,11 @@
-{ ... }: {
+{...}: {
   imports = [
-		./ticktick.nix
-		./signal.nix
-		./devenv.nix
-		./spotify.nix
+    ./steam.nix
+    ./protonvpn-gui.nix
+    ./ticktick.nix
+    ./signal.nix
+    ./devenv.nix
+    ./spotify.nix
     ./zsh.nix
     ./wdisplays.nix
     ./pavucontrol.nix
@@ -41,7 +43,8 @@
     ./jq.nix
     ./keepassxc.nix
     ./kitty.nix
-    ./lazygit.nix
+    ./jj.nix
+    ./darktable.nix
     ./lf.nix
     ./mbsync.nix
     ./micro.nix
@@ -79,9 +82,7 @@
     ./wofi.nix
     ./xplr.nix
     ./yt-dlp.nix
-    ./yazi.nix
     ./zathura.nix
-    ./zed.nix
     ./zellij.nix
     ./zoxide.nix
   ];

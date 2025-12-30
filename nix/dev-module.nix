@@ -80,8 +80,9 @@
     EDITOR = "nvim";
   };
 
-  home.username = "robert.murphy";
-  home.homeDirectory = "/home/robert.murphy";
+  home.username = "rob";
+  home.homeDirectory = "/home/rob";
   programs.home-manager.enable = true;
   home.stateVersion = "25.05";
 }
+

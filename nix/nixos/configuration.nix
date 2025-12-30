@@ -275,6 +275,8 @@
 
       # Using the Overlay defined in Flake.nix
       r2305.yuzu-mainline
+
+      jellyfin-media-player
     ];
 
     programs.alacritty.enable = true;

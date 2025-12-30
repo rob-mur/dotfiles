@@ -1,28 +1,29 @@
-{pkgs, ...}:
-with pkgs;
-let
-  profile = import ./../../../user/profile {};
-in
 {
-
+  pkgs,
+  config,
+  ...
+}:
+with pkgs; let
+  profile = import ./../../../user/profile {inherit config;};
+in {
   home-manager = {
     users.${profile.name} = {
-  home.packages = [qwerty-fr];
-  home.keyboard.options = ["caps:swapescape"];
-  wayland.windowManager.sway = {
-    
-    # We must disable config checking and defer to runtime as the keyboard layout
-    # has not been defined until the build is complete
-    checkConfig = false;
+      home.packages = [qwerty-fr];
+      home.keyboard.options = ["caps:swapescape"];
+      wayland.windowManager.sway = {
+        # We must disable config checking and defer to runtime as the keyboard layout
+        # has not been defined until the build is complete
+        checkConfig = false;
 
-    extraConfig =''
-    input * {
-      xkb_layout us_qwerty-fr
-      xkb_options "caps:swapescape"
-    }
-  '';};
-};
-};
+        extraConfig = ''
+          input * {
+            xkb_layout us_qwerty-fr
+            xkb_options "caps:swapescape"
+          }
+        '';
+      };
+    };
+  };
   services.xserver = {
     enable = true;
     xkb = {
@@ -33,5 +34,4 @@ in
       };
     };
   };
-
 }

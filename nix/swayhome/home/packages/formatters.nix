@@ -1,19 +1,14 @@
-{
-  pkgs,
-  ...
-}:
-with pkgs;
-let
-
+{pkgs, ...}: let
   profile = import ./../../../user/profile {};
-
 in {
   home-manager = {
     users.${profile.name} = {
       home = {
-        packages = with unixODBCDrivers; [
-          psql
-          sqlite
+        packages = with pkgs; [
+          alejandra
+          stylua
+          nodePackages.prettier
+          black
         ];
       };
     };
