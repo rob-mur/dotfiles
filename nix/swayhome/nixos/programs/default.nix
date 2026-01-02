@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./git.nix
     ./adb.nix
     ./cnf.nix
     ./corectrl.nix

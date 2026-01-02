@@ -1,8 +1,11 @@
-{pkgs, ...}: let
-  profile = import ./../../user/profile {};
+{
+  pkgs,
+  config,
+  ...
+}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home.packages = with pkgs; [
         jujutsu
         lazyjj

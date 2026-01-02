@@ -1,11 +1,8 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-  alias = import ./../../user/abbr {};
-
+{config, ...}: let
+  alias = import ./../../user/abbr {inherit config;};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         nushell = {
           enable = false;

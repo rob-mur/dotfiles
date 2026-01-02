@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
-  time.timeZone = "${profile.timezone}";
+  time.timeZone = "${config.timezone}";
 }

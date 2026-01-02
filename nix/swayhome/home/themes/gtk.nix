@@ -1,21 +1,18 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
+with pkgs; let
   theme = import ./../../user/theme {};
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       gtk = {
         enable = true;
         font = {
           name = theme.font;
-          size= theme.font-size;
+          size = theme.font-size;
         };
         theme = {
           name = theme.theme;
@@ -54,21 +51,21 @@ in {
             gtk-button-images = "false";
           };
           extraCss = ''
-          .titlebar,
-          .titlebar .background
-          {
-            border-radius: 0;
-          }
+            .titlebar,
+            .titlebar .background
+            {
+              border-radius: 0;
+            }
 
-          decoration
-          {
-            box-shadow: none;
-          }
+            decoration
+            {
+              box-shadow: none;
+            }
 
-          decoration:backdrop
-          {
-            box-shadow: none;
-          }
+            decoration:backdrop
+            {
+              box-shadow: none;
+            }
           '';
         };
         gtk4 = {
@@ -82,21 +79,21 @@ in {
             gtk-overlay-scrolling = "true";
           };
           extraCss = ''
-          .titlebar,
-          .titlebar .background
-          {
-            border-radius: 0;
-          }
+            .titlebar,
+            .titlebar .background
+            {
+              border-radius: 0;
+            }
 
-          decoration
-          {
-            box-shadow: none;
-          }
+            decoration
+            {
+              box-shadow: none;
+            }
 
-          decoration:backdrop
-          {
-            box-shadow: none;
-          }
+            decoration:backdrop
+            {
+              box-shadow: none;
+            }
           '';
         };
       };

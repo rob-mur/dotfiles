@@ -1,16 +1,13 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         pandoc = {
           enable = true;
           defaults = {
             metadata = {
-              author = "${profile.fullname}";
+              author = "${config.fullname}";
             };
             pdf-engine = "xelatex";
             citeproc = true;

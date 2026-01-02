@@ -1,15 +1,12 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home = {
         packages = [
           libreoffice

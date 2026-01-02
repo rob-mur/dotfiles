@@ -1,10 +1,7 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         translate-shell = {
           enable = false;

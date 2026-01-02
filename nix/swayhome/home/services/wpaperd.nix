@@ -1,12 +1,9 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-  res = "hd";  # hd/fhd
+{config, ...}: let
+  res = "hd"; # hd/fhd
   wallpaper = "${./../../asset/wallpaper/${res}}";
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       services = {
         wpaperd = {
           enable = false;

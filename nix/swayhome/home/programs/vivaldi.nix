@@ -1,9 +1,7 @@
-{ ... }: let
-  profile = import ./../../user/profile {};
-in
-{
+{config, ...}: let
+in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs.vivaldi.enable = true;
     };
   };

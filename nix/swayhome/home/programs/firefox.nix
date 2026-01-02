@@ -1,15 +1,12 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         firefox = {
           enable = false;
           profiles = {
-            ${profile.name} = {
+            ${config.name} = {
               isDefault = true;
               search = {
                 default = "ddg";

@@ -1,9 +1,12 @@
-{pkgs, ...}:
+{
+  pkgs,
+  config,
+  ...
+}:
 with pkgs; let
-  profile = import ./../../user/profile {};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home.file.".undodir/.keep".text = "";
       xdg.configFile."nvim" = {
         source = ../config/nvim;

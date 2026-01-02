@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   services = {
     vsftpd = {
@@ -9,7 +6,7 @@ in {
       localUsers = true;
       writeEnable = true;
       userlist = [
-       "${profile.name}"
+        "${config.name}"
       ];
     };
   };

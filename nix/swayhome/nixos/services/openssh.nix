@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   services = {
     openssh = {
@@ -10,7 +7,7 @@ in {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
         PermitRootLogin = "no";
-        AllowUsers = [ "${profile.name}" ];
+        AllowUsers = ["${config.name}"];
       };
     };
   };

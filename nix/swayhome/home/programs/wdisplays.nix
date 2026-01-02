@@ -1,10 +1,12 @@
-{ pkgs, ... }: with pkgs; let
-
-  profile = import ./../../user/profile {};
-
+{
+  pkgs,
+  config,
+  ...
+}:
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home.packages = [wdisplays];
     };
   };

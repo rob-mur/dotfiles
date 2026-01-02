@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   virtualisation = {
     virtualbox = {
@@ -17,7 +14,7 @@ in {
     extraGroups = {
       vboxusers = {
         members = [
-        "${profile.name}"
+          "${config.name}"
         ];
       };
     };

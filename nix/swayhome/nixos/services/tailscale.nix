@@ -1,12 +1,9 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
-      services = {
-        tailscale = {
-          enable = true;
-          useRoutingFeatures = "both";
-        };
+  services = {
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "both";
+    };
   };
 }

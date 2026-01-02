@@ -1,29 +1,27 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         password-store = {
           enable = true;
-          package = pass-wayland.withExtensions (exts: [
-            exts.pass-checkup
-            exts.pass-genphrase
-            exts.pass-import
-            exts.pass-otp
-            exts.pass-tomb
-            exts.pass-update
+          package = pass-wayland.withExtensions (
+            exts: [
+              exts.pass-checkup
+              exts.pass-genphrase
+              exts.pass-import
+              exts.pass-otp
+              exts.pass-tomb
+              exts.pass-update
             ]
           );
           settings = {
-            PASSWORD_STORE_DIR = "/home/${profile.name}/${profile.pass}";
+            PASSWORD_STORE_DIR = "/home/${config.name}/${config.pass}";
           };
         };
       };

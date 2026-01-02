@@ -1,15 +1,18 @@
-{ ... }: let
-
+{
+  pkgs,
+  config,
+  ...
+}: let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
-  theme = import ./../../user/theme {};
 
+  theme = import ./../../user/theme {};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         waybar = {
           enable = true;
+          package = pkgs.waybar.override {pulseSupport = true;};
           settings = {
             mainBar = {
               layer = "bottom";
@@ -52,7 +55,7 @@ in {
                 on-click = "activate";
                 sort-by-number = true;
                 format = "{value}";
-                             };
+              };
               "sway/scratchpad" = {
                 format = "{icon} {count}";
                 show-empty = false;
@@ -111,7 +114,7 @@ in {
               };
               "cpu" = {
                 format = "{usage}% ";
-                tooltip =false;
+                tooltip = false;
               };
               "memory" = {
                 format = "{}% ";
@@ -133,7 +136,17 @@ in {
                 # device = "acpi_video1";
                 format = "{percent}% {icon}";
                 format-icons = [
-                  "" "" "" "" "" "" "" "" "" "" ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
                 ];
               };
               "battery" = {
@@ -187,7 +200,9 @@ in {
                   portable = "";
                   car = "";
                   default = [
-                    "" "" ""
+                    ""
+                    ""
+                    ""
                   ];
                 };
               };
@@ -271,9 +286,6 @@ in {
             #pulseaudio,
             #temperature,
             #tray,
-            #wireplumber {
-              padding: 0 8px;
-            }
 
             #window,
             #workspaces {
@@ -441,17 +453,6 @@ in {
               border-bottom: 0px solid ${color.r_bright_blue};
             }
 
-            #wireplumber {
-              color: ${color.r_foreground};
-              background-color: transparent;
-              border-bottom: 0px solid ${color.r_bright_yellow};
-            }
-
-            #wireplumber.muted {
-              color: ${color.r_foreground};
-              background-color: transparent;
-              border-bottom: 0px solid ${color.r_bright_yellow};
-            }
           '';
         };
       };

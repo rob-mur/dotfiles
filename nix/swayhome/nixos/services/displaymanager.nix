@@ -1,31 +1,19 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   services = {
     displayManager = {
-    sddm.enable = false;
+      sddm.enable = true;
       enable = true;
-      ly = {
-        enable = true;
-        settings = {
-          animation = "none";
-          blank_box = false;
-          default_input = "password";
-          save = false;
-        };
-      };
-      defaultSession = "Sway";
-      sessionPackages = [ sway ];
+      defaultSession = "sway";
+      sessionPackages = [sway];
       autoLogin = {
-        enable = false;
-        user = "${profile.name}";
+        enable = config.autoLogin;
+        user = "${config.name}";
       };
     };
   };

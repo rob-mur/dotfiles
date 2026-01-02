@@ -1,12 +1,8 @@
 {
   pkgs,
+  config,
   ...
-}:
-
-let
-
-  profile = import ./../../../user/profile {};
-
+}: let
   archive = import ./archive.nix {
     inherit pkgs;
     enable_archive_pkgs = true;
@@ -67,7 +63,7 @@ let
     enable_wayland_pkgs = true;
   };
 
-  wine= import ./wine.nix {
+  wine = import ./wine.nix {
     inherit pkgs;
     enable_wine = false;
   };
@@ -86,12 +82,9 @@ let
     ++ utility.utility_pkgs
     ++ wayland.wayland_pkgs
     ++ wine.wine_pkgs;
-
-in
-
-{
+in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home = {
         packages = all_basic_pkgs;
       };

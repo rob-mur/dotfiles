@@ -1,12 +1,10 @@
-{ ... }: let
-
+{config, ...}: let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
-  theme = import ./../../user/theme {};
 
+  theme = import ./../../user/theme {};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       wayland = {
         windowManager = {
           sway = {

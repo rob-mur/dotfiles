@@ -1,16 +1,13 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         sqls = {
           enable = false;
           settings = {
             lowercaseKeywords = true;
-            connections = [ ];
+            connections = [];
           };
         };
       };

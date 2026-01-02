@@ -4,10 +4,9 @@
   ...
 }:
 with pkgs; let
-  profile = import ./../../../user/profile {inherit config;};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       home.packages = [qwerty-fr];
       home.keyboard.options = ["caps:swapescape"];
       wayland.windowManager.sway = {

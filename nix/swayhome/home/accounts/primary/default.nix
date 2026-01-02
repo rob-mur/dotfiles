@@ -1,24 +1,21 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       accounts.email = {
         maildirBasePath = "mail";
         accounts = {
-          ${profile.email} = {
+          ${config.email} = {
             primary = true;
-            address = "${profile.email}";
-            userName = "${profile.name}";
-            realName = "${profile.fullname}";
-            passwordCommand = "${pass}/bin/pass show disroot/main/${profile.name}";
+            address = "${config.email}";
+            userName = "${config.name}";
+            realName = "${config.fullname}";
+            passwordCommand = "${pass}/bin/pass show disroot/main/${config.name}";
             flavor = "plain";
             imap = {
               host = "disroot.org";
@@ -41,7 +38,7 @@ in {
               create = "both";
               expunge = "both";
               flatten = ".";
-              patterns = [ "*" ];
+              patterns = ["*"];
             };
             msmtp = {
               enable = true;

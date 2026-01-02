@@ -22,7 +22,7 @@
     ./open-webui.nix
     ./openssh.nix
     ./pcscd.nix
-    ./pipewire.nix
+    ./pulseaudio.nix
     ./postgresql.nix
     ./power-profiles.nix
     ./printing.nix

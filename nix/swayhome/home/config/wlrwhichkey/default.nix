@@ -1,12 +1,11 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
+with pkgs; let
   color = import ./../../../user/color {};
-  profile = import ./../../../user/profile {};
+
   theme = import ./../../user/theme {};
 
   output = "eDP-1";
@@ -17,13 +16,12 @@ let
   recorder = "${wl-screenrec}/bin/${screenrec}";
   area = "$(${slurp}/bin/slurp -d)";
   opt = "--low-power=off";
-  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${profile.name}";
+  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${config.name}";
   pfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir PICTURES)/${filename}.png)";
   vfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir VIDEOS)/${filename}.mp4)";
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       xdg = {
         configFile = {
           "wlrwhichkey" = {
@@ -45,7 +43,7 @@ in {
               margin_left: 0
               margin_top: 0
 
-              menu: 
+              menu:
                 "m":
                   desc: Message
                   submenu:

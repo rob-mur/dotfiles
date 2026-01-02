@@ -1,10 +1,7 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         sioyek = {
           enable = false;
@@ -13,8 +10,8 @@ in {
             "move_down" = "j";
             "move_left" = "h";
             "move_right" = "l";
-            "screen_down" = [ "d" "" ];
-            "screen_up" = [ "u" "" ];
+            "screen_down" = ["d" ""];
+            "screen_up" = ["u" ""];
           };
           config = {
           };

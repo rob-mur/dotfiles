@@ -1,20 +1,17 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         comodoro = {
           enable = false;
           settings = {
-            ${profile.name} = {
+            ${config.name} = {
               cycles = [
                 {
                   name = "Work";
@@ -59,8 +56,8 @@ in {
       services = {
         comodoro = {
           enable = false;
-          protocols = [ "tcp" ];
-          preset = "${profile.name}";
+          protocols = ["tcp"];
+          preset = "${config.name}";
         };
       };
     };

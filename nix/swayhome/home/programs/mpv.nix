@@ -1,15 +1,12 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         mpv = {
           enable = true;
@@ -21,7 +18,7 @@ in {
             force-window = "yes";
             fullscreen = "no";
             osc = "yes";
-            profile = "gpu-hq";
+
             save-position-on-quit = "yes";
             ytdl-format = "bestvideo+bestaudio";
           };

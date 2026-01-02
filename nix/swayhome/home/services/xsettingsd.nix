@@ -1,11 +1,8 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
+{config, ...}: let
   theme = import ./../../user/theme {};
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       services = {
         xsettingsd = {
           enable = true;

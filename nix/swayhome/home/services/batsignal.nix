@@ -1,17 +1,17 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       services = {
         batsignal = {
           enable = false;
           extraArgs = [
-            "-c" "10"
-            "-w" "30"
-            "-f" "97"
+            "-c"
+            "10"
+            "-w"
+            "30"
+            "-f"
+            "97"
           ];
         };
       };

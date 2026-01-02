@@ -1,12 +1,10 @@
-{ ... }: let
-
+{config, ...}: let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
-  theme = import ./../../user/theme {};
 
+  theme = import ./../../user/theme {};
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         kitty = {
           enable = true;
@@ -25,11 +23,11 @@ in {
             update_check_interval = 0;
             window_padding_width = 5;
 
-	    repaint_delay = 10;
-	    input_delay = 3;
-	    sync_to_monitor = "yes";
-						cursor_stop_blinking_after = 0;
-	    cursor_blink_interval = 0;
+            repaint_delay = 10;
+            input_delay = 3;
+            sync_to_monitor = "yes";
+            cursor_stop_blinking_after = 0;
+            cursor_blink_interval = 0;
 
             draw_minimal_borders = "yes";
             tab_bar_edge = "top";

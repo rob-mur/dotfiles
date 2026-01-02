@@ -1,20 +1,17 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   services = {
-   greetd = {
+    greetd = {
       enable = false;
       settings = rec {
         initial_session = {
           command = "${sway}/bin/sway";
-          user = "${profile.name}";
+          user = "${config.name}";
         };
         default_session = initial_session;
       };

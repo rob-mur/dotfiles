@@ -1,21 +1,18 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   programs.zsh.enable = true;
 
   users = {
     defaultUserShell = zsh;
     users = {
-      ${profile.name} = {
+      ${config.name} = {
         isNormalUser = true;
-        description = "${profile.fullname}";
+        description = "${config.fullname}";
         uid = 1000;
         extraGroups = [
           "adbusers"

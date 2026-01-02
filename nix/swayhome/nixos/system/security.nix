@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   security = {
     polkit.enable = true;
@@ -11,23 +8,11 @@ in {
     pam = {
       services = {
         swaylock = {};
+        sddm.enableGnomeKeyring = true;
       };
     };
     sudo = {
-      enable = false;
-      wheelNeedsPassword = false;
-    };
-    doas = {
       enable = true;
-      extraRules = [
-        {
-          users = ["${profile.name}"];
-          groups = ["wheel"];
-          keepEnv = true;
-          noPass = true;
-        }
-      ];
-      wheelNeedsPassword = false;
     };
   };
 }

@@ -1,12 +1,9 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   services = {
     xserver = {
@@ -15,7 +12,7 @@ in {
         "nvidia"
       ];
       xkb = {
-        layout = "${profile.layout}";
+        layout = "${config.layout}";
       };
     };
   };

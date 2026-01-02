@@ -1,14 +1,11 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       services = {
         mpd = {
           enable = true;
-          musicDirectory = "/home/${profile.name}/music";
+          musicDirectory = "/home/${config.name}/music";
           extraConfig = ''
             auto_update    "yes"
             restore_paused "yes"

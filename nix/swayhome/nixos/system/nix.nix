@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   nixpkgs = {
     config = {
@@ -10,7 +7,7 @@ in {
       firefox = {
         enablePlasmaBrowserIntegration = false;
       };
-      permittedInsecurePackages = [ ];
+      permittedInsecurePackages = [];
     };
   };
 
@@ -31,14 +28,14 @@ in {
     settings = {
       allowed-users = ["@wheel"];
       auto-optimise-store = true;
-        extra-substituters = ["https://devenv.cachix.org"];
-    extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
-    experimental-features = ["nix-command" "flakes"];
-    
+      extra-substituters = ["https://devenv.cachix.org"];
+      extra-trusted-public-keys = ["devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="];
+      experimental-features = ["nix-command" "flakes"];
+
       sandbox = true;
       trusted-users = [
         "root"
-        "${profile.name}"
+        "${config.name}"
       ];
     };
   };

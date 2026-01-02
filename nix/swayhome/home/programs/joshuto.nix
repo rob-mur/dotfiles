@@ -1,10 +1,7 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         joshuto = {
           enable = false;
@@ -36,7 +33,7 @@ in {
               audio_default = [
                 {
                   command = "mpv";
-                  args = [ "--" ];
+                  args = ["--"];
                 }
                 {
                   command = "mediainfo";
@@ -46,13 +43,13 @@ in {
               image_default = [
                 {
                   command = "imv-dir";
-                  args = [ "--" ];
+                  args = ["--"];
                   fork = true;
                   silent = true;
                 }
                 {
                   command = "krita";
-                  args = [ "--" ];
+                  args = ["--"];
                   fork = true;
                   silent = true;
                 }
@@ -64,7 +61,7 @@ in {
               video_default = [
                 {
                   command = "mpv";
-                  args = [ "--" ];
+                  args = ["--"];
                   fork = true;
                   silent = true;
                 }
@@ -74,7 +71,7 @@ in {
                 }
                 {
                   command = "mpv";
-                  args = [ "--mute" "on" "--" ];
+                  args = ["--mute" "on" "--"];
                   fork = true;
                   silent = true;
                 }
@@ -85,7 +82,7 @@ in {
                 }
                 {
                   command = "bat";
-                  args = [ "--paging=always" ];
+                  args = ["--paging=always"];
                 }
               ];
 
@@ -277,7 +274,7 @@ in {
                 }
                 {
                   command = "bat";
-                  args = [ "--paging=always" ];
+                  args = ["--paging=always"];
                 }
               ];
 
@@ -285,7 +282,7 @@ in {
               "7z".app_list = [
                 {
                   command = "7z";
-                  args = [ "x" ];
+                  args = ["x"];
                   confirm_exit = true;
                 }
                 {
@@ -297,7 +294,7 @@ in {
               bz2.app_list = [
                 {
                   command = "tar";
-                  args = [ "-xvjf" ];
+                  args = ["-xvjf"];
                   confirm_exit = true;
                 }
                 {
@@ -309,7 +306,7 @@ in {
               gz.app_list = [
                 {
                   command = "tar";
-                  args = [ "-xvzf" ];
+                  args = ["-xvzf"];
                   confirm_exit = true;
                 }
                 {
@@ -321,7 +318,7 @@ in {
               tar.app_list = [
                 {
                   command = "tar";
-                  args = [ "-xvf" ];
+                  args = ["-xvf"];
                   confirm_exit = true;
                 }
                 {
@@ -333,7 +330,7 @@ in {
               tgz.app_list = [
                 {
                   command = "tar";
-                  args = [ "-xvzf" ];
+                  args = ["-xvzf"];
                   confirm_exit = true;
                 }
                 {
@@ -345,7 +342,7 @@ in {
               rar.app_list = [
                 {
                   command = "unrar";
-                  args = [ "x" ];
+                  args = ["x"];
                   confirm_exit = true;
                 }
                 {
@@ -357,7 +354,7 @@ in {
               xz.app_list = [
                 {
                   command = "tar";
-                  args = [ "-xvJf" ];
+                  args = ["-xvJf"];
                   confirm_exit = true;
                 }
                 {

@@ -1,10 +1,7 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         gitui = {
           enable = true;
@@ -41,7 +38,7 @@ in {
               move_right: Some(( code: Char('l'), modifiers: "")),
               move_up: Some(( code: Char('k'), modifiers: "")),
               move_down: Some(( code: Char('j'), modifiers: "")),
-    
+
               popup_up: Some(( code: Char('p'), modifiers: "CONTROL")),
               popup_down: Some(( code: Char('n'), modifiers: "CONTROL")),
               page_up: Some(( code: Char('b'), modifiers: "CONTROL")),

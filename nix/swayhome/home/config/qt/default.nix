@@ -1,16 +1,13 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../../user/profile {};
+with pkgs; let
   theme = import ./../../../user/theme {};
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       xdg = {
         configFile = {
           "qt5ct" = {
@@ -52,4 +49,3 @@ in {
     };
   };
 }
-

@@ -1,15 +1,13 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         texlive = {
           enable = true;
-            extraPackages = tpkgs: {
-            inherit (tpkgs)
+          extraPackages = tpkgs: {
+            inherit
+              (tpkgs)
               scheme-medium
               algorithms
               fontawesome5
@@ -19,7 +17,7 @@ in {
               pdfcol
               tcolorbox
               tikzfill
-            ;
+              ;
           };
         };
       };

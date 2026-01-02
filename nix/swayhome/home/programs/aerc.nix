@@ -1,15 +1,12 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         aerc = {
           enable = true;
@@ -24,7 +21,7 @@ in {
             general = {
               editor = "${helix}/bin/hx";
               unsafe-accounts-conf = true;
-              viewer= "${less}/bin/less";
+              viewer = "${less}/bin/less";
             };
             ui = {
               sidebar-width = 25;

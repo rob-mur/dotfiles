@@ -1,24 +1,11 @@
-{
-  pkgs,
-  ...
-}:
-with pkgs;
-{
+{pkgs, ...}:
+with pkgs; {
   xdg = {
     portal = {
       enable = true;
-      wlr = {
-        enable = true;
-      };
-      configPackages = [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-wlr
-      ];
-      extraPortals = [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-wlr
-        kdePackages.xdg-desktop-portal-kde
-      ];
+
+      configPackages = [pkgs.xdg-desktop-portal-gtk];
+      extraPortals = [pkgs.xdg-desktop-portal-gtk];
     };
   };
 }

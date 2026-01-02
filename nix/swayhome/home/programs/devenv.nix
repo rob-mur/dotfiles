@@ -1,14 +1,13 @@
-{pkgs, ...}:
-with pkgs;
-let
-  profile = import ./../../user/profile {};
-in
 {
-
+  pkgs,
+  config,
+  ...
+}:
+with pkgs; let
+in {
   home-manager = {
-    users.${profile.name} = {
-  home.packages = [devenv];
-};
-};
-
+    users.${config.name} = {
+      home.packages = [devenv];
+    };
+  };
 }

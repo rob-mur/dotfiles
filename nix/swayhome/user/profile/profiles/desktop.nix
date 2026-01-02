@@ -1,4 +1,4 @@
-{...}: let
+{config, ...}: let
   locale = "en_GB.UTF-8";
   hostname = "nixos"; # laptop/pc name
   timezone = "Europe/Paris"; # time zone region

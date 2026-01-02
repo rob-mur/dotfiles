@@ -1,12 +1,9 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   services = {
     redis = {
       servers = {
-        "${profile.hostname}" = {
+        "${config.hostname}" = {
           enable = false;
           port = 6379;
         };

@@ -1,14 +1,11 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         eza = {
           enable = true;
-          extraOptions = [ "--group-directories-first"  "--header" ];
+          extraOptions = ["--group-directories-first" "--header"];
           git = true;
         };
       };

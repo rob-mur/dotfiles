@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../profile {};
-
+{config, ...}: let
   abbr = {
     c = "cp";
     d = "doas";
@@ -48,12 +45,12 @@
     nei = "nix-env -iA";
     neu = "nix-env --uninstall";
 
-    nlg = "nix-env --list-generations -p /home/${profile.name}/.local/state/nix/profiles/profile";
-    hlg = "nix-env --list-generations -p /home/${profile.name}/.local/state/nix/profiles/home-manager";
+    nlg = "nix-env --list-generations -p /home/${config.name}/.local/state/nix/profiles/profile";
+    hlg = "nix-env --list-generations -p /home/${config.name}/.local/state/nix/profiles/home-manager";
     slg = "doas nix-env --list-generations -p /nix/var/nix/profiles/system";
 
-    ndg = "nix-env --delete-generations old -p /home/${profile.name}/.local/state/nix/profiles/profile";
-    hdg = "nix-env --delete-generations old -p /home/${profile.name}/.local/state/nix/profiles/home-manager";
+    ndg = "nix-env --delete-generations old -p /home/${config.name}/.local/state/nix/profiles/profile";
+    hdg = "nix-env --delete-generations old -p /home/${config.name}/.local/state/nix/profiles/home-manager";
     sdg = "doas nix-env --delete-generations old -p /nix/var/nix/profiles/system";
 
     dncl = "doas nix-channel --list";
@@ -132,9 +129,6 @@
     gugm = "git pull gh main";
     gulm = "git pull gl main";
   };
-
 in {
-
   inherit abbr;
-
 }

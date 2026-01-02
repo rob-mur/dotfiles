@@ -1,10 +1,7 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   home-manager = {
-    users.${profile.name} = { config, ... }: {
+    users.${config.name} = {config, ...}: {
       programs = {
         ssh = {
           enable = true;

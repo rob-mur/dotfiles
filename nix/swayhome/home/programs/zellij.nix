@@ -1,11 +1,8 @@
-{ ... }: let
-
+{config, ...}: let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         zellij = {
           enable = false;
@@ -16,9 +13,9 @@ in {
             default_shell = "fish";
             pane_frames = false;
             simplified_ui = true;
-            theme = "${profile.name}";
+            theme = "${config.name}";
             themes = {
-              ${profile.name} = {
+              ${config.name} = {
                 fg = color.h_foreground;
                 bg = color.h_bright_black;
                 black = color.h_black;

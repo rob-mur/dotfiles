@@ -1,24 +1,25 @@
-{ pkgs, ... }: let
-
-  profile = import ./../../user/profile {};
-
+{
+  pkgs,
+  config,
+  ...
+}: let
 in {
-services.dbus.packages = [ pkgs.keepassxc ];
+  services.dbus.packages = [pkgs.keepassxc];
   home-manager = {
-    users.${profile.name} = {
-home.file.".config/vivaldi/NativeMessagingHosts/org.keepassxc.keepassxc_browser.json" = {
-  text = builtins.toJSON {
-    allowed_origins = [
-      "chrome-extension://oboonakemofpalcgghocfoadofidjkkk/" 
-      "chrome-extension://pdffhmdngciaglkoonimfcmckachoopb/" 
-    ];
-    description = "KeePassXC integration with native messaging support";
-    name = "org.keepassxc.keepassxc_browser";
-    path = "${pkgs.keepassxc}/bin/keepassxc-proxy";
-    type = "stdio";
-  };
-};
- 
+    users.${config.name} = {
+      home.file.".config/vivaldi/NativeMessagingHosts/org.keepassxc.keepassxc_browser.json" = {
+        text = builtins.toJSON {
+          allowed_origins = [
+            "chrome-extension://oboonakemofpalcgghocfoadofidjkkk/"
+            "chrome-extension://pdffhmdngciaglkoonimfcmckachoopb/"
+          ];
+          description = "KeePassXC integration with native messaging support";
+          name = "org.keepassxc.keepassxc_browser";
+          path = "${pkgs.keepassxc}/bin/keepassxc-proxy";
+          type = "stdio";
+        };
+      };
+
       programs = {
         keepassxc = {
           enable = true;

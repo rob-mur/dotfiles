@@ -1,22 +1,19 @@
 {
   pkgs,
+  config,
   ...
 }:
-with pkgs;
-let
-
-  profile = import ./../../user/profile {};
-
+with pkgs; let
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         git = {
           enable = true;
-          settings  = {
+          settings = {
             user = {
-              email = "${profile.email}";
-              name = "${profile.fullname}";
+              email = "${config.email}";
+              name = "${config.fullname}";
             };
             init = {
               defaultBranch = "main";

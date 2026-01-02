@@ -35,7 +35,6 @@
     ./git.nix
     ./gitui.nix
     ./go.nix
-    ./helix.nix
     ./htop.nix
     ./imv.nix
     ./java.nix

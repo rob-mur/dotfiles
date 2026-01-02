@@ -1,11 +1,8 @@
-{ ... }: let
-
+{config, ...}: let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       programs = {
         cava = {
           enable = true;

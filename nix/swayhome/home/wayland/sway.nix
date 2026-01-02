@@ -1,14 +1,13 @@
 {
   lib,
   pkgs,
+  config,
   ...
 }:
 with lib;
-with pkgs;
-let
-
+with pkgs; let
   color = import ./../../user/color {};
-  profile = import ./../../user/profile {};
+
   theme = import ./../../user/theme {};
 
   mod4 = "Mod4";
@@ -36,22 +35,24 @@ let
   area = "$(${slurp}/bin/slurp -d)";
   current = ''$(${sway}/bin/swaymsg -t get_tree | ${jq}/bin/jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | ${slurp}/bin/slurp -d)'';
   opt = "--low-power=off";
-  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${profile.name}";
+  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${config.name}";
   pfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir PICTURES)/screenshot/${filename}.png)";
   vfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir VIDEOS)/recording/${filename}.mp4)";
-
 in {
   home-manager = {
-    users.${profile.name} = {
+    users.${config.name} = {
       wayland = {
         windowManager = {
           sway = {
             enable = true;
+            extraOptions = ["--unsupported-gpu"];
             config = {
               modifier = "${mod4}";
-              bars = [{
-                command = "${waybar}/bin/waybar";
-              }];
+              bars = [
+                {
+                  command = "${waybar}/bin/waybar";
+                }
+              ];
               focus = {
                 forceWrapping = false;
                 followMouse = false;
@@ -64,10 +65,21 @@ in {
                 inner = 15;
               };
               startup = [
-                { command = "${pkgs.procps}/bin/pgrep -x waybar > /dev/null || ${pkgs.coreutils}/bin/sleep 2"; }
-                { command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"; }
-                { command = "${kitty}/bin/kitty"; }
-                { command = "${waytrogen}/bin/waytrogen --restore"; }
+                {command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway";}
+                {command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP";}
+
+                # Initialize the keyring daemon and the Polkit agent
+                {command = "gnome-keyring-daemon --start --components=secrets";}
+                {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
+
+                # --- Portal & UI ---
+                {command = "systemctl --user restart xdg-desktop-portal";}
+                {command = "pkill waybar && waybar";}
+
+                # --- Apps ---
+                {command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";}
+                {command = "${kitty}/bin/kitty";}
+                {command = "${waytrogen}/bin/waytrogen --restore";}
               ];
               input = {
                 "type:touchpad" = {
@@ -85,7 +97,7 @@ in {
                   natural_scroll = "disabled";
                 };
               };
-             window = {
+              window = {
                 border = 1;
                 titlebar = false;
                 commands = [
@@ -134,58 +146,68 @@ in {
                 ];
               };
               assigns = {
-                "1" = [ # Terminal
-                  { app_id = "foot"; }
-                  { app_id = "kitty"; }
-                  { app_id = "Alacritty"; }
+                "1" = [
+                  # Terminal
+                  {app_id = "foot";}
+                  {app_id = "kitty";}
+                  {app_id = "Alacritty";}
                 ];
-                "2" = [ # Browser
-                  { app_id = ".*qutebrowser"; }
-                  { app_id = "firefox"; }
-                  { app_id = "thunderbird"; }
+                "2" = [
+                  # Browser
+                  {app_id = ".*qutebrowser";}
+                  {app_id = "firefox";}
+                  {app_id = "thunderbird";}
                 ];
-                "3" = [ # Editor
-                  { app_id = "vscode"; }
-                  { app_id = ".*zed.*"; }
-                  { instance = "vscodium"; }
+                "3" = [
+                  # Editor
+                  {app_id = "vscode";}
+                  {app_id = ".*zed.*";}
+                  {instance = "vscodium";}
                 ];
-                "4" = [ # Editor
-                  { app_id = ".*biolab.*"; }
-                  { app_id = "spyder"; }
+                "4" = [
+                  # Editor
+                  {app_id = ".*biolab.*";}
+                  {app_id = "spyder";}
                 ];
-                "5" = [ # Datalabs
-                  { app_id = "DBeaver"; }
-                  { app_id = "sqlitebrowser"; }
-                  { instance = "rstudio"; }
+                "5" = [
+                  # Datalabs
+                  {app_id = "DBeaver";}
+                  {app_id = "sqlitebrowser";}
+                  {instance = "rstudio";}
                 ];
-                "6" = [ # Office
-                  { app_id = "texstudio"; }
-                  { app_id = "libreoffice-*"; }
-                  { class = "Zotero"; }
+                "6" = [
+                  # Office
+                  {app_id = "texstudio";}
+                  {app_id = "libreoffice-*";}
+                  {class = "Zotero";}
                 ];
-                "7" = [ # Entertainment
-                  { app_id = ".*telegram.*"; }
-                  { app_id = "Session"; }
-                  { app_id = "vesktop"; }
-                  { class = "DeltaChat"; }
-                  { class = "discord"; }
+                "7" = [
+                  # Entertainment
+                  {app_id = ".*telegram.*";}
+                  {app_id = "Session";}
+                  {app_id = "vesktop";}
+                  {class = "DeltaChat";}
+                  {class = "discord";}
                 ];
-                "8" = [ # Design
-                  { app_id = "inkscape"; }
-                  { app_id = "gimp*"; }
-                  { app_id = "scribus"; }
-                  { class = "krita"; }
+                "8" = [
+                  # Design
+                  {app_id = "inkscape";}
+                  {app_id = "gimp*";}
+                  {app_id = "scribus";}
+                  {class = "krita";}
                 ];
-                "9" = [ # Animation
-                  { app_id = "blender"; }
-                  { app_id = "synfigstudio"; }
+                "9" = [
+                  # Animation
+                  {app_id = "blender";}
+                  {app_id = "synfigstudio";}
                 ];
-                "10" = [ # Multimedia
-                  { app_id = ".*kdenlive"; }
-                  { app_id = "lmms"; }
-                  { app_id = "media-downloader"; }
-                  { app_id = "tenacity"; }
-                  { instance = "audacity"; }
+                "10" = [
+                  # Multimedia
+                  {app_id = ".*kdenlive";}
+                  {app_id = "lmms";}
+                  {app_id = "media-downloader";}
+                  {app_id = "tenacity";}
+                  {instance = "audacity";}
                 ];
               };
               floating = {
@@ -193,25 +215,25 @@ in {
                 border = 1;
                 titlebar = false;
                 criteria = [
-                  { app_id = ".*blueman-manager-wrapped"; }
-                  { app_id = ".*scrcpy-wrapped"; }
-                  { app_id = ".*themechanger.*"; }
-                  { app_id = ".*wl_mirror"; }
-                  { app_id = ".*zathura"; }
-                  { app_id = ".*Waytrogen"; }
-                  { app_id = "imv"; }
-                  { app_id = "inkview"; }
-                  { app_id = "kvantummanager"; }
-                  { app_id = "mpv"; }
-                  { app_id = "qt5ct"; }
-                  { app_id = "qt6ct"; }
-                  { app_id = "sioyek"; }
-                  { app_id = "snippetexpandergui"; }
-                  { app_id = "system-config-printer"; }
-                  { app_id = "wdisplays"; }
-                  { app_id = "xdg-desktop-portal-gtk"; }
-                  { class = "Zotero"; }
-                  { instance = "lxappearance"; }
+                  {app_id = ".*blueman-manager-wrapped";}
+                  {app_id = ".*scrcpy-wrapped";}
+                  {app_id = ".*themechanger.*";}
+                  {app_id = ".*wl_mirror";}
+                  {app_id = ".*zathura";}
+                  {app_id = ".*Waytrogen";}
+                  {app_id = "imv";}
+                  {app_id = "inkview";}
+                  {app_id = "kvantummanager";}
+                  {app_id = "mpv";}
+                  {app_id = "qt5ct";}
+                  {app_id = "qt6ct";}
+                  {app_id = "sioyek";}
+                  {app_id = "snippetexpandergui";}
+                  {app_id = "system-config-printer";}
+                  {app_id = "wdisplays";}
+                  {app_id = "xdg-desktop-portal-gtk";}
+                  {class = "Zotero";}
+                  {instance = "lxappearance";}
                 ];
               };
               keybindings = mkOptionDefault {
@@ -247,7 +269,7 @@ in {
                 "Print" = "mode printscreen";
                 "Shift+Print" = "mode recording";
 
-                "${mod4}+b" = "exec ${wl-kbptr}/bin/wl-kbptr -o modes=floating','click -o mode_floating.source=detect";
+                "${mod4}+b" = "exec wl-kbptr-sway-active-win -o modes='floating,click -o mode_floating.source=detect'";
                 "${mod4}+Shift+b" = "mode mouse";
 
                 "${mod4}+bracketright" = "workspace next";
@@ -296,14 +318,13 @@ in {
                 "${mod4}+Shift+${right}" = "move right";
 
                 # Audio control
-                "XF86AudioRaiseVolume" = "exec ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+";
-                "XF86AudioLowerVolume" = "exec ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-";
-                "XF86AudioMute" = "exec ${wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-
+                "XF86AudioRaiseVolume" = "exec ${pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +2%";
+                "XF86AudioLowerVolume" = "exec ${pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -2%";
+                "XF86AudioMute" = "exec ${pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
                 # Mic control
-                "${mod4}+XF86AudioRaiseVolume" = "exec ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%+";
-                "${mod4}+XF86AudioLowerVolume" = "exec ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 2%-";
-                "${mod4}+XF86AudioMute" = "exec ${wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+                "${mod4}+XF86AudioRaiseVolume" = "exec ${pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ +2%";
+                "${mod4}+XF86AudioLowerVolume" = "exec ${pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ -2%";
+                "${mod4}+XF86AudioMute" = "exec ${pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
 
                 # Player control
                 "XF86AudioPlay" = "exec ${playerctl}/bin/playerctl play-pause --player=%any,mpv,mpd";

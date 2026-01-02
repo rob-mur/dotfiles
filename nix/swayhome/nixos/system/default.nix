@@ -1,7 +1,4 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   imports = [
     ./bluetooth.nix
@@ -23,6 +20,6 @@ in {
     ./zram.nix
   ];
   system = {
-    stateVersion = "${profile.version}";
+    stateVersion = "${config.version}";
   };
 }

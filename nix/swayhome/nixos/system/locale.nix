@@ -1,12 +1,9 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   i18n = {
-    defaultLocale = "${profile.defaultlocale}";
+    defaultLocale = "${config.locale}";
     extraLocaleSettings = {
-      LANGUAGE = "${profile.defaultlocale}";
+      LANGUAGE = "${config.locale}";
     };
   };
 }

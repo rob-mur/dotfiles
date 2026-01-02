@@ -1,14 +1,11 @@
-{ ... }: let
-
-  profile = import ./../../user/profile {};
-
+{config, ...}: let
 in {
   services = {
     syncthing = {
       enable = false;
-      user = "${profile.hostname}";
+      user = "${config.hostname}";
       group = "users";
-      dataDir = "/home/${profile.hostname}/documents";
+      dataDir = "/home/${config.hostname}/documents";
       overrideDevices = true;
       overrideFolders = true;
       settings = {
