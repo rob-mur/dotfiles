@@ -7,7 +7,10 @@ with pkgs; let
 in {
   services = {
     displayManager = {
-      sddm.enable = true;
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
       enable = true;
       defaultSession = "sway";
       sessionPackages = [sway];
