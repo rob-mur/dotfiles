@@ -312,9 +312,9 @@ in {
                   # Printscreen = "launch: [1]save-fullarea [2]save-area [3]save-current";
                   Escape = "mode default";
                   Return = "mode default";
-                  "1" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} "${pfilename}" | ${wl-clipboard}/bin/wl-copy -t image/png && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
-                  "2" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} -g "${area}" "${pfilename}" | ${wl-clipboard}/bin/wl-copy -t image/png && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
-                  "3" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} -g "${current}" "${pfilename}" | ${wl-clipboard}/bin/wl-copy -t image/png && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
+                  "1" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} "${pfilename}" && ${wl-clipboard}/bin/wl-copy -t image/png < "${pfilename}" && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
+                  "2" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} -g "${area}" "${pfilename}" && ${wl-clipboard}/bin/wl-copy -t image/png < "${pfilename}" && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
+                  "3" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${shot} -g "${current}" "${pfilename}" && ${wl-clipboard}/bin/wl-copy -t image/png < "${pfilename}" && ${notify-desktop}/bin/notify-desktop "Printscreen" "Screenshot taken...", mode default'';
                 };
                 randr = {
                   Escape = "mode default";
