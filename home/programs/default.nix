@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./yuzu.nix
     ./dolphin.nix
     ./steam.nix
     ./protonvpn-gui.nix
