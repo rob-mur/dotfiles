@@ -1,14 +1,37 @@
-{pkgs, ...}: {
-  services = {
-    pipewire.enable = false;
-    pulseaudio = {
+{pkgs, lib, config, ...}: {
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+
+    wireplumber = {
       enable = true;
-      support32Bit = true;
-      package = pkgs.pulseaudioFull;
-      extraConfig = ''
-        load-module module-dbus-protocol
-        load-module module-native-protocol-unix
-      '';
+      configPackages = [
+        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-alsa-disable-batch.conf" ''
+          monitor.alsa.rules = [
+            {
+              matches = [
+                {
+                  node.name = "~alsa_output.*"
+                }
+              ]
+              actions = {
+                update-props = {
+                  api.alsa.use-acp = true
+                  api.alsa.disable-batch = true
+                }
+              }
+            }
+          ]
+        '')
+      ];
     };
   };
+
+  environment.pathsToLink = ["/share/wireplumber"];
+  environment.systemPackages = with pkgs; [
+    wireplumber
+    pipewire
+  ];
 }

@@ -12,7 +12,6 @@ in {
       programs = {
         waybar = {
           enable = true;
-          package = pkgs.waybar.override {pulseSupport = true;};
           settings = {
             mainBar = {
               layer = "bottom";

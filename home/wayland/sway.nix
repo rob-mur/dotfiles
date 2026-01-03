@@ -75,10 +75,6 @@ in {
                 {command = "gnome-keyring-daemon --start --components=secrets";}
                 {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
 
-                # --- Portal & UI ---
-                {command = "systemctl --user restart xdg-desktop-portal";}
-                {command = "pkill waybar && waybar";}
-
                 # --- Apps ---
                 {command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";}
                 {command = "${kitty}/bin/kitty";}
@@ -93,7 +89,7 @@ in {
                 };
 
                 "type:pointer" = {
-                  natural_scroll = "enabled";
+                  natural_scroll = "disabled";
                 };
 
                 "type:mouse" = {
@@ -110,18 +106,7 @@ in {
                       class = ".*";
                     };
                   }
-                  {
-                    command = "opacity ${opacity}, border pixel 1, inhibit_idle fullscreen";
-                    criteria = {
-                      app_id = ".*";
-                    };
-                  }
-                  {
-                    command = "floating enable, resize set 800 500";
-                    criteria = {
-                      app_id = "org.keepassxc.KeePassXC";
-                    };
-                  }
+
                   {
                     command = "resize set 650 450";
                     criteria = {
@@ -140,105 +125,9 @@ in {
                       title = ".*Sharing Indicator.*";
                     };
                   }
-                  {
-                    command = "floating enable, sticky enable, resize set 650 450";
-                    criteria = {
-                      title = ".*Syncthing Tray.*";
-                    };
-                  }
                 ];
               };
-              assigns = {
-                "1" = [
-                  # Terminal
-                  {app_id = "foot";}
-                  {app_id = "kitty";}
-                  {app_id = "Alacritty";}
-                ];
-                "2" = [
-                  # Browser
-                  {app_id = ".*qutebrowser";}
-                  {app_id = "firefox";}
-                  {app_id = "thunderbird";}
-                ];
-                "3" = [
-                  # Editor
-                  {app_id = "vscode";}
-                  {app_id = ".*zed.*";}
-                  {instance = "vscodium";}
-                ];
-                "4" = [
-                  # Editor
-                  {app_id = ".*biolab.*";}
-                  {app_id = "spyder";}
-                ];
-                "5" = [
-                  # Datalabs
-                  {app_id = "DBeaver";}
-                  {app_id = "sqlitebrowser";}
-                  {instance = "rstudio";}
-                ];
-                "6" = [
-                  # Office
-                  {app_id = "texstudio";}
-                  {app_id = "libreoffice-*";}
-                  {class = "Zotero";}
-                ];
-                "7" = [
-                  # Entertainment
-                  {app_id = ".*telegram.*";}
-                  {app_id = "Session";}
-                  {app_id = "vesktop";}
-                  {class = "DeltaChat";}
-                  {class = "discord";}
-                ];
-                "8" = [
-                  # Design
-                  {app_id = "inkscape";}
-                  {app_id = "gimp*";}
-                  {app_id = "scribus";}
-                  {class = "krita";}
-                ];
-                "9" = [
-                  # Animation
-                  {app_id = "blender";}
-                  {app_id = "synfigstudio";}
-                ];
-                "10" = [
-                  # Multimedia
-                  {app_id = ".*kdenlive";}
-                  {app_id = "lmms";}
-                  {app_id = "media-downloader";}
-                  {app_id = "tenacity";}
-                  {instance = "audacity";}
-                ];
-              };
-              floating = {
-                modifier = "${mod4}";
-                border = 1;
-                titlebar = false;
-                criteria = [
-                  {app_id = ".*blueman-manager-wrapped";}
-                  {app_id = ".*scrcpy-wrapped";}
-                  {app_id = ".*themechanger.*";}
-                  {app_id = ".*wl_mirror";}
-                  {app_id = ".*zathura";}
-                  {app_id = ".*Waytrogen";}
-                  {app_id = "imv";}
-                  {app_id = "inkview";}
-                  {app_id = "kvantummanager";}
-                  {app_id = "mpv";}
-                  {app_id = "qt5ct";}
-                  {app_id = "qt6ct";}
-                  {app_id = "sioyek";}
-                  {app_id = "snippetexpandergui";}
-                  {app_id = "system-config-printer";}
-                  {app_id = "wdisplays";}
-                  {app_id = "xdg-desktop-portal-gtk";}
-                  {class = "Zotero";}
-                  {instance = "lxappearance";}
-                ];
-              };
+
               keybindings = mkOptionDefault {
                 # Rofi: menu
                 "${mod4}+d" = "exec ${rofi}/bin/rofi -show drun";

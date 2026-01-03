@@ -17,7 +17,7 @@ in {
           krita = "krita_psd.desktop";
           mpv = "mpv.desktop";
           neovim = "nvim.desktop";
-          pcmanfm = "pcmanfm.desktop";
+          dolphin = "org.kde.dolphin.desktop";
           vivaldi = "org.vivaldi.vivaldi.desktop";
           zathura = "org.pwmt.zathura.desktop";
         in {
@@ -47,7 +47,7 @@ in {
             "image/webp" = [imv swayimg];
             "image/x-eps" = [inkscape];
             "image/x-xcf" = [gimp];
-            "inode/directory" = [pcmanfm];
+            "inode/directory" = [dolphin];
             "text/html" = [vivaldi];
             "text/markdown" = [helix neovim];
             "text/plain" = [helix neovim];
@@ -93,7 +93,7 @@ in {
             "image/webp" = [imv swayimg];
             "image/x-eps" = [inkscape];
             "image/x-xcf" = [gimp];
-            "inode/directory" = [pcmanfm];
+            "inode/directory" = [dolphin];
             "text/html" = [vivaldi];
             "text/markdown" = [helix neovim];
             "text/plain" = [helix neovim];

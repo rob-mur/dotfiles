@@ -56,7 +56,7 @@
     dncl = "doas nix-channel --list";
     dncu = "doas nix-channel --update";
     dnrd = "doas nixos-rebuild dry-build";
-    snrs = "cd ${config.hostDir} && sudo nixos-rebuild switch --flake .#dev";
+    snrs = "zsh -c 'cd ${config.hostDir} && sudo nixos-rebuild switch --flake .#dev'";
     dnru = "doas nixos-rebuild switch --upgrade";
     dngc = "doas nix-store --gc";
     dngd = "doas nix-collect-garbage --delete-old";

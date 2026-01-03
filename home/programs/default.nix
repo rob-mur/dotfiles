@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./dolphin.nix
     ./steam.nix
     ./protonvpn-gui.nix
     ./ticktick.nix
