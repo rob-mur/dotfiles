@@ -1,7 +1,0 @@
-{ ... }: {
-  programs = {
-    ydotool = {
-      enable = false;
-    };
-  };
-}
