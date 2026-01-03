@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         obs-studio = {
           enable = false;
           plugins = with obs-studio-plugins; [
@@ -15,8 +13,6 @@ in {
             obs-pipewire-audio-capture
             wlrobs
           ];
-        };
-      };
     };
   };
 }

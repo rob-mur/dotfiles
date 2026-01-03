@@ -5,9 +5,5 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home.packages = [steam];
-    };
-  };
+  home.packages = [steam];
 }

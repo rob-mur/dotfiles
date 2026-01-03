@@ -1,9 +1,7 @@
 {config, ...}: let
   color = import ./../../user/color {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         zellij = {
           enable = false;
           enableFishIntegration = false;
@@ -27,8 +25,6 @@ in {
                 cyan = color.h_cyan;
                 white = color.h_white;
                 orange = color.h_yellow;
-              };
-            };
             plugins = {
               tab-bar.path = "tab-bar";
               status-bar.path = "status-bar";

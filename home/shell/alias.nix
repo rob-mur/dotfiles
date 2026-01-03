@@ -1,11 +1,7 @@
 {config, ...}: let
   alias = import ./../../user/abbr {inherit config;};
 in {
-  home-manager = {
-    users.${config.name} = {
-      home = {
+  home = {
         shellAliases = alias.abbr;
-      };
-    };
   };
 }

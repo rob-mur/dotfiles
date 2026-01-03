@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         joshuto = {
           enable = false;
           settings = {
@@ -25,8 +23,6 @@ in {
             preview = {
               max_preview_size = "10 GB";
               preview_script = "${./preview.sh}";
-            };
-          };
 
           mimetype = {
             class = {

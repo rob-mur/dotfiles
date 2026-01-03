@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         gitui = {
           enable = true;
           theme = ''
@@ -59,8 +57,6 @@ in {
               abort_merge: Some(( code: Char('M'), modifiers: "SHIFT")),
             )
           '';
-        };
-      };
     };
   };
 }

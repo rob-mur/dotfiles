@@ -1,15 +1,11 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         mbsync = {
           enable = true;
           extraConfig = ''
             CopyArrivalDate yes
           '';
-        };
-      };
     };
   };
 }

@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home.packages = [qwerty-fr];
+  home.packages = [qwerty-fr];
       home.keyboard.options = ["caps:swapescape"];
       wayland.windowManager.sway = {
         # We must disable config checking and defer to runtime as the keyboard layout
@@ -20,8 +18,6 @@ in {
             xkb_options "caps:swapescape"
           }
         '';
-      };
-    };
   };
   services.xserver = {
     enable = true;

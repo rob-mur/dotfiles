@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         sioyek = {
           enable = false;
           bindings = {
@@ -14,8 +12,6 @@ in {
             "screen_up" = ["u" ""];
           };
           config = {
-          };
-        };
       };
     };
   };

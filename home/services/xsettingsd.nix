@@ -1,9 +1,7 @@
 {config, ...}: let
   theme = import ./../../user/theme {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         xsettingsd = {
           enable = true;
           settings = {
@@ -26,8 +24,6 @@ in {
             "Xft/HintStyle" = "hintslight";
             "Xft/Hinting" = 1;
             "Xft/RGBA" = "none";
-          };
-        };
       };
     };
   };

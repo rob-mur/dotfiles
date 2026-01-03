@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         mpd = {
           enable = true;
           musicDirectory = "/home/${config.name}/music";
@@ -20,8 +18,6 @@ in {
               path         "/tmp/mpd.fifo"
             }
           '';
-        };
-      };
     };
   };
 }

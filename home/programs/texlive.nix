@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         texlive = {
           enable = true;
           extraPackages = tpkgs: {
@@ -18,8 +16,6 @@ in {
               tcolorbox
               tikzfill
               ;
-          };
-        };
       };
     };
   };

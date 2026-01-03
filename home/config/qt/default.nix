@@ -6,9 +6,7 @@
 with pkgs; let
   theme = import ./../../../user/theme {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      xdg = {
+  xdg = {
         configFile = {
           "qt5ct" = {
             enable = true;
@@ -43,8 +41,6 @@ in {
               fixed="${theme.font},${toString theme.font-size},-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular"
               general="${theme.font},${toString theme.font-size},-1,5,400,0,0,0,0,0,0,0,0,0,0,1,Regular"
             '';
-          };
-        };
       };
     };
   };

@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         aria2 = {
           enable = false;
           settings = {
@@ -11,8 +9,6 @@ in {
             seed-ratio = 1.0;
             max-upload-limit = "50K";
             ftp-pasv = true;
-          };
-        };
       };
     };
   };

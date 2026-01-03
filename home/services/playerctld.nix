@@ -5,14 +5,10 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         playerctld = {
           enable = true;
           package = playerctl;
-        };
-      };
     };
   };
 }

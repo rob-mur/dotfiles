@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home.file.".undodir/.keep".text = "";
+  home.file.".undodir/.keep".text = "";
       xdg.configFile."nvim" = {
         source = ../config/nvim;
         recursive = true;
@@ -26,8 +24,6 @@ in {
           vimdiffAlias = true;
           withNodeJs = true;
           withPython3 = true;
-        };
-      };
     };
   };
 }

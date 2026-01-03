@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         visidata = {
           enable = true;
           visidatarc = ''
@@ -26,8 +24,6 @@ in {
             options.color_menu_active = "bold white on blue"
             options.color_menu_help = "blue"
           '';
-        };
-      };
     };
   };
 }

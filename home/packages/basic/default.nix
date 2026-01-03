@@ -83,11 +83,7 @@
     ++ wayland.wayland_pkgs
     ++ wine.wine_pkgs;
 in {
-  home-manager = {
-    users.${config.name} = {
-      home = {
+  home = {
         packages = all_basic_pkgs;
-      };
-    };
   };
 }

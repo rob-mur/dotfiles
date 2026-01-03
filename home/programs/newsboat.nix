@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         newsboat = {
           enable = true;
           autoReload = true;
@@ -776,8 +774,6 @@ in {
               ];
             }
           ];
-        };
-      };
     };
   };
 }

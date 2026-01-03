@@ -3,9 +3,7 @@
 
   theme = import ./../../user/theme {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         alacritty = {
           enable = false;
           settings = {
@@ -33,8 +31,6 @@ in {
                 magenta = color.h_bright_purple;
                 cyan = color.h_bright_cyan;
                 white = color.h_bright_white;
-              };
-            };
             font = {
               size = theme.font-size;
               normal = {

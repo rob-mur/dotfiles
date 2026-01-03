@@ -1,12 +1,8 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         mpd-mpris = {
           enable = true;
-        };
-      };
     };
   };
 }

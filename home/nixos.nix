@@ -5,25 +5,28 @@
 }: let
   alias = import ./../user/abbr {inherit config;};
 in {
-  imports = [
-    ./accounts
-    ./config
-    ./dconf
-    ./fonts
-    ./packages
-    ./programs
-    ./services
-    ./shell
-    ./themes
-    ./wayland
-    ./xdg
-  ];
-
   home-manager = {
     backupFileExtension = "backup";
     overwriteBackup = true;
     useGlobalPkgs = true;
+
+    # Wrap all module imports under users.${config.name}
+    # The imported modules now contain unwrapped home-manager configs
     users.${config.name} = {
+      imports = [
+        ./accounts
+        ./config
+        ./dconf
+        ./fonts
+        ./packages
+        ./programs
+        ./services
+        ./shell
+        ./themes
+        ./wayland
+        ./xdg
+      ];
+
       home = {
         homeDirectory = "/home/${config.name}";
         stateVersion = "${config.version}";

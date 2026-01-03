@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         thunderbird = {
           enable = false;
           profiles = {
@@ -24,8 +22,6 @@ in {
                   threadCol = {
                     visible = true;
                     ordinal = 2;
-                  };
-                };
               };
             };
           };

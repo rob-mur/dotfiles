@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         batsignal = {
           enable = false;
           extraArgs = [
@@ -13,8 +11,6 @@ in {
             "-f"
             "97"
           ];
-        };
-      };
     };
   };
 }

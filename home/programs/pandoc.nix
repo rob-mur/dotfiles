@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         pandoc = {
           enable = true;
           defaults = {
@@ -11,8 +9,6 @@ in {
             };
             pdf-engine = "xelatex";
             citeproc = true;
-          };
-        };
       };
     };
   };

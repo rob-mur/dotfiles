@@ -11,9 +11,7 @@ with pkgs; let
   resumecommand = "${sway}/bin/swaymsg \"output * dpms on\"";
   suspendcommand = "${systemd}/bin/systemctl suspend";
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         swayidle = {
           enable = true;
           events = [
@@ -50,8 +48,6 @@ in {
               command = suspendcommand;
             }
           ];
-        };
-      };
     };
   };
 }

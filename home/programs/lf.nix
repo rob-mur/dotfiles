@@ -1,13 +1,9 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         lf = {
           enable = false;
           settings = {
-          };
-        };
       };
     };
   };

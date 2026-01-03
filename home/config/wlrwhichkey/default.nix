@@ -20,9 +20,7 @@ with pkgs; let
   pfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir PICTURES)/${filename}.png)";
   vfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir VIDEOS)/${filename}.mp4)";
 in {
-  home-manager = {
-    users.${config.name} = {
-      xdg = {
+  xdg = {
         configFile = {
           "wlrwhichkey" = {
             enable = false;
@@ -90,8 +88,6 @@ in {
                     "5": { desc: Reboot, cmd: ${systemd}/bin/systemctl reboot }
                     "6": { desc: Suspend, cmd: ${systemd}/bin/systemctl suspend }
             '';
-          };
-        };
       };
     };
   };

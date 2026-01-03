@@ -4,9 +4,7 @@
   ...
 }: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         tmux = {
           enable = true;
           clock24 = true;
@@ -56,8 +54,6 @@ in {
             catppuccin
             tmux-fzf
           ];
-        };
-      };
     };
   };
 }

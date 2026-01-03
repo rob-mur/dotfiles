@@ -10,9 +10,7 @@ with pkgs; let
 
   externalConfig = config;
 in {
-  home-manager = {
-    users.${config.name} = {config, ...}: {
-      programs = {
+  programs = {
         rofi = {
           enable = true;
           font = "${theme.font} ${toString theme.font-size}";
@@ -108,8 +106,6 @@ in {
               text-color = mkLiteral "@fg";
               background-color = mkLiteral "@ac";
             };
-          };
-        };
       };
     };
   };

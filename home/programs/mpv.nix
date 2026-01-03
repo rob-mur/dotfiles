@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         mpv = {
           enable = true;
           scripts = with mpvScripts; [
@@ -21,8 +19,6 @@ in {
 
             save-position-on-quit = "yes";
             ytdl-format = "bestvideo+bestaudio";
-          };
-        };
       };
     };
   };

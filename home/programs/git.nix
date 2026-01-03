@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         git = {
           enable = true;
           settings = {
@@ -56,8 +54,6 @@ in {
                 insteadOf = [
                   "https://gitlab.com/"
                 ];
-              };
-            };
           };
 
           lfs = {

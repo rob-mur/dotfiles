@@ -1,8 +1,9 @@
 {...}: {
   imports = [
-    ./yuzu.nix
-    ./dolphin.nix
-    ./steam.nix
+    # Gaming packages commented out for work laptop - require special inputs
+    # ./yuzu.nix
+    # ./dolphin.nix
+    # ./steam.nix
     ./protonvpn-gui.nix
     ./ticktick.nix
     ./signal.nix

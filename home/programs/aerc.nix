@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         aerc = {
           enable = true;
           extraConfig = {
@@ -198,6 +196,4 @@ in {
           };
         };
       };
-    };
-  };
 }

@@ -5,9 +5,7 @@
 }: let
 in {
   services.dbus.packages = [pkgs.keepassxc];
-  home-manager = {
-    users.${config.name} = {
-      home.file.".config/vivaldi/NativeMessagingHosts/org.keepassxc.keepassxc_browser.json" = {
+  home.file.".config/vivaldi/NativeMessagingHosts/org.keepassxc.keepassxc_browser.json" = {
         text = builtins.toJSON {
           allowed_origins = [
             "chrome-extension://oboonakemofpalcgghocfoadofidjkkk/"
@@ -17,8 +15,6 @@ in {
           name = "org.keepassxc.keepassxc_browser";
           path = "${pkgs.keepassxc}/bin/keepassxc-proxy";
           type = "stdio";
-        };
-      };
 
       programs = {
         keepassxc = {

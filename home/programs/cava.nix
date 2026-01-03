@@ -1,9 +1,7 @@
 {config, ...}: let
   color = import ./../../user/color {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         cava = {
           enable = true;
           settings = {
@@ -22,8 +20,6 @@ in {
               gradient_color_1 = color.q_bright_blue;
               gradient_color_2 = color.q_bright_cyan;
               gradient_color_3 = color.q_bright_yellow;
-            };
-          };
         };
       };
     };

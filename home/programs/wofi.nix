@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         wofi = {
           enable = false;
           settings = {
@@ -10,8 +8,6 @@ in {
             allow_markup = true;
             width = 400;
             height = 200;
-          };
-        };
       };
     };
   };

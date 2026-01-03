@@ -4,16 +4,12 @@
   ...
 }: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home = {
+  home = {
         packages = with pkgs; [
           alejandra
           stylua
           nodePackages.prettier
           black
         ];
-      };
-    };
   };
 }

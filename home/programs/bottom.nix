@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         bottom = {
           enable = true;
           settings = {
@@ -12,8 +10,6 @@ in {
             };
             colors = {
               low_battery_color = "red";
-            };
-          };
         };
       };
     };

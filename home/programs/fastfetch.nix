@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         fastfetch = {
           enable = true;
           settings = {
@@ -11,8 +9,6 @@ in {
               padding = {
                 right = 1;
                 top = 2;
-              };
-            };
             display = {
               size = {
                 binaryPrefix = "si";

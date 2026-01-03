@@ -3,9 +3,7 @@
 
   theme = import ./../../user/theme {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         foot = {
           enable = false;
           settings = {
@@ -37,8 +35,6 @@ in {
               bright5 = color.bright_purple;
               bright6 = color.bright_cyan;
               bright7 = color.bright_white;
-            };
-          };
         };
       };
     };

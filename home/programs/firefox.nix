@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         firefox = {
           enable = false;
           profiles = {
@@ -42,8 +40,6 @@ in {
                 "signon.rememberSignons" = false;
                 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
                 "ui.prefersReducedMotion" = 1;
-              };
-            };
           };
           policies = {
             CaptivePortal = false;

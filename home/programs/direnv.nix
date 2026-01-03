@@ -1,12 +1,8 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         direnv = {
           enable = true;
-        };
-      };
     };
   };
 }

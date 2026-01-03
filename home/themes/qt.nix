@@ -1,16 +1,12 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      qt = {
+  qt = {
         enable = true;
         platformTheme = {
           name = "qtct";
         };
         style = {
           name = "breeze";
-        };
-      };
     };
   };
 }

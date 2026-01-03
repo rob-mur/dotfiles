@@ -6,7 +6,5 @@
 }: let
   yuzu_pkgs = import inputs.yuzu-nixpkgs {system = "x86_64-linux";};
 in {
-  home-manager = {
-    users.${config.name}.home.packages = [yuzu_pkgs.yuzu];
-  };
+  home.packages = [yuzu_pkgs.yuzu];
 }

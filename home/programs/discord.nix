@@ -5,9 +5,5 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home.packages = [discord];
-    };
-  };
+  home.packages = [discord];
 }

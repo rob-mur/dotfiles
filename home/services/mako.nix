@@ -3,9 +3,7 @@
 
   theme = import ./../../user/theme {};
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         mako = {
           enable = true;
           settings = {
@@ -18,8 +16,6 @@ in {
             padding = "5";
             progressColor = "over ${color.f_bright_cyan}";
             textColor = color.f_foreground;
-          };
-        };
       };
     };
   };

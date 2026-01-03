@@ -9,7 +9,8 @@
       "Bash(wpctl set-default:*)",
       "Bash(pw-link:*)",
       "WebSearch",
-      "Bash(swaymsg:*)"
+      "Bash(swaymsg:*)",
+      "Bash(nix flake update:*)"
     ]
   }
 }

@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         ncmpcpp = {
           enable = true;
           bindings = [
@@ -56,8 +54,6 @@ in {
             visualizer_look = "●●";
             visualizer_output_name = "mpd-visualizer";
             visualizer_type = "ellipse";
-          };
-        };
       };
     };
   };

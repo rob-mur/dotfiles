@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      services = {
+  services = {
         espanso = {
           enable = false;
           package = espanso-wayland;
@@ -18,8 +16,6 @@ in {
             vscode = {
               filter_title = "Visual Studio Code$";
               backend = "Clipboard";
-            };
-          };
           matches = {
             base = {
               matches = [

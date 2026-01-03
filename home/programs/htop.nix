@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         htop = {
           enable = false;
           settings = {
@@ -15,8 +13,6 @@ in {
             show_program_path = false;
             tree_view = true;
             vim_mode = true;
-          };
-        };
       };
     };
   };

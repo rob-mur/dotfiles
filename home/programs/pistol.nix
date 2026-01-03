@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         pistol = {
           enable = false;
           associations = [
@@ -19,8 +17,6 @@ in {
               command = "sh: bat --paging=never --color=always %pistol-filename% | head -8";
             }
           ];
-        };
-      };
     };
   };
 }

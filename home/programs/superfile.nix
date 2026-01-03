@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         superfile = {
           enable = true;
           settings = {
@@ -113,8 +111,6 @@ in {
             file_panel_select_mode_items_select_down = ["shift+down" "J"];
             file_panel_select_mode_items_select_up = ["shift+up" "K"];
             file_panel_select_all_items = ["A" ""];
-          };
-        };
       };
     };
   };

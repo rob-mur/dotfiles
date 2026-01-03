@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      xdg = {
+  xdg = {
         userDirs = {
           enable = true;
           createDirectories = true;
@@ -14,8 +12,6 @@ in {
           publicShare = "\$HOME/Public";
           templates = "\$HOME/Templates";
           videos = "\$HOME/Videos";
-        };
-      };
     };
   };
 }

@@ -5,15 +5,11 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      home = {
+  home = {
         packages = [
           libreoffice
           tipp10
           zotero
         ];
-      };
-    };
   };
 }

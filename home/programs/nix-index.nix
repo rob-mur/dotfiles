@@ -1,13 +1,9 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         nix-index = {
           enable = false;
           enableFishIntegration = true;
-        };
-      };
     };
   };
 }

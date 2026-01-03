@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         btop = {
           enable = true;
           settings = {
@@ -14,8 +12,6 @@ in {
             rounded_corners = false;
             graph_symbol = "braille";
             update_ms = 2000;
-          };
-        };
       };
     };
   };

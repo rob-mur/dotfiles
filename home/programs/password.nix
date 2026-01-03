@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         password-store = {
           enable = true;
           package = pass-wayland.withExtensions (
@@ -22,8 +20,6 @@ in {
           );
           settings = {
             PASSWORD_STORE_DIR = "/home/${config.name}/${config.pass}";
-          };
-        };
       };
     };
   };

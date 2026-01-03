@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      programs = {
+  programs = {
         chawan = {
           enable = true;
           settings = {
@@ -25,8 +23,6 @@ in {
             };
             page = {
               "C-k" = "() => pager.load('ddg:')";
-            };
-          };
         };
       };
     };

@@ -5,9 +5,7 @@
 }:
 with pkgs; let
 in {
-  home-manager = {
-    users.${config.name} = {
-      accounts.email = {
+  accounts.email = {
         maildirBasePath = "mail";
         accounts = {
           ${config.email} = {
@@ -22,8 +20,6 @@ in {
               port = 993;
               tls = {
                 enable = true;
-              };
-            };
             smtp = {
               host = "disroot.org";
               port = 465; # 465 smtps, 587 smtp

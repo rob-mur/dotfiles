@@ -1,8 +1,6 @@
 {config, ...}: let
 in {
-  home-manager = {
-    users.${config.name} = {
-      xdg = {
+  xdg = {
         configFile = {
           "mimeapps.list".force = true;
         };
@@ -113,8 +111,6 @@ in {
             "x-scheme-handler/http" = [vivaldi];
             "x-scheme-handler/https" = [vivaldi];
             "x-scheme-handler/unknown" = [vivaldi];
-          };
-        };
       };
     };
   };
