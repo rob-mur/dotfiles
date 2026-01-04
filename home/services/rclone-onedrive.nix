@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }: let
 in {
@@ -18,7 +19,7 @@ in {
 
     Service = {
       Type = "simple";
-      User = "${config.name}";
+      User = "${osConfig.name}";
       ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/Documents/OneDrive";
       ExecStart = ''
         ${pkgs.rclone}/bin/rclone --config %h/.config/rclone/rclone.conf \

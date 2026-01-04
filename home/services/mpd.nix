@@ -1,9 +1,9 @@
-{config, ...}: let
+{config, osConfig ? config, ...}: let
 in {
   services = {
         mpd = {
           enable = true;
-          musicDirectory = "/home/${config.name}/music";
+          musicDirectory = "/home/${osConfig.name}/music";
           extraConfig = ''
             auto_update    "yes"
             restore_paused "yes"

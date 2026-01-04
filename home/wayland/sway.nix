@@ -2,6 +2,7 @@
   lib,
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with lib;
@@ -35,7 +36,7 @@ with pkgs; let
   area = "$(${slurp}/bin/slurp -d)";
   current = ''$(${sway}/bin/swaymsg -t get_tree | ${jq}/bin/jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | ${slurp}/bin/slurp -d)'';
   opt = "--low-power=off";
-  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${config.name}";
+  filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${osConfig.name}";
   pfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir PICTURES)/screenshot/${filename}.png)";
   vfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir VIDEOS)/recording/${filename}.mp4)";
 in {

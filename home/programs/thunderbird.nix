@@ -1,10 +1,10 @@
-{config, ...}: let
+{config, osConfig ? config, ...}: let
 in {
   programs = {
         thunderbird = {
           enable = false;
           profiles = {
-            "${config.name}" = {
+            "${osConfig.name}" = {
               isDefault = true;
               withExternalGnupg = true;
               search = {

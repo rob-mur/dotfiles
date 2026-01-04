@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with pkgs; let
@@ -9,7 +10,7 @@ in {
     comodoro = {
       enable = false;
       settings = {
-        ${config.name} = {
+        ${osConfig.name} = {
           cycles = [
             {
               name = "Work";
@@ -55,7 +56,7 @@ in {
     comodoro = {
       enable = false;
       protocols = ["tcp"];
-      preset = "${config.name}";
+      preset = "${osConfig.name}";
     };
   };
 }

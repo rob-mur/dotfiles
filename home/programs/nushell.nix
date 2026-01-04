@@ -1,5 +1,5 @@
-{config, ...}: let
-  alias = import ./../../user/abbr {inherit config;};
+{config, osConfig ? config, ...}: let
+  alias = import ./../../user/abbr {config = osConfig;};
 in {
   programs = {
         nushell = {

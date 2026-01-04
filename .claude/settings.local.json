@@ -10,7 +10,8 @@
       "Bash(pw-link:*)",
       "WebSearch",
       "Bash(swaymsg:*)",
-      "Bash(nix flake update:*)"
+      "Bash(nix flake update:*)",
+      "Bash(nix flake check:*)"
     ]
   }
 }

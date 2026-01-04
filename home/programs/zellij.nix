@@ -1,4 +1,4 @@
-{config, ...}: let
+{config, osConfig ? config, ...}: let
   color = import ./../../user/color {};
 in {
   programs = {
@@ -11,9 +11,9 @@ in {
             default_shell = "fish";
             pane_frames = false;
             simplified_ui = true;
-            theme = "${config.name}";
+            theme = "${osConfig.name}";
             themes = {
-              ${config.name} = {
+              ${osConfig.name} = {
                 fg = color.h_foreground;
                 bg = color.h_bright_black;
                 black = color.h_black;

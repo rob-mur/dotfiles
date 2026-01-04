@@ -1,11 +1,11 @@
-{config, ...}: let
+{config, osConfig ? config, ...}: let
 in {
   programs = {
         pandoc = {
           enable = true;
           defaults = {
             metadata = {
-              author = "${config.fullname}";
+              author = "${osConfig.fullname}";
             };
             pdf-engine = "xelatex";
             citeproc = true;

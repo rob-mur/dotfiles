@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with pkgs; let
@@ -19,7 +20,7 @@ in {
             ]
           );
           settings = {
-            PASSWORD_STORE_DIR = "/home/${config.name}/${config.pass}";
+            PASSWORD_STORE_DIR = "/home/${osConfig.name}/${osConfig.pass}";
       };
     };
   };

@@ -1,14 +1,13 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with pkgs; let
   color = import ./../../user/color {};
 
   theme = import ./../../user/theme {};
-
-  externalConfig = config;
 in {
   programs = {
         rofi = {
@@ -28,7 +27,7 @@ in {
           pass = {
             enable = true;
             package = rofi-pass-wayland;
-            stores = ["/home/${externalConfig.name}/${externalConfig.pass}"];
+            stores = ["/home/${osConfig.name}/${osConfig.pass}"];
           };
           plugins = [
             rofi-file-browser

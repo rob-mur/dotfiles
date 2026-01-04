@@ -1,10 +1,10 @@
-{config, ...}: let
+{config, osConfig ? config, ...}: let
 in {
   programs = {
         firefox = {
           enable = false;
           profiles = {
-            ${config.name} = {
+            ${osConfig.name} = {
               isDefault = true;
               search = {
                 default = "ddg";

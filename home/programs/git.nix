@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with pkgs; let
@@ -10,8 +11,8 @@ in {
           enable = true;
           settings = {
             user = {
-              email = "${config.email}";
-              name = "${config.fullname}";
+              email = "${osConfig.email}";
+              name = "${osConfig.fullname}";
             };
             init = {
               defaultBranch = "main";

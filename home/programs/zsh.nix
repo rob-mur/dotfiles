@@ -1,10 +1,11 @@
 {
   pkgs,
   config,
+  osConfig ? config,
   ...
 }:
 with pkgs; let
-  abbr = import ./../../user/abbr {inherit config;};
+  abbr = import ./../../user/abbr {config = osConfig;};
   plugins = import ../config/zsh/plugins.nix;
 in {
   programs.zsh = {
