@@ -1,0 +1,7 @@
+{ ... }: {
+  programs = {
+    wshowkeys = {
+      enable = false;
+    };
+  };
+}

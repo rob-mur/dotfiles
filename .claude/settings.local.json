@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wpctl status:*)",
+      "Bash(journalctl:*)",
+      "Bash(wpctl inspect:*)",
+      "Bash(wireplumber --version:*)",
+      "Bash(systemctl:*)",
+      "Bash(wpctl set-default:*)",
+      "Bash(pw-link:*)",
+      "WebSearch",
+      "Bash(swaymsg:*)",
+      "Bash(nix flake update:*)",
+      "Bash(nix flake check:*)",
+      "Bash(cat:*)"
+    ]
+  }
+}
