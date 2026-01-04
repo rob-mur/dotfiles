@@ -11,7 +11,8 @@
       "WebSearch",
       "Bash(swaymsg:*)",
       "Bash(nix flake update:*)",
-      "Bash(nix flake check:*)"
+      "Bash(nix flake check:*)",
+      "Bash(cat:*)"
     ]
   }
 }

@@ -6,38 +6,46 @@
   # Helper function to wrap a package with nixGL
   # This creates wrapper scripts that call nixGLIntel before the actual binary
   # and preserves the original package's override attributes for home-manager compatibility
-  wrapWithNixGL = pkg: let
-    wrapped = prev.runCommand "${pkg.name}-nixgl" {} ''
-      mkdir -p $out/bin
+  wrapWithNixGL = pkg:
+    prev.lib.makeOverridable (args: let
+      # Allow the base package to be overridden with args
+      basePkg =
+        if args != {}
+        then pkg.override args
+        else pkg;
 
-      # For each binary in the package, create a wrapper
-      for bin in ${pkg}/bin/*; do
-        if [ -x "$bin" ]; then
-          binary_name=$(basename $bin)
-          cat > $out/bin/$binary_name <<EOF
+      wrapped = prev.runCommand "${basePkg.name}-nixgl" {} ''
+        mkdir -p $out/bin
+
+        # For each binary in the package, create a wrapper
+        for bin in ${basePkg}/bin/*; do
+          if [ -x "$bin" ]; then
+            binary_name=$(basename $bin)
+            cat > $out/bin/$binary_name <<EOF
 #!/bin/sh
-exec ${nixGLWrapper}/bin/nixGLIntel ${pkg}/bin/$binary_name "\$@"
+exec ${nixGLWrapper}/bin/nixGLIntel ${basePkg}/bin/$binary_name "\$@"
 EOF
-          chmod +x $out/bin/$binary_name
-        fi
-      done
+            chmod +x $out/bin/$binary_name
+          fi
+        done
 
-      # Symlink other outputs (share for desktop files, icons, etc.)
-      for dir in share lib include etc; do
-        if [ -d "${pkg}/$dir" ]; then
-          ln -s "${pkg}/$dir" "$out/$dir"
-        fi
-      done
-    '';
-  in
-    wrapped // {
-      # Preserve override for packages that home-manager needs to customize
-      override = args: wrapWithNixGL (pkg.override args);
-      overrideAttrs = f: wrapWithNixGL (pkg.overrideAttrs f);
-      passthru = (pkg.passthru or {}) // {
-        unwrapped = pkg;
-      };
-    };
+        # Symlink other outputs (share for desktop files, icons, etc.)
+        for dir in share lib include etc; do
+          if [ -d "${basePkg}/$dir" ]; then
+            ln -s "${basePkg}/$dir" "$out/$dir"
+          fi
+        done
+      '';
+    in
+      wrapped
+      // {
+        passthru =
+          (basePkg.passthru or {})
+          // {
+            unwrapped = basePkg;
+          };
+      })
+    {};
 in {
   # Terminal emulators (high priority - these definitely need GPU)
   kitty = wrapWithNixGL prev.kitty;
