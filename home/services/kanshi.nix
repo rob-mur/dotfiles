@@ -3,6 +3,7 @@ in {
   services = {
     kanshi = {
       enable = true;
+      systemdTarget = "sway-session.target";
       settings = [
         {
           profile.name = "work_laptop";
