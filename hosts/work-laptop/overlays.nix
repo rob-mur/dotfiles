@@ -15,26 +15,28 @@
         else pkg;
 
       wrapped = prev.runCommand "${basePkg.name}-nixgl" {} ''
-        mkdir -p $out/bin
+                mkdir -p $out/bin
 
-        # For each binary in the package, create a wrapper
-        for bin in ${basePkg}/bin/*; do
-          if [ -x "$bin" ]; then
-            binary_name=$(basename $bin)
-            cat > $out/bin/$binary_name <<EOF
-#!/bin/sh
-exec ${nixGLWrapper}/bin/nixGLIntel ${basePkg}/bin/$binary_name "\$@"
-EOF
-            chmod +x $out/bin/$binary_name
-          fi
-        done
+                # For each binary in the package, create a wrapper
+                for bin in ${basePkg}/bin/*; do
+                  if [ -x "$bin" ]; then
+                    binary_name=$(basename $bin)
+                    cat > $out/bin/$binary_name <<EOF
+        #!/bin/sh
+        # Preserve XDG_DATA_DIRS for icon themes and other XDG data
+        export XDG_DATA_DIRS="\''${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+        exec ${nixGLWrapper}/bin/nixGLIntel ${basePkg}/bin/$binary_name "\$@"
+        EOF
+                    chmod +x $out/bin/$binary_name
+                  fi
+                done
 
-        # Symlink other outputs (share for desktop files, icons, etc.)
-        for dir in share lib include etc; do
-          if [ -d "${basePkg}/$dir" ]; then
-            ln -s "${basePkg}/$dir" "$out/$dir"
-          fi
-        done
+                # Symlink other outputs (share for desktop files, icons, etc.)
+                for dir in share lib include etc; do
+                  if [ -d "${basePkg}/$dir" ]; then
+                    ln -s "${basePkg}/$dir" "$out/$dir"
+                  fi
+                done
       '';
     in
       wrapped
@@ -64,7 +66,26 @@ in {
   waybar = wrapWithNixGL prev.waybar;
   wofi = wrapWithNixGL prev.wofi;
   rofi-wayland = wrapWithNixGL prev.rofi-wayland;
-  swaylock = wrapWithNixGL prev.swaylock;
+
+  # Use system swaylock for PAM compatibility on Ubuntu
+  swaylock =
+    prev.runCommand "swaylock-system-wrapper" {
+      # Preserve the passthru attributes that home-manager expects
+      passthru = {
+        # This makes home-manager think the package is installed
+        # but we're actually using the system binary
+      };
+    } ''
+          mkdir -p $out/bin
+          # Create a wrapper that calls the system swaylock
+          cat > $out/bin/swaylock <<'EOF'
+      #!/bin/sh
+      # Use system swaylock for PAM compatibility
+      exec /usr/bin/swaylock "$@"
+      EOF
+          chmod +x $out/bin/swaylock
+    '';
+
   swayimg = wrapWithNixGL prev.swayimg;
 
   # PDF/document viewers

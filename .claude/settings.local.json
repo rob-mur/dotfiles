@@ -12,7 +12,27 @@
       "Bash(swaymsg:*)",
       "Bash(nix flake update:*)",
       "Bash(nix flake check:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(getcap:*)",
+      "Bash(chmod:*)",
+      "Bash(ldd:*)",
+      "WebFetch(domain:wiki.nixos.org)",
+      "Bash(LD_LIBRARY_PATH=/lib/x86_64-linux-gnu /nix/store/qvglcl2jhpg9caymgk5dplv12r6i1kq7-swaylock-1.8.4/bin/swaylock:*)",
+      "Bash(nix search:*)",
+      "Bash(home-manager packages)",
+      "Bash(echo:*)",
+      "Bash(rofi:*)",
+      "Bash(XDG_DATA_DIRS=\"$HOME/.nix-profile/share:${XDG_DATA_DIRS}\" bash:*)",
+      "Bash(update-desktop-database:*)",
+      "Bash(killall:*)",
+      "Bash(XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS rofi:*)",
+      "Bash(pgrep:*)",
+      "Bash(gtk-launch waytrogen)",
+      "Bash(desktop-file-validate:*)",
+      "Bash(pkill:*)",
+      "Bash(dex:*)",
+      "Bash(env)",
+      "WebFetch(domain:man.archlinux.org)"
     ]
   }
 }

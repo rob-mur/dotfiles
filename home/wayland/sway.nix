@@ -50,11 +50,7 @@ in {
         extraOptions = ["--unsupported-gpu"];
         config = {
           modifier = "${mod4}";
-          bars = [
-            {
-              command = "${waybar}/bin/waybar";
-            }
-          ];
+          bars = [];
           focus = {
             forceWrapping = false;
             followMouse = false;
@@ -81,14 +77,16 @@ in {
             inner = 15;
           };
           startup = [
-            {command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway";}
-            {command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP";}
+            {command = "export XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS";}
+            {command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway XDG_DATA_DIRS";}
+            {command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS";}
 
             # Initialize the keyring daemon and the Polkit agent
             {command = "gnome-keyring-daemon --start --components=secrets";}
             {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
 
             # --- Apps ---
+            {command = "${waybar}/bin/waybar";}
             {command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";}
             {command = "${kitty}/bin/kitty";}
             {command = "${waytrogen}/bin/waytrogen --restore";}
@@ -143,7 +141,7 @@ in {
 
           keybindings = mkOptionDefault {
             # Rofi: menu
-            "${mod4}+d" = "exec ${rofi}/bin/rofi -show drun";
+            "${mod4}+d" = "exec XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS ${rofi}/bin/rofi -show drun";
             # Rofi: bluetooth
             "${mod4}+y" = "exec ${rofi-bluetooth}/bin/rofi-bluetooth";
             # Rofi: clipboard manager
