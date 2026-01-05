@@ -41,6 +41,19 @@ in {
               transform = "normal";
             }
           ];
+          profile.exec = [
+            # Create and move workspaces in reverse order, alternating
+            "swaymsg workspace 10, move workspace to output eDP-1"
+            "swaymsg workspace 9, move workspace to output DP-1"
+            "swaymsg workspace 8, move workspace to output eDP-1"
+            "swaymsg workspace 7, move workspace to output DP-1"
+            "swaymsg workspace 6, move workspace to output eDP-1"
+            "swaymsg workspace 5, move workspace to output DP-1"
+            "swaymsg workspace 4, move workspace to output eDP-1"
+            "swaymsg workspace 3, move workspace to output DP-1"
+            "swaymsg workspace 2, move workspace to output eDP-1"
+            "swaymsg workspace 1, move workspace to output DP-1"
+          ];
         }
         {
           profile.name = "home_laptop_plugged_in";
@@ -73,6 +86,19 @@ in {
               transform = "normal";
             }
           ];
+          profile.exec = [
+            # Create and move workspaces in reverse order, alternating
+            "swaymsg workspace 10, move workspace to output DP-4"
+            "swaymsg workspace 9, move workspace to output DP-2"
+            "swaymsg workspace 8, move workspace to output DP-4"
+            "swaymsg workspace 7, move workspace to output DP-2"
+            "swaymsg workspace 6, move workspace to output DP-4"
+            "swaymsg workspace 5, move workspace to output DP-2"
+            "swaymsg workspace 4, move workspace to output DP-4"
+            "swaymsg workspace 3, move workspace to output DP-2"
+            "swaymsg workspace 2, move workspace to output DP-4"
+            "swaymsg workspace 1, move workspace to output DP-2"
+          ];
         }
         {
           profile.name = "workstation";
@@ -95,6 +121,19 @@ in {
               status = "enable";
               transform = "normal";
             }
+          ];
+          profile.exec = [
+            # Create and move workspaces in reverse order, alternating
+            "swaymsg workspace 10, move workspace to output DP-4"
+            "swaymsg workspace 9, move workspace to output DP-2"
+            "swaymsg workspace 8, move workspace to output DP-4"
+            "swaymsg workspace 7, move workspace to output DP-2"
+            "swaymsg workspace 6, move workspace to output DP-4"
+            "swaymsg workspace 5, move workspace to output DP-2"
+            "swaymsg workspace 4, move workspace to output DP-4"
+            "swaymsg workspace 3, move workspace to output DP-2"
+            "swaymsg workspace 2, move workspace to output DP-4"
+            "swaymsg workspace 1, move workspace to output DP-2"
           ];
         }
       ];

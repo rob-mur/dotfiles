@@ -31,7 +31,8 @@
       "Bash(desktop-file-validate:*)",
       "Bash(pkill:*)",
       "Bash(dex:*)",
-      "Bash(env)"
+      "Bash(env)",
+      "WebFetch(domain:man.archlinux.org)"
     ]
   }
 }
