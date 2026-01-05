@@ -50,11 +50,7 @@ in {
         extraOptions = ["--unsupported-gpu"];
         config = {
           modifier = "${mod4}";
-          bars = [
-            {
-              command = "${waybar}/bin/waybar";
-            }
-          ];
+          bars = [];
           focus = {
             forceWrapping = false;
             followMouse = false;
@@ -89,6 +85,7 @@ in {
             {command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";}
 
             # --- Apps ---
+            {command = "${waybar}/bin/waybar";}
             {command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";}
             {command = "${kitty}/bin/kitty";}
             {command = "${waytrogen}/bin/waytrogen --restore";}

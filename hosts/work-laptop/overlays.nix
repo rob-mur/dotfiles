@@ -23,6 +23,8 @@
                     binary_name=$(basename $bin)
                     cat > $out/bin/$binary_name <<EOF
         #!/bin/sh
+        # Preserve XDG_DATA_DIRS for icon themes and other XDG data
+        export XDG_DATA_DIRS="\''${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
         exec ${nixGLWrapper}/bin/nixGLIntel ${basePkg}/bin/$binary_name "\$@"
         EOF
                     chmod +x $out/bin/$binary_name
