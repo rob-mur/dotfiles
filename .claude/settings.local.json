@@ -12,7 +12,12 @@
       "Bash(swaymsg:*)",
       "Bash(nix flake update:*)",
       "Bash(nix flake check:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(getcap:*)",
+      "Bash(chmod:*)",
+      "Bash(ldd:*)",
+      "WebFetch(domain:wiki.nixos.org)",
+      "Bash(LD_LIBRARY_PATH=/lib/x86_64-linux-gnu /nix/store/qvglcl2jhpg9caymgk5dplv12r6i1kq7-swaylock-1.8.4/bin/swaylock:*)"
     ]
   }
 }
