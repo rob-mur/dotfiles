@@ -19,13 +19,13 @@
           "node.name" = "combined_xonar_d1";
           "node.description" = "Xonar + D1 DAC (Combined)";
           "combine.props" = {
-            "audio.position" = [ "FL" "FR" ];
+            "audio.position" = ["FL" "FR"];
           };
           "stream.rules" = [
             {
               matches = [
-                { "node.name" = "alsa_output.usb-ASUSTeK_Xonar_SoundCard-00.analog-stereo"; }
-                { "node.name" = "alsa_output.usb-Audioengine_Audioengine_D1-00.analog-stereo"; }
+                {"node.name" = "alsa_output.usb-ASUSTeK_Xonar_SoundCard-00.analog-stereo";}
+                {"node.name" = "alsa_output.usb-Audioengine_Audioengine_D1-00.analog-stereo";}
               ];
               actions = {
                 create-stream = {};

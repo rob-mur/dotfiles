@@ -1,10 +1,8 @@
 {
-  inputs,
   config,
   system,
+  pkgs,
   ...
-}: let
-  yuzu_pkgs = import inputs.yuzu-nixpkgs {system = "x86_64-linux";};
-in {
-  home.packages = [yuzu_pkgs.yuzu];
+}: {
+  home.packages = with pkgs; [yuzu-pkgs.yuzu];
 }
