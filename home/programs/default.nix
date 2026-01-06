@@ -3,6 +3,7 @@
     ./dolphin.nix
     ./steam.nix
     ./yuzu.nix
+    ./slack.nix
     ./protonvpn-gui.nix
     ./ticktick.nix
     ./signal.nix
