@@ -5,7 +5,10 @@
   ...
 }: let
 in {
-  home.packages = [pkgs.rclone];
+  home.packages = [
+    pkgs.rclone
+    pkgs.fuse
+  ];
 
   systemd.user.services.rclone-onedrive = {
     Unit = {
@@ -19,8 +22,7 @@ in {
 
     Service = {
       Type = "simple";
-      User = "${osConfig.name}";
-      ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/Documents/OneDrive";
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p %h/Documents/OneDrive";
       ExecStart = ''
         ${pkgs.rclone}/bin/rclone --config %h/.config/rclone/rclone.conf \
           mount onedrive: %h/Documents/OneDrive \
@@ -29,10 +31,9 @@ in {
           --allow-non-empty \
           -v
       '';
-      ExecStop = "/run/current-system/sw/bin/fusermount -u %h/Documents/OneDrive";
+      ExecStop = "${pkgs.fuse}/bin/fusermount -u %h/Documents/OneDrive";
       Restart = "on-failure";
       RestartSec = "10s";
-      Environment = ["PATH=/run/wrappers/bin:/run/current-system/sw/bin"];
     };
   };
 }
