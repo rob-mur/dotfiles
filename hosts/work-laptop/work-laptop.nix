@@ -25,6 +25,7 @@ in {
   imports = [
     ../../options.nix
     ../../home/standalone.nix
+    ./desktopentries.nix
   ];
 
   # Set the option values

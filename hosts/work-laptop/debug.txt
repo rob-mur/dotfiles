@@ -1,2 +1,0 @@
-warning: Git tree '/home/robert.murphy/repos/dotfiles' is dirty
-error: interrupted by the user
