@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./vlc.nix
     ./dolphin.nix
     ./steam.nix
     ./slack.nix

@@ -31,8 +31,7 @@ with pkgs; let
 
   # Printscreen
   shot = "${grim}/bin/grim";
-  screenrec = "wl-screenrec";
-  recorder = "${wl-screenrec}/bin/${screenrec}";
+  recorder = "${gpu-screen-recorder}/bin/gpu-screen-recorder";
   area = "$(${slurp}/bin/slurp -d)";
   current = ''$(${sway}/bin/swaymsg -t get_tree | ${jq}/bin/jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | ${slurp}/bin/slurp -d)'';
   opt = "--low-power=off";
@@ -42,6 +41,9 @@ with pkgs; let
 in {
   home.packages = [
     wl-kbptr # for using the mouse with the keyboard
+    wl-screenrec
+    gpu-screen-recorder
+    slurp
   ];
   wayland = {
     windowManager = {
@@ -57,17 +59,47 @@ in {
           };
           workspaceOutputAssign = [
             # Odd workspaces on Samsung (DP-2) - primary monitor
-            {workspace = "1"; output = "DP-2";}
-            {workspace = "3"; output = "DP-2";}
-            {workspace = "5"; output = "DP-2";}
-            {workspace = "7"; output = "DP-2";}
-            {workspace = "9"; output = "DP-2";}
+            {
+              workspace = "1";
+              output = "DP-2";
+            }
+            {
+              workspace = "3";
+              output = "DP-2";
+            }
+            {
+              workspace = "5";
+              output = "DP-2";
+            }
+            {
+              workspace = "7";
+              output = "DP-2";
+            }
+            {
+              workspace = "9";
+              output = "DP-2";
+            }
             # Even workspaces on AOC (DP-4) - secondary monitor
-            {workspace = "2"; output = "DP-4";}
-            {workspace = "4"; output = "DP-4";}
-            {workspace = "6"; output = "DP-4";}
-            {workspace = "8"; output = "DP-4";}
-            {workspace = "10"; output = "DP-4";}
+            {
+              workspace = "2";
+              output = "DP-4";
+            }
+            {
+              workspace = "4";
+              output = "DP-4";
+            }
+            {
+              workspace = "6";
+              output = "DP-4";
+            }
+            {
+              workspace = "8";
+              output = "DP-4";
+            }
+            {
+              workspace = "10";
+              output = "DP-4";
+            }
           ];
           fonts = {
             names = ["${theme.font}"];
@@ -336,11 +368,21 @@ in {
               # [0]stop-record";
               Escape = "mode default";
               Return = "mode default";
-              "1" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} ${opt} --filename="${vfilename}" --audio , mode default'';
-              "2" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} ${opt} --filename="${vfilename}" --geometry "$(${slurp}/bin/slurp -d)" --audio , mode default'';
-              "3" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} ${opt} --filename="${vfilename}" , mode default'';
-              "4" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} ${opt} --filename="${vfilename}" --geometry "$(${slurp}/bin/slurp -d)" , mode default'';
-              "0" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${procps}/bin/pkill --signal INT ${screenrec} && ${notify-desktop}/bin/notify-desktop "Video record" "Recording stopped...", mode default'';
+
+              # 1: Full screen with audio (records the 'screen' and 'default' audio)
+              "1" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} -w screen -f 60 -a default -o "${vfilename}", mode default'';
+
+              # 2: Area with audio (uses slurp to get coordinates)
+              "2" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} -w "$(${slurp}/bin/slurp -f %o)" -f 60 -a default -o "${vfilename}", mode default'';
+
+              # 3: Full screen without audio
+              "3" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} -w screen -f 60 -o "${vfilename}", mode default'';
+
+              # 4: Area without audio
+              "4" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${recorder} -w "$(${slurp}/bin/slurp -f %o)" -f 60 -o "${vfilename}", mode default'';
+
+              # 0: Stop record (Uses SIGINT to ensure the video file is finalized correctly)
+              "0" = ''exec ${coreutils-full}/bin/sleep 1.0 && ${procps}/bin/pkill --signal INT gpu-screen-reco && ${notify-desktop}/bin/notify-desktop "Video record" "Recording stopped...", mode default'';
             };
             resize = {
               Escape = "mode default";
