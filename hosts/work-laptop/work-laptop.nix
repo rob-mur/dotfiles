@@ -25,6 +25,7 @@ in {
   imports = [
     ../../options.nix
     ../../home/standalone.nix
+    ./desktopentries.nix
   ];
 
   # Set the option values
@@ -56,7 +57,7 @@ in {
   # Specific env vars just for work
   home.sessionVariables = {
     UV_KEYRING_PROVIDER = "subprocess";
-    GOOGLE_CLOUD_PROJECT = "duet-assistant";
+    # GOOGLE_CLOUD_PROJECT = "duet-assistant";
     GITLAB_API_TOKEN = "$(cat $HOME/.auth/gitlab_token)";
     GOOGLE_APPLICATION_CREDENTIALS = "$HOME/.config/gcloud/application_default_credentials.json";
   };

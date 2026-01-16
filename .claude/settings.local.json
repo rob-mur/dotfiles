@@ -32,7 +32,8 @@
       "Bash(pkill:*)",
       "Bash(dex:*)",
       "Bash(env)",
-      "WebFetch(domain:man.archlinux.org)"
+      "WebFetch(domain:man.archlinux.org)",
+      "Bash(nvim:*)"
     ]
   }
 }
