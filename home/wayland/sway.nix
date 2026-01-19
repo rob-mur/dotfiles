@@ -13,7 +13,7 @@ with pkgs; let
 
   mod4 = "Mod4";
   output = "eDP-1";
-  opacity = "0.95";
+  opacity = "1";
 
   # Navigation
   left = "h";
@@ -104,9 +104,6 @@ in {
           fonts = {
             names = ["${theme.font}"];
             size = toString theme.font-size;
-          };
-          gaps = {
-            inner = 15;
           };
           startup = [
             {command = "export XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS";}
