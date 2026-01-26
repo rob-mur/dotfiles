@@ -5,6 +5,7 @@
     ./cnf.nix
     ./corectrl.nix
     ./dconf.nix
+    ./endpoint-verification.nix
     ./gnupg.nix
     ./light.nix
     ./mtr.nix

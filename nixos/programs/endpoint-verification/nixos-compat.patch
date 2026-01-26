@@ -1,0 +1,33 @@
+--- a/opt/google/endpoint-verification/bin/device_state.sh
++++ b/opt/google/endpoint-verification/bin/device_state.sh
+@@ -2,18 +2,18 @@
+
+ set -u
+
+-AWK=/usr/bin/awk
+-CAT=/bin/cat
+-CUT=/usr/bin/cut
+-DCONF=/usr/bin/dconf
+-ECHO=/bin/echo
+-GREP=/bin/grep
+-GSETTINGS=/usr/bin/gsettings
+-LSBLK=/bin/lsblk
+-MOUNTPOINT=/bin/mountpoint
+-PRINTF=/usr/bin/printf
+-STAT=/usr/bin/stat
+-TR=/usr/bin/tr
+-UDEVADM=/bin/udevadm
++AWK=$(command -v awk || echo /usr/bin/awk)
++CAT=$(command -v cat || echo /bin/cat)
++CUT=$(command -v cut || echo /usr/bin/cut)
++DCONF=$(command -v dconf || echo /usr/bin/dconf)
++ECHO=$(command -v echo || echo /bin/echo)
++GREP=$(command -v grep || echo /bin/grep)
++GSETTINGS=$(command -v gsettings || echo /usr/bin/gsettings)
++LSBLK=$(command -v lsblk || echo /bin/lsblk)
++MOUNTPOINT=$(command -v mountpoint || echo /bin/mountpoint)
++PRINTF=$(command -v printf || echo /usr/bin/printf)
++STAT=$(command -v stat || echo /usr/bin/stat)
++TR=$(command -v tr || echo /usr/bin/tr)
++UDEVADM=$(command -v udevadm || echo /bin/udevadm)
+
