@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./kdeconnect.nix
     ./tailscale.nix
     ./adguardhome.nix
     ./blueman.nix

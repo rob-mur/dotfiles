@@ -2,10 +2,9 @@
   pkgs,
   config,
   ...
-}:
-with pkgs; let
-in {
+}: {
   services = {
+    desktopManager.plasma6.enable = true;
     displayManager = {
       sddm = {
         enable = true;
@@ -13,7 +12,7 @@ in {
       };
       enable = true;
       defaultSession = "sway";
-      sessionPackages = [sway];
+      sessionPackages = [pkgs.sway];
       autoLogin = {
         enable = config.autoLogin;
         user = "${config.name}";

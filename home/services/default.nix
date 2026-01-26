@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   imports = [
     ./rclone-onedrive.nix
     ./batsignal.nix
@@ -7,7 +7,6 @@
     ./espanso.nix
     ./gnome-keyring.nix
     ./kanshi.nix
-    ./kdeconnect.nix
     ./mako.nix
     ./mbsync.nix
     ./mpd-mpris.nix

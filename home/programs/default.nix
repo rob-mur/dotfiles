@@ -15,7 +15,6 @@
     ./discord.nix
     ./anki.nix
     ./vivaldi.nix
-    ./google-chrome.nix
     ./aerc.nix
     ./alacritty.nix
     ./aria2.nix

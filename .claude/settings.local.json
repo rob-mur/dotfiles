@@ -66,7 +66,14 @@
       "Bash(sudo ls:*)",
       "Bash(for func in get_disk_encrypted get_hostname get_model get_all_mac_addresses get_os_firewall get_screenlock_value get_os_name_and_version)",
       "Bash(do echo \"=== $func ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(getfacl:*)",
+      "Bash(getent group:*)",
+      "Bash(ydotoold --help:*)",
+      "Bash(export YDOTOOL_SOCKET=/run/ydotoold/socket)",
+      "Bash(ydotool type:*)",
+      "Bash(busctl:*)",
+      "Bash(xargs cat:*)"
     ]
   }
 }
