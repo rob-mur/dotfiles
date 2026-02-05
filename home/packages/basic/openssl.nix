@@ -1,6 +1,6 @@
 {pkgs, ...}:
 with pkgs; {
   home.packages = [
-    lazyjj
+    openssl
   ];
 }
