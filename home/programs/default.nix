@@ -29,7 +29,6 @@
     ./chawan.nix
     ./comodoro.nix
     ./direnv.nix
-    ./eza.nix
     ./fastfetch.nix
     ./firefox.nix
     ./foot.nix

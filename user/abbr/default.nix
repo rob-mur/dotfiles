@@ -2,7 +2,6 @@
   abbr = {
     c = "cp";
     d = "doas";
-    e = "eza";
     f = "fastfetch";
     v = "nvim";
     t = "btop";

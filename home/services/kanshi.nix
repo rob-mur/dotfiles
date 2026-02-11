@@ -26,7 +26,7 @@ in {
               adaptiveSync = true;
               criteria = "AU Optronics 0x18A7 Unknown";
               mode = "1920x1200@60.00Hz";
-              position = "3840,0";
+              position = "1920,0";
               scale = 1.0;
               status = "enable";
               transform = "normal";
@@ -36,7 +36,7 @@ in {
               criteria = "Dell Inc. DELL S2721QS C1Z6M43";
               mode = "3840x2160@60.00Hz";
               position = "0,0";
-              scale = 1.0;
+              scale = 2.0;
               status = "enable";
               transform = "normal";
             }
