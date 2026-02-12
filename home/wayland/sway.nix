@@ -175,8 +175,6 @@ in {
             "${mod4}+y" = "exec ${rofi-bluetooth}/bin/rofi-bluetooth";
             # Rofi: clipboard manager
             "${mod4}+c" = "exec ${cliphist}/bin/cliphist list | ${rofi}/bin/rofi -dmenu | ${cliphist}/bin/cliphist decode | ${wl-clipboard}/bin/wl-copy";
-            # Rofi: password store
-            "${mod4}+e" = "exec ${rofi-pass-wayland}/bin/rofi-pass";
             # Rofi: power menu
             "${mod4}+x" = "exec ${rofi}/bin/rofi -show menu -modi 'menu:${rofi-power-menu}/bin/rofi-power-menu --no-symbols'";
             # Rofi: filebrowser
