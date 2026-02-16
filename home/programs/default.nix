@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./proton-auth.nix
     ./bottles.nix
     ./jellyfin.nix
     ./vlc.nix

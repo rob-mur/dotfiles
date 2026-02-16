@@ -13,6 +13,7 @@
     ./fstrim.nix
     ./grafana.nix
     ./greetd.nix
+    ./gnome-keyring.nix
     ./hdapsd.nix
     ./languagetool.nix
     ./libinput.nix

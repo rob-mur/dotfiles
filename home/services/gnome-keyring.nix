@@ -1,8 +1,6 @@
-{config, ...}: let
-in {
-  services = {
-        gnome-keyring = {
-          enable = true;
-    };
+{config, ...}: {
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "pkcs11" "secrets" "ssh" ];
   };
 }
