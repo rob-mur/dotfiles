@@ -27,7 +27,7 @@ in {
               criteria = "AU Optronics 0x18A7 Unknown";
               mode = "1920x1200@60.00Hz";
               position = "1920,0";
-              scale = 2.0;
+              scale = 1.0;
               status = "enable";
               transform = "normal";
             }
