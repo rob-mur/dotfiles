@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   boot = {
     kernelPackages = pkgs.linuxPackages;
 
@@ -18,7 +20,13 @@
       };
     };
 
-    initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-    kernelModules = [ "kvm-amd" "kvm-intel" "nouveau"];
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+    kernelModules = [
+      "kvm-amd"
+      "kvm-intel"
+      "nouveau"
+      "iptable_nat"
+      "br_netfilter"
+    ];
   };
 }
