@@ -21,10 +21,10 @@
     };
 
     initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+    kernelParams = ["nvidia_drm.fbdev=1"];
     kernelModules = [
       "kvm-amd"
       "kvm-intel"
-      "nouveau"
       "iptable_nat"
       "br_netfilter"
     ];
