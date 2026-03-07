@@ -1,9 +1,3 @@
-{
-  pkgs,
-  config,
-  ...
-}:
-with pkgs; let
-in {
-  home.packages = [devenv];
+{pkgs, ...}: {
+  home.packages = with pkgs; [pkgs-unstable.devenv];
 }
