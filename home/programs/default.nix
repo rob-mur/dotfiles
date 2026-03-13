@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./dbeaver.nix
     ./proton-auth.nix
     ./bottles.nix
     ./jellyfin.nix
@@ -10,7 +11,6 @@
     ./protonvpn-gui.nix
     ./ticktick.nix
     ./signal.nix
-    ./devenv.nix
     ./spotify.nix
     ./zsh.nix
     ./wdisplays.nix
