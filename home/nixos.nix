@@ -37,6 +37,7 @@ in {
           XDG_CURRENT_DESKTOP = "sway";
           XDG_SESSION_DESKTOP = "sway";
           XDG_SESSION_TYPE = "wayland";
+          XDG_MENU_PREFIX = "plasma-";
 
           # Wayland
           MOZ_ENABLE_WAYLAND = "1";
