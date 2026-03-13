@@ -3,23 +3,27 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  baseVivaldi = pkgs.vivaldi.override {
+    proprietaryCodecs = true;
+    enableWidevine = true;
+  };
+
+  wrappedVivaldi = baseVivaldi.overrideAttrs (oldAttrs: {
+    buildCommand = oldAttrs.buildCommand or "" + ''
+      # Add dolphin and xdg-utils to the wrapper's PATH
+      sed -i "s|^exec|export PATH=\"${lib.makeBinPath [ pkgs.kdePackages.dolphin pkgs.xdg-utils ]}:\$PATH\"\nexec|" $out/bin/vivaldi
+    '';
+  });
+in {
   programs.vivaldi = {
     enable = true;
-    package = pkgs.vivaldi.override {
-      proprietaryCodecs = true;
-      enableWidevine = true;
-    };
+    package = wrappedVivaldi;
     commandLineArgs = [
       "--disable-features=UseChromeOSDirectVideoDecoder"
       "--disable-setuid-sandbox"
     ];
   };
-
-  # Ensure xdg-utils is available for Vivaldi to find dolphin
-  home.packages = with pkgs; [
-    xdg-utils
-  ];
 
   # Override xdg-mime to point to dolphin for directories
   xdg.mimeApps = {
