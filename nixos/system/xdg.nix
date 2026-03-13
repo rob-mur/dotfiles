@@ -11,8 +11,9 @@ with pkgs; {
       ];
       config = {
         sway = {
-          default = ["wlr" "gnome" "gtk"];
-          "org.freedesktop.impl.portal.FileChooser" = ["kde"];
+          default = ["wlr" "gtk"];
+          "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+          "org.freedesktop.impl.portal.OpenURI" = ["gtk"];
           "org.freedesktop.impl.portal.RemoteDesktop" = ["gnome"];
           "org.freedesktop.impl.portal.ScreenCast" = ["wlr"];
           "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
