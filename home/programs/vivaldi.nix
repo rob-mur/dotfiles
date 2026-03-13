@@ -1,27 +1,31 @@
 {
   config,
   pkgs,
+  lib,
   ...
-}: let
-  wrappedVivaldi = pkgs.symlinkJoin {
-    name = "vivaldi-wrapped";
-    paths = [ (pkgs.vivaldi.override {
-      proprietaryCodecs = true;
-      enableWidevine = true;
-    }) ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/vivaldi \
-        --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.xdg-utils pkgs.kdePackages.dolphin ]}
-    '';
-  };
-in {
+}: {
   programs.vivaldi = {
     enable = true;
-    package = wrappedVivaldi;
+    package = pkgs.vivaldi.override {
+      proprietaryCodecs = true;
+      enableWidevine = true;
+    };
     commandLineArgs = [
       "--disable-features=UseChromeOSDirectVideoDecoder"
       "--disable-setuid-sandbox"
     ];
+  };
+
+  # Ensure xdg-utils is available for Vivaldi to find dolphin
+  home.packages = with pkgs; [
+    xdg-utils
+  ];
+
+  # Override xdg-mime to point to dolphin for directories
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = "org.kde.dolphin.desktop";
+    };
   };
 }
