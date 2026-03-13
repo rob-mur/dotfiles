@@ -7,22 +7,30 @@
   baseVivaldi = pkgs.vivaldi.override {
     proprietaryCodecs = true;
     enableWidevine = true;
+    commandLineArgs = "--disable-features=UseChromeOSDirectVideoDecoder --disable-setuid-sandbox";
   };
 
-  wrappedVivaldi = baseVivaldi.overrideAttrs (oldAttrs: {
-    buildCommand = oldAttrs.buildCommand or "" + ''
-      # Add dolphin and xdg-utils to the wrapper's PATH
-      sed -i "s|^exec|export PATH=\"${lib.makeBinPath [ pkgs.kdePackages.dolphin pkgs.xdg-utils ]}:\$PATH\"\nexec|" $out/bin/vivaldi
-    '';
-  });
+  wrappedVivaldi = pkgs.runCommand "vivaldi-wrapped" {
+    buildInputs = [ pkgs.makeWrapper ];
+    preferLocalBuild = true;
+    # Preserve passthru and meta for home-manager
+    passthru = baseVivaldi.passthru or {};
+    meta = baseVivaldi.meta or {};
+  } ''
+    mkdir -p $out/bin
+    mkdir -p $out/share
+
+    # Link everything from the base package
+    ln -s ${baseVivaldi}/share/* $out/share/ 2>/dev/null || true
+
+    # Create wrapper script that adds dolphin to PATH
+    makeWrapper ${baseVivaldi}/bin/vivaldi $out/bin/vivaldi \
+      --prefix PATH : ${lib.makeBinPath [ pkgs.kdePackages.dolphin pkgs.xdg-utils ]}
+  '';
 in {
   programs.vivaldi = {
     enable = true;
     package = wrappedVivaldi;
-    commandLineArgs = [
-      "--disable-features=UseChromeOSDirectVideoDecoder"
-      "--disable-setuid-sandbox"
-    ];
   };
 
   # Override xdg-mime to point to dolphin for directories
