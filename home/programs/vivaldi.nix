@@ -7,9 +7,12 @@ in {
   programs.vivaldi = {
     enable = true;
     package = pkgs.vivaldi.override {
-      commandLineArgs = ["--ozone-platform=x11" "--disable-setuid-sandbox" "--no-sandbox"];
       proprietaryCodecs = true;
       enableWidevine = true;
     };
+    commandLineArgs = [
+      "--disable-features=UseChromeOSDirectVideoDecoder"
+      "--disable-setuid-sandbox"
+    ];
   };
 }
