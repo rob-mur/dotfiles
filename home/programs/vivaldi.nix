@@ -23,9 +23,10 @@
     # Link everything from the base package
     ln -s ${baseVivaldi}/share/* $out/share/ 2>/dev/null || true
 
-    # Create wrapper script that adds dolphin to PATH
+    # Create wrapper script that adds dolphin to PATH and enables Wayland
     makeWrapper ${baseVivaldi}/bin/vivaldi $out/bin/vivaldi \
-      --prefix PATH : ${lib.makeBinPath [ pkgs.kdePackages.dolphin pkgs.xdg-utils ]}
+      --prefix PATH : ${lib.makeBinPath [ pkgs.kdePackages.dolphin pkgs.xdg-utils ]} \
+      --set NIXOS_OZONE_WL "1"
   '';
 in {
   programs.vivaldi = {
