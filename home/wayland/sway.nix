@@ -106,10 +106,11 @@ in {
             size = toString theme.font-size;
           };
           startup = [
-            {command = "export XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS";}
-            {command = "export XDG_MENU_PREFIX=plasma-";}
-            {command = "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway XDG_DATA_DIRS XDG_MENU_PREFIX";}
-            {command = "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XDG_DATA_DIRS XDG_MENU_PREFIX";}
+            # Update D-Bus and systemd environments with session variables
+            {command = "dbus-update-activation-environment --systemd --all";}
+            {command = "systemctl --user import-environment";}
+
+            # Build KDE system configuration cache
             {command = "${kdePackages.kservice}/bin/kbuildsycoca6";}
 
             # Initialize the keyring daemon and the Polkit agent
