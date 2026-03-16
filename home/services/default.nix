@@ -21,5 +21,6 @@
     ./wlsunset.nix
     ./wpaperd.nix
     ./xsettingsd.nix
+    ./xdg-portal-hypr-remote.nix
   ];
 }

@@ -46,6 +46,9 @@ in {
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
           SDL_VIDEODRIVER = "wayland";
 
+          # KDE Connect remote input (ydotool fallback)
+          YDOTOOL_SOCKET = "/run/ydotoold/socket";
+
           # GTK Theme
           GTK_THEME = "Breeze-Dark";
         };

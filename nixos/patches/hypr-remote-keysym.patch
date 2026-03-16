@@ -1,0 +1,194 @@
+Add NotifyKeyboardKeysym support for KDE Connect character input
+
+KDE Connect sends character input via NotifyKeyboardKeysym (Unicode -> XKB
+keysym via xkb_utf32_to_keysym). Without this method the portal returns
+"No such method" for every typed character. Special keys already worked via
+NotifyKeyboardKeycode.
+
+The implementation iterates the XKB keymap to resolve keysym -> (keycode,
+shift_needed) and injects the key via the existing virtual keyboard.
+--- a/src/wayland_virtual_keyboard.h
++++ b/src/wayland_virtual_keyboard.h
+@@ -1,6 +1,9 @@
+ #pragma once
+
++#include <optional>
++#include <xkbcommon/xkbcommon.h>
++
+ extern "C" {
+ #include <wayland-client.h>
+ #include "virtual-keyboard-unstable-v1-client-protocol.h"
+ }
+@@ -17,6 +20,11 @@
+     void send_key(uint32_t time, uint32_t key, uint32_t state);
+     void send_modifiers(uint32_t mods_depressed, uint32_t mods_latched,
+                        uint32_t mods_locked, uint32_t group);
++
++    // Keysym-based input (for character keys from KDE Connect)
++    struct KeyInfo { uint32_t keycode; bool shift_needed; };
++    std::optional<KeyInfo> keysym_to_keycode(uint32_t keysym);
++    void send_key_for_keysym(uint32_t time, uint32_t keysym, uint32_t state);
+
+     // Registry callback functions (must be public)
+     static void registry_global(void* data, struct wl_registry* registry,
+@@ -29,5 +37,8 @@
+     struct zwp_virtual_keyboard_manager_v1* keyboard_manager;
+     struct zwp_virtual_keyboard_v1* virtual_keyboard;
+
++    xkb_context* xkb_ctx = nullptr;
++    xkb_keymap* xkb_map = nullptr;
++
+     bool setup_keymap();
+ };
+--- a/src/wayland_virtual_keyboard.cpp
++++ b/src/wayland_virtual_keyboard.cpp
+@@ -63,9 +63,19 @@
+     if (!setup_keymap()) {
+         std::cerr << "Failed to setup keymap" << std::endl;
+         cleanup();
+         return false;
+     }
+
++    // Build an xkb keymap from the same string for keysym->keycode lookups
++    xkb_ctx = xkb_context_new(XKB_CONTEXT_NO_FLAGS);
++    if (xkb_ctx) {
++        xkb_map = xkb_keymap_new_from_string(xkb_ctx, keymap_str,
++            XKB_KEYMAP_FORMAT_TEXT_V1, XKB_KEYMAP_COMPILE_NO_FLAGS);
++        if (!xkb_map) {
++            std::cerr << "Warning: failed to compile xkb keymap for keysym lookup" << std::endl;
++        }
++    }
++
+     wl_display_roundtrip(display);
+     std::cout << "Wayland Virtual Keyboard initialized successfully" << std::endl;
+     return true;
+@@ -74,8 +85,16 @@
+ void WaylandVirtualKeyboard::cleanup() {
+     if (virtual_keyboard) {
+         zwp_virtual_keyboard_v1_destroy(virtual_keyboard);
+         virtual_keyboard = nullptr;
+     }
++    if (xkb_map) {
++        xkb_keymap_unref(xkb_map);
++        xkb_map = nullptr;
++    }
++    if (xkb_ctx) {
++        xkb_context_unref(xkb_ctx);
++        xkb_ctx = nullptr;
++    }
+     if (keyboard_manager) {
+         zwp_virtual_keyboard_manager_v1_destroy(keyboard_manager);
+         keyboard_manager = nullptr;
+@@ -161,3 +180,54 @@
+         wl_display_flush(display);
+     }
+ }
++
++std::optional<WaylandVirtualKeyboard::KeyInfo>
++WaylandVirtualKeyboard::keysym_to_keycode(uint32_t keysym) {
++    if (!xkb_map) return std::nullopt;
++
++    xkb_keycode_t min_kc = xkb_keymap_min_keycode(xkb_map);
++    xkb_keycode_t max_kc = xkb_keymap_max_keycode(xkb_map);
++
++    for (xkb_keycode_t kc = min_kc; kc <= max_kc; kc++) {
++        xkb_layout_index_t num_layouts = xkb_keymap_num_layouts_for_key(xkb_map, kc);
++        for (xkb_layout_index_t layout = 0; layout < num_layouts; layout++) {
++            xkb_level_index_t num_levels =
++                xkb_keymap_num_levels_for_key(xkb_map, kc, layout);
++            for (xkb_level_index_t level = 0; level < num_levels; level++) {
++                const xkb_keysym_t* syms = nullptr;
++                int n = xkb_keymap_key_get_syms_by_level(
++                    xkb_map, kc, layout, level, &syms);
++                for (int i = 0; i < n; i++) {
++                    if (syms[i] == keysym) {
++                        // XKB keycodes are evdev+8; subtract to get Linux keycode
++                        uint32_t linux_kc = static_cast<uint32_t>(kc) - 8;
++                        bool shift = (level == 1);
++                        return KeyInfo{linux_kc, shift};
++                    }
++                }
++            }
++        }
++    }
++    return std::nullopt;
++}
++
++void WaylandVirtualKeyboard::send_key_for_keysym(uint32_t time, uint32_t keysym,
++                                                  uint32_t state) {
++    auto info = keysym_to_keycode(keysym);
++    if (!info) {
++        std::cerr << "No keycode found for keysym 0x" << std::hex << keysym
++                  << std::dec << std::endl;
++        return;
++    }
++
++    constexpr uint32_t KEY_LEFTSHIFT = 42;
++    if (state == 1) { // press
++        if (info->shift_needed)
++            send_key(time, KEY_LEFTSHIFT, 1);
++        send_key(time, info->keycode, 1);
++    } else { // release
++        send_key(time, info->keycode, 0);
++        if (info->shift_needed)
++            send_key(time, KEY_LEFTSHIFT, 0);
++    }
++}
+--- a/src/portal.h
++++ b/src/portal.h
+@@ -51,6 +51,7 @@
+     void NotifyPointerMotion(sdbus::MethodCall call);
+     void NotifyPointerButton(sdbus::MethodCall call);
+     void NotifyKeyboardKeycode(sdbus::MethodCall call);
++    void NotifyKeyboardKeysym(sdbus::MethodCall call);
+     void NotifyPointerAxis(sdbus::MethodCall call);
+
+     // Modern EIS (Emulated Input Server) method
+--- a/src/portal.cpp
++++ b/src/portal.cpp
+@@ -74,6 +74,9 @@
+         object->registerMethod(PORTAL_INTERFACE, "NotifyKeyboardKeycode", "oa{sv}iu", "",
+                               [this](sdbus::MethodCall call) { NotifyKeyboardKeycode(std::move(call)); });
+
++        object->registerMethod(PORTAL_INTERFACE, "NotifyKeyboardKeysym", "oa{sv}iu", "",
++                              [this](sdbus::MethodCall call) { NotifyKeyboardKeysym(std::move(call)); });
++
+         object->registerMethod(PORTAL_INTERFACE, "NotifyPointerAxis", "oa{sv}dd", "",
+                               [this](sdbus::MethodCall call) { NotifyPointerAxis(std::move(call)); });
+
+@@ -392,6 +395,35 @@
+     auto reply = call.createReply();
+     reply.send();
+ }
+
++void Portal::NotifyKeyboardKeysym(sdbus::MethodCall call) {
++    std::cout << "⌨️ NotifyKeyboardKeysym called!" << std::endl;
++
++    sdbus::ObjectPath session_handle;
++    std::map<std::string, sdbus::Variant> options;
++    int32_t keysym;
++    uint32_t state;
++    call >> session_handle >> options >> keysym >> state;
++
++    std::cout << "Session: " << session_handle
++              << ", Keysym: 0x" << std::hex << keysym << std::dec
++              << ", State: " << state << std::endl;
++
++    uint32_t time = static_cast<uint32_t>(
++        std::chrono::duration_cast<std::chrono::milliseconds>(
++            std::chrono::steady_clock::now().time_since_epoch()).count());
++
++    if (libei_handler && libei_handler->keyboard) {
++        libei_handler->keyboard->send_key_for_keysym(
++            time, static_cast<uint32_t>(keysym), state);
++        std::cout << "✅ Keysym event forwarded to virtual keyboard" << std::endl;
++    } else {
++        std::cout << "❌ No virtual keyboard available" << std::endl;
++    }
++
++    auto reply = call.createReply();
++    reply.send();
++}
++
+ void Portal::NotifyPointerAxis(sdbus::MethodCall call) {
+     std::cout << "🖱️ NotifyPointerAxis called!" << std::endl;
