@@ -3,8 +3,7 @@
   config,
   osConfig ? config,
   ...
-}: let
-in {
+}: {
   programs.jujutsu = {
     enable = true;
     settings = {
@@ -12,10 +11,12 @@ in {
         name = "${osConfig.fullname}";
         email = "${osConfig.email}";
       };
+      git.push-new-bookmarks = true;
+      ui.allow-new = true;
     };
   };
 
   home.packages = with pkgs; [
-        lazyjj
-      ];
+    lazyjj
+  ];
 }
