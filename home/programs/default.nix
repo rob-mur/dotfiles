@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./claude-code.nix
+    ./glab.nix
     ./dbeaver.nix
     ./proton-auth.nix
     ./bottles.nix
