@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,12 +15,24 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     nixgl,
     ...
   }: let
+    pkgs-unstable = import nixpkgs-unstable {
+      system = "x86_64-linux";
+      config.allowUnfree = true;
+      overlays = [
+        (import ./overlays.nix {inherit nixgl;})
+      ];
+    };
+
+    overlay-unstable = final: prev: {
+      pkgs-unstable = pkgs-unstable;
+    };
+
     overlay-gtk-portal = final: prev: {
       xdg-desktop-portal-gtk = prev.xdg-desktop-portal-gtk.overrideAttrs (oldAttrs: {
         postInstall =
@@ -58,7 +71,7 @@
       };
       modules = [
         ({...}: {
-          nixpkgs.overlays = [overlay-gtk-portal overlay-hypr-remote];
+          nixpkgs.overlays = [overlay-gtk-portal overlay-hypr-remote overlay-unstable];
         })
         ./work-laptop.nix
       ];
