@@ -173,7 +173,7 @@ in {
 
           keybindings = mkOptionDefault {
             # Rofi: menu
-            "${mod4}+d" = "exec XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS ${rofi}/bin/rofi -show drun";
+            "${mod4}+d" = "exec PATH=$HOME/.nix-profile/bin:$PATH XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS ${rofi}/bin/rofi -show drun";
             # Rofi: bluetooth
             "${mod4}+y" = "exec ${rofi-bluetooth}/bin/rofi-bluetooth";
             # Rofi: clipboard manager

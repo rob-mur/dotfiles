@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./obsidian.nix
     ./claude-code.nix
     ./glab.nix
     ./dbeaver.nix

@@ -6,7 +6,10 @@
   # Helper function to wrap a package with nixGL
   # This creates wrapper scripts that call nixGLIntel before the actual binary
   # and preserves the original package's override attributes for home-manager compatibility
-  wrapWithNixGL = {pkg, extraFlags ? ""}:
+  wrapWithNixGL = {
+    pkg,
+    extraFlags ? "",
+  }:
     prev.lib.makeOverridable (args: let
       # Handle potential overrides like pkg.override { ... }
       basePkg =
@@ -77,50 +80,52 @@
         meta = basePkg.meta // {outputsToInstall = ["out"];};
         passthru = (basePkg.passthru or {}) // {unwrapped = basePkg;};
       }) {};
-in {
-  # Terminal emulators (high priority - these definitely need GPU)
-  kitty = wrapWithNixGL {pkg = prev.kitty;};
-  alacritty = wrapWithNixGL {pkg = prev.alacritty;};
-  foot = wrapWithNixGL {pkg = prev.foot;};
-
-  # Browsers (need GPU acceleration)
-  vivaldi = wrapWithNixGL {pkg = prev.vivaldi;};
-  firefox = wrapWithNixGL {pkg = prev.firefox;};
-
-  # Media players and viewers
-  mpv = wrapWithNixGL {pkg = prev.mpv;};
-  imv = wrapWithNixGL {pkg = prev.imv;};
-
-  # Wayland tools (need GPU for rendering)
-  waybar = wrapWithNixGL {pkg = prev.waybar;};
-  wofi = wrapWithNixGL {pkg = prev.wofi;};
-  rofi-wayland = wrapWithNixGL {pkg = prev.rofi-wayland;};
-
-  # Use system swaylock for PAM compatibility on Ubuntu
-  swaylock =
-    prev.runCommand "swaylock-system-wrapper" {
-      # Preserve the passthru attributes that home-manager expects
-      passthru = {
-        # This makes home-manager think the package is installed
-        # but we're actually using the system binary
-      };
-    } ''
-          mkdir -p $out/bin
-          # Create a wrapper that calls the system swaylock
-          cat > $out/bin/swaylock <<'EOF'
-      #!/bin/sh
-      # Use system swaylock for PAM compatibility
-      exec /usr/bin/swaylock "$@"
-      EOF
-          chmod +x $out/bin/swaylock
-    '';
-
-  swayimg = wrapWithNixGL {pkg = prev.swayimg;};
-
-  # PDF/document viewers
-  zathura = wrapWithNixGL {pkg = prev.zathura;};
-  sioyek = wrapWithNixGL {pkg = prev.sioyek;};
-
-  # Slack (needs gpu as it's a browser)
-  slack = wrapWithNixGL {pkg = prev.slack;};
-}
+  # All GUI packages that need nixGL wrapping on this non-NixOS host.
+  # Rule: any app that renders via OpenGL/EGL/Vulkan goes here.
+  # Adding a new GUI app? Just add its nixpkgs attribute name to the right group.
+  nixGLPackageNames = [
+    # Terminal emulators
+    "kitty"
+    "alacritty"
+    "foot"
+    # Browsers
+    "vivaldi"
+    "firefox"
+    # Electron/Chromium apps
+    "obsidian"
+    "slack"
+    "discord"
+    "spotify"
+    "signal-desktop"
+    # Wayland compositor utilities
+    "waybar"
+    "wofi"
+    "rofi-wayland"
+    "swayimg"
+    # Media players and viewers
+    "mpv"
+    "imv"
+    "vlc"
+    # Document/image viewers and editors
+    "zathura"
+    "sioyek"
+    "darktable"
+    # Screen recording (GPU is the whole point)
+    "gpu-screen-recorder"
+  ];
+in
+  (prev.lib.genAttrs nixGLPackageNames (name: wrapWithNixGL {pkg = prev.${name};}))
+  // {
+    # Special case: use system swaylock for PAM compatibility on Ubuntu
+    swaylock =
+      prev.runCommand "swaylock-system-wrapper" {
+        passthru = {};
+      } ''
+                mkdir -p $out/bin
+                cat > $out/bin/swaylock <<'EOF'
+        #!/bin/sh
+        exec /usr/bin/swaylock "$@"
+        EOF
+                chmod +x $out/bin/swaylock
+      '';
+  }

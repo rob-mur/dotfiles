@@ -56,6 +56,7 @@ in {
         QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         SDL_VIDEODRIVER = "wayland";
+        NIXOS_OZONE_WL = "1";
 
         # GTK Theme
         GTK_THEME = "Breeze-Dark";
@@ -64,6 +65,18 @@ in {
       sessionPath = [
         "$HOME/.nix-profile/bin"
       ];
+    };
+
+    # Propagate Wayland vars to the systemd user session so apps launched
+    # via D-Bus/rofi (not through the shell) also get them.
+    systemd.user.sessionVariables = {
+      MOZ_ENABLE_WAYLAND = "1";
+      MOZ_USE_XINPUT2 = "1";
+      QT_QPA_PLATFORM = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      SDL_VIDEODRIVER = "wayland";
+      NIXOS_OZONE_WL = "1";
+      GTK_THEME = "Breeze-Dark";
     };
 
     # Ensure XDG_DATA_DIRS includes nix profile
