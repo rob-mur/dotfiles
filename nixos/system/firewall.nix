@@ -2,7 +2,7 @@
   networking = {
     firewall = {
       enable = true;
-      allowPing = false;
+      allowPing = true;
       allowedTCPPorts = [
         20 21 # ftp
         22 # ssh

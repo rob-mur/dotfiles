@@ -19,12 +19,14 @@
           "node.name" = "combined_xonar_d1";
           "node.description" = "Xonar + D1 DAC (Combined)";
           "combine.props" = {
-            "audio.position" = ["FL" "FR"];
+            "audio.position" = ["FL" "FR" "RL" "RR" "FC" "LFE"];
+            "channelmix.upmix" = true;
+            "channelmix.upmix-method" = "psd";
           };
           "stream.rules" = [
             {
               matches = [
-                {"node.name" = "alsa_output.usb-ASUSTeK_Xonar_SoundCard-00.analog-stereo";}
+                {"node.name" = "alsa_output.usb-ASUSTeK_Xonar_SoundCard-00.analog-surround-51";}
                 {"node.name" = "alsa_output.usb-Audioengine_Audioengine_D1-00.analog-stereo";}
               ];
               actions = {
@@ -78,6 +80,12 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # NVIDIA + wlroots: force card2 (RTX), disable unsupported hardware cursors
+  environment.sessionVariables = {
+    WLR_DRM_DEVICES = "/dev/dri/card2";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
 
   # Setting overrides
   networking.interfaces.enp4s0.wakeOnLan.enable = true;

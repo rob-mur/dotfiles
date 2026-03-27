@@ -1,5 +1,7 @@
 {...}: {
   imports = [
+    ./sunshine.nix
+    ./gvfs.nix
     ./kdeconnect.nix
     ./tailscale.nix
     ./adguardhome.nix
