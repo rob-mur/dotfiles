@@ -97,6 +97,7 @@
     "discord"
     "spotify"
     "signal-desktop"
+    "anki"
     # Wayland compositor utilities
     "waybar"
     "wofi"

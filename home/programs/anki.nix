@@ -5,5 +5,5 @@
 }:
 with pkgs; let
 in {
-  home.packages = [anki-bin];
+  home.packages = [anki];
 }
