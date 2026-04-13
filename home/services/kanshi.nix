@@ -42,6 +42,17 @@ in {
             }
           ];
           profile.exec = [
+            # Bind workspace defaults for this profile
+            "swaymsg workspace 1 output DP-1"
+            "swaymsg workspace 3 output DP-1"
+            "swaymsg workspace 5 output DP-1"
+            "swaymsg workspace 7 output DP-1"
+            "swaymsg workspace 9 output DP-1"
+            "swaymsg workspace 2 output eDP-1"
+            "swaymsg workspace 4 output eDP-1"
+            "swaymsg workspace 6 output eDP-1"
+            "swaymsg workspace 8 output eDP-1"
+            "swaymsg workspace 10 output eDP-1"
             # Create and move workspaces in reverse order, alternating
             "swaymsg workspace 10, move workspace to output eDP-1"
             "swaymsg workspace 9, move workspace to output DP-1"
@@ -87,6 +98,17 @@ in {
             }
           ];
           profile.exec = [
+            # Bind workspace defaults for this profile
+            "swaymsg workspace 1 output DP-2"
+            "swaymsg workspace 3 output DP-2"
+            "swaymsg workspace 5 output DP-2"
+            "swaymsg workspace 7 output DP-2"
+            "swaymsg workspace 9 output DP-2"
+            "swaymsg workspace 2 output DP-4"
+            "swaymsg workspace 4 output DP-4"
+            "swaymsg workspace 6 output DP-4"
+            "swaymsg workspace 8 output DP-4"
+            "swaymsg workspace 10 output DP-4"
             # Create and move workspaces in reverse order, alternating
             "swaymsg workspace 10, move workspace to output DP-4"
             "swaymsg workspace 9, move workspace to output DP-2"
@@ -123,6 +145,17 @@ in {
             }
           ];
           profile.exec = [
+            # Bind workspace defaults for this profile
+            "swaymsg workspace 1 output DP-4"
+            "swaymsg workspace 3 output DP-4"
+            "swaymsg workspace 5 output DP-4"
+            "swaymsg workspace 7 output DP-4"
+            "swaymsg workspace 9 output DP-4"
+            "swaymsg workspace 2 output DP-3"
+            "swaymsg workspace 4 output DP-3"
+            "swaymsg workspace 6 output DP-3"
+            "swaymsg workspace 8 output DP-3"
+            "swaymsg workspace 10 output DP-3"
             # Create and move workspaces in reverse order, alternating
             "swaymsg workspace 10, move workspace to output DP-3"
             "swaymsg workspace 9, move workspace to output DP-4"

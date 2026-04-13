@@ -17,6 +17,10 @@ in {
         "git.sr.ht" = sharedconfig;
         "github.com" = sharedconfig;
         "gitlab.com" = sharedconfig;
+        "forgejo.clarob.uk" = sharedconfig // {
+          user = "forgejo";
+          port = 2222;
+        };
       };
     };
   };
