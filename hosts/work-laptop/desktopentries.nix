@@ -9,14 +9,6 @@
       categories = ["Graphics" "Utility"];
       icon = "preferences-desktop-wallpaper";
     };
-    keepassxc = {
-      name = "KeePassXC";
-      genericName = "Password Manager";
-      comment = "Securely store and manage your passwords";
-      exec = "${pkgs.keepassxc}/bin/keepassxc";
-      terminal = false;
-      categories = ["Utility" "Security"];
-      icon = "keepassxc"; # Assuming there's an icon named 'keepassxc'
-    };
+
   };
 }

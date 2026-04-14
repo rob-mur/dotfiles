@@ -48,7 +48,7 @@
     ./java.nix
     ./joshuto.nix
     ./jq.nix
-    ./keepassxc.nix
+
     ./kitty.nix
     ./jj.nix
     ./darktable.nix
