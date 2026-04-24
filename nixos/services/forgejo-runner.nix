@@ -12,6 +12,16 @@
     "d /var/cache/forgejo-devenv 0777 root root -"
   ];
 
+  # nix.conf for job containers: points Nix at the self-hosted atticd binary
+  # cache at https://attic.clarob.uk/bexcel-ci so devenv shells resolve from
+  # our cache before falling back to cache.nixos.org / devenv.cachix.org.
+  # Consuming workflows mount this at /etc/nix/nix.conf in the job container.
+  environment.etc."forgejo-runner/nix.conf".text = ''
+    experimental-features = nix-command flakes
+    substituters = https://attic.clarob.uk/bexcel-ci https://cache.nixos.org/ https://devenv.cachix.org/
+    trusted-public-keys = bexcel-ci:4aPozx0nwacOgGdgfhOhVVsDHme8O3LHMlI8ZCDi5IY= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+  '';
+
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
     instances.dev = {
@@ -25,6 +35,7 @@
           network = "host";
           valid_volumes = [
             "/var/cache/forgejo-devenv"
+            "/etc/forgejo-runner/nix.conf"
           ];
         };
       };
