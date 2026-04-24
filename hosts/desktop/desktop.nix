@@ -4,7 +4,10 @@
   pkgs,
   ...
 }: {
-  imports = [../../configuration.nix];
+  imports = [
+    ../../configuration.nix
+    ../../nixos/services/forgejo-runner.nix
+  ];
 
   machineType = "desktop";
   hostDir = "/home/rob/repos/dotfiles/hosts/desktop/";
