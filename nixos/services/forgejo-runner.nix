@@ -12,6 +12,22 @@
     "d /var/cache/forgejo-devenv 0777 root root -"
   ];
 
+  # nix.conf for job containers: configure the host's /nix/store as a local
+  # file-based substituter. Workflows bind-mount the host store read-only at
+  # /mnt/host-nix-store (a side path, not /nix/store itself — bind-mounting
+  # over /nix/store would shadow the devenv image's own binaries and the
+  # container wouldn't start). Any path already built on the host is served
+  # via a plain FS copy, which is several orders of magnitude faster than
+  # refetching from cache.nixos.org / devenv.cachix.org. Anything missing on
+  # the host falls back to the upstream substituters, same as before.
+  environment.etc."forgejo-runner/nix.conf".text = ''
+    experimental-features = nix-command flakes
+    extra-substituters = file:///mnt/host-nix-store?trusted=1
+    extra-trusted-substituters = file:///mnt/host-nix-store
+    substituters = https://cache.nixos.org/ https://devenv.cachix.org/
+    trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+  '';
+
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
     instances.dev = {
@@ -25,6 +41,8 @@
           network = "host";
           valid_volumes = [
             "/var/cache/forgejo-devenv"
+            "/etc/forgejo-runner/nix.conf"
+            "/nix/store"
           ];
         };
       };
