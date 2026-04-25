@@ -13,7 +13,6 @@
     "d /var/cache/forgejo-nix-host 0755 1000 1000 -"
     "d /var/cache/forgejo-nix-host/.cache 0755 1000 1000 -"
     "d /var/cache/forgejo-nix-host/.local 0755 1000 1000 -"
-    "d /var/cache/forgejo-nix-host/.local/state 0755 1000 1000 -"
   ];
 
   # devenv must be on PATH inside job containers. systemPackages places it at
@@ -43,13 +42,13 @@
           options = builtins.concatStringsSep " " [
             "-v /nix:/nix"
             "-v /var/cache/forgejo-nix-host/.cache:/home/ci/.cache"
-            "-v /var/cache/forgejo-nix-host/.local/state:/home/ci/.local/state"
+            "-v /var/cache/forgejo-nix-host/.local:/home/ci/.local"
             "--user 1000:1000"
           ];
           valid_volumes = [
             "/nix"
             "/var/cache/forgejo-nix-host/.cache"
-            "/var/cache/forgejo-nix-host/.local/state"
+            "/var/cache/forgejo-nix-host/.local"
           ];
         };
       };
