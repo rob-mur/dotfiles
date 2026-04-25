@@ -4,6 +4,16 @@
   # as a systemd EnvironmentFile, not a bare token — see upstream module).
   systemd.tmpfiles.rules = [
     "d /var/lib/secrets 0755 root root -"
+    # Persistent per-user cache for jobs running as UID 1000 inside the
+    # nix-host image. The /nix store is shared, so substitutions are local —
+    # but nix's eval cache, devenv's cachix-trust file, and similar per-user
+    # state live under ~/.cache and ~/.local/state. Without persistence each
+    # job pays the eval-cache + cachix-trust penalty (~20s). Owner 1000:1000
+    # to match the container user.
+    "d /var/cache/forgejo-nix-host 0755 1000 1000 -"
+    "d /var/cache/forgejo-nix-host/.cache 0755 1000 1000 -"
+    "d /var/cache/forgejo-nix-host/.local 0755 1000 1000 -"
+    "d /var/cache/forgejo-nix-host/.local/state 0755 1000 1000 -"
   ];
 
   # devenv must be on PATH inside job containers. systemPackages places it at
@@ -30,9 +40,16 @@
       settings = {
         container = {
           network = "host";
-          options = "-v /nix:/nix --user 1000:1000";
+          options = builtins.concatStringsSep " " [
+            "-v /nix:/nix"
+            "-v /var/cache/forgejo-nix-host/.cache:/home/ci/.cache"
+            "-v /var/cache/forgejo-nix-host/.local/state:/home/ci/.local/state"
+            "--user 1000:1000"
+          ];
           valid_volumes = [
             "/nix"
+            "/var/cache/forgejo-nix-host/.cache"
+            "/var/cache/forgejo-nix-host/.local/state"
           ];
         };
       };
