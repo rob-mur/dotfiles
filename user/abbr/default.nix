@@ -127,6 +127,8 @@
     gusm = "git pull sh main";
     gugm = "git pull gh main";
     gulm = "git pull gl main";
+
+    iaptun = "gcloud compute start-iap-tunnel bastion-sql 22 --local-host-port=localhost:2222 --project=portfolio-dev-402609 --zone=europe-west1-b";
   };
 in {
   inherit abbr;
