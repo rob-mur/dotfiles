@@ -1,7 +1,7 @@
 {pkgs, ...}:
 with pkgs; {
   home.packages = [
-    lazyjj
+    jjui
     gnumake
     uv
   ];
