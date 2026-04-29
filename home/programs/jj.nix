@@ -13,19 +13,9 @@
       };
       git.push-new-bookmarks = true;
       ui.allow-new = true;
-      ui.merge-editor = "nvimdiff";
-      merge-tools.nvimdiff = {
-        program = "nvim";
-        merge-args = [
-          "-d"
-          "$left"
-          "$base"
-          "$right"
-          "$output"
-          "-c"
-          "wincmd J | wincmd ="
-        ];
-      };
+      # Only trunk + tags are immutable. Feature branches (incl. their remote
+      # bookmarks) stay rebasable without --ignore-immutable.
+      revset-aliases."immutable_heads()" = "trunk() | tags()";
     };
   };
 
