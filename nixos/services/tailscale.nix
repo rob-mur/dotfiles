@@ -4,6 +4,7 @@ in {
     tailscale = {
       enable = true;
       useRoutingFeatures = "both";
+      extraUpFlags = ["--ssh"];
     };
   };
 }
