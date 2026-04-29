@@ -21,7 +21,6 @@
     ./pavucontrol.nix
     ./discord.nix
     ./anki.nix
-    ./vivaldi.nix
     ./aerc.nix
     ./alacritty.nix
     ./aria2.nix

@@ -89,7 +89,6 @@
     "alacritty"
     "foot"
     # Browsers
-    "vivaldi"
     "firefox"
     # Electron/Chromium apps
     "obsidian"
