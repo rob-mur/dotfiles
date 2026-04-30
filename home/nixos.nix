@@ -40,7 +40,6 @@ in {
           XDG_MENU_PREFIX = "plasma-";
 
           # Wayland
-          MOZ_ENABLE_WAYLAND = "1";
           MOZ_USE_XINPUT2 = "1";
           QT_QPA_PLATFORM = "wayland";
           QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
