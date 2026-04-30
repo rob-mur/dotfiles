@@ -37,7 +37,7 @@
         "nix-host:docker://forgejo.clarob.uk/rob/nix-ci:latest"
       ];
       settings = {
-        runner.capacity = 2;
+        runner.capacity = 4;
         container = {
           network = "host";
           options = builtins.concatStringsSep " " [
