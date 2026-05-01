@@ -44,12 +44,14 @@
             "-v /nix:/nix"
             "-v /var/cache/forgejo-nix-host/.cache:/home/ci/.cache"
             "-v /var/cache/forgejo-nix-host/.local:/home/ci/.local"
+            "-v /var/run/docker.sock:/var/run/docker.sock"
             "--user 1000:1000"
           ];
           valid_volumes = [
             "/nix"
             "/var/cache/forgejo-nix-host/.cache"
             "/var/cache/forgejo-nix-host/.local"
+            "/var/run/docker.sock"
           ];
         };
       };
