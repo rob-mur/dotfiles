@@ -45,6 +45,7 @@
             "-v /var/cache/forgejo-nix-host/.cache:/home/ci/.cache"
             "-v /var/cache/forgejo-nix-host/.local:/home/ci/.local"
             "-v /var/run/docker.sock:/var/run/docker.sock"
+            "--group-add docker"
             "--user 1000:1000"
           ];
           valid_volumes = [
