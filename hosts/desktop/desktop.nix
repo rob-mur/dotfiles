@@ -84,9 +84,10 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # NVIDIA + wlroots: force card2 (RTX), disable unsupported hardware cursors
+  # Sway on Intel iGPU → NVIDIA VRAM fully free for compute/Docker.
+  # Requires monitor plugged into motherboard video output (Intel).
   environment.sessionVariables = {
-    WLR_DRM_DEVICES = "/dev/dri/card2";
+    WLR_DRM_DEVICES = "/dev/dri/card1";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
