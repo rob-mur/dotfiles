@@ -1,5 +1,6 @@
 {...}: {
   imports = [
+    ./google-chrome.nix
     ./forgejo-cli.nix
     ./obsidian.nix
     ./claude-code.nix
