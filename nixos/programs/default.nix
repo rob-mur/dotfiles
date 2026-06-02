@@ -9,6 +9,7 @@
     ./gnupg.nix
     ./light.nix
     ./mtr.nix
+    ./partition-manager.nix
     ./printer.nix
     ./virt-manager.nix
     ./wshowkeys.nix

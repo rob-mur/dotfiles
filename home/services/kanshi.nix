@@ -1,4 +1,9 @@
-{config, ...}: let
+{
+  config,
+  lib,
+  osConfig,
+  ...
+}: let
 in {
   services = {
     kanshi = {
@@ -124,26 +129,35 @@ in {
         }
         {
           profile.name = "workstation";
-          profile.outputs = [
-            {
-              adaptiveSync = true;
-              criteria = "AOC 24G2W1G5 0x000001B0";
-              mode = "1920x1080@60.00Hz";
-              position = "2560,0";
-              scale = 1.0;
-              status = "enable";
-              transform = "normal";
-            }
-            {
-              adaptiveSync = true;
-              criteria = "Samsung Electric Company C27JG5x H4ZN301397";
-              mode = "2560x1440@60.00Hz";
-              position = "0,0";
-              scale = 1.0;
-              status = "enable";
-              transform = "normal";
-            }
-          ];
+          # Samsung is cabled to both NVIDIA DP and Intel iGPU HDMI. When
+          # NVIDIA drives display, suppress the iGPU HDMI-A-2 mirror so the
+          # monitor isn't seen as a phantom duplicate. When iGPU is the only
+          # display path, HDMI-A-2 *is* the Samsung — leave the rule out.
+          profile.outputs =
+            [
+              {
+                adaptiveSync = true;
+                criteria = "AOC 24G2W1G5 0x000001B0";
+                mode = "1920x1080@60.00Hz";
+                position = "2560,0";
+                scale = 1.0;
+                status = "enable";
+                transform = "normal";
+              }
+              {
+                adaptiveSync = true;
+                criteria = "Samsung Electric Company C27JG5x H4ZN301397";
+                mode = "2560x1440@60.00Hz";
+                position = "0,0";
+                scale = 1.0;
+                status = "enable";
+                transform = "normal";
+              }
+            ]
+            ++ lib.optional osConfig.nvidiaForDisplay {
+              criteria = "HDMI-A-2";
+              status = "disable";
+            };
           profile.exec = [
             # Bind workspace defaults for this profile
             "swaymsg workspace 1 output DP-4"

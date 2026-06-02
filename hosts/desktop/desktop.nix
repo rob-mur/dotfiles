@@ -11,6 +11,7 @@
 
   machineType = "desktop";
   hostDir = "/home/rob/repos/dotfiles/hosts/desktop/";
+  nvidiaForDisplay = true;
 
   # Combined audio output for Xonar + D1 DAC
   services.pipewire.extraConfig.pipewire."99-combined-sink" = {
@@ -84,10 +85,11 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # Sway on Intel iGPU → NVIDIA VRAM fully free for compute/Docker.
-  # Requires monitor plugged into motherboard video output (Intel).
   environment.sessionVariables = {
-    WLR_DRM_DEVICES = "/dev/dri/card1";
+    WLR_DRM_DEVICES =
+      if config.nvidiaForDisplay
+      then "/dev/dri/card1:/dev/dri/card0"
+      else "/dev/dri/card1";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 

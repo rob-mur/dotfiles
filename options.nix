@@ -77,5 +77,16 @@
       default = false;
       description = "Whether to login automatically without password";
     };
+
+    nvidiaForDisplay = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Whether the NVIDIA GPU is used for Wayland scanout. When false, Sway
+        runs on the Intel iGPU only and the NVIDIA card is left idle for
+        CUDA/Docker workloads. The driver stays loaded either way, so
+        nvidia-smi works in both modes.
+      '';
+    };
   };
 }
