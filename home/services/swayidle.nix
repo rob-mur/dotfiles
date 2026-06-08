@@ -32,7 +32,7 @@ in {
               command = resumecommand;
             }
           ];
-          systemdTarget = "sway-session.target";
+          systemdTargets = ["sway-session.target"];
           timeouts = [
             {
               timeout = 600; # 10m

@@ -1,7 +1,0 @@
-{ ... }: {
-  programs = {
-    adb = {
-      enable = true;
-    };
-  };
-}

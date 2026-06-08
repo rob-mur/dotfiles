@@ -56,7 +56,6 @@
     ./lf.nix
     ./mbsync.nix
     ./micro.nix
-    ./mpv.nix
     ./msmtp.nix
     ./ncmpcpp.nix
     ./neovim.nix

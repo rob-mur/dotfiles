@@ -223,8 +223,8 @@ in {
             "XF86AudioStop" = "exec ${playerctl}/bin/playerctl play-pause --player=%any,mpv,mpd";
 
             # Brightness
-            "XF86MonBrightnessUp" = "exec ${light}/bin/light -A 2";
-            "XF86MonBrightnessDown" = "exec ${light}/bin/light -U 2";
+            "XF86MonBrightnessUp" = "exec ${brightnessctl}/bin/brightnessctl set +2%";
+            "XF86MonBrightnessDown" = "exec ${brightnessctl}/bin/brightnessctl set 2%-";
           };
           colors = {
             background = window_bg_color;

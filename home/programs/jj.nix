@@ -11,7 +11,7 @@
         name = "${osConfig.fullname}";
         email = "${osConfig.email}";
       };
-      git.push-new-bookmarks = true;
+      remotes."origin".auto-track-bookmarks = "*";
       ui.allow-new = true;
       # Only trunk + tags are immutable. Feature branches (incl. their remote
       # bookmarks) stay rebasable without --ignore-immutable.

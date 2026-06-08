@@ -13,7 +13,7 @@ with pkgs;
         bash
       '';
     };
-    unixODBCDrivers = with unixODBCDrivers; [
+    unixODBCDrivers = with unixodbcDrivers; [
       mariadb
       psql
       sqlite

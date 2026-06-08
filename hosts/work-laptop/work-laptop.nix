@@ -12,7 +12,7 @@
     name = "robert.murphy";
     email = "robert.murphy@descartesunderwriting.com";
     fullname = "Rob Murphy";
-    version = "25.11";
+    version = "26.05";
     locale = "en_GB.UTF-8";
     timezone = "Europe/Paris";
     layout = "us_qwerty-fr";

@@ -5,5 +5,5 @@
 }:
 with pkgs; let
 in {
-  home.packages = [protonvpn-gui];
+  home.packages = [proton-vpn];
 }

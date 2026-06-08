@@ -67,6 +67,8 @@ in {
           '';
         };
         gtk4 = {
+          # 26.05 changed the default to null; keep applying the GTK theme to GTK4.
+          theme = config.gtk.theme;
           extraConfig = {
             gtk-application-prefer-dark-theme = "true";
             gtk-xft-antialias = 1;

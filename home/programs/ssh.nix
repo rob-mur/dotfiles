@@ -4,22 +4,22 @@ in {
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = let
+      settings = let
         sshdir = "${config.home.homeDirectory}/.ssh";
         sharedconfig = {
-          addKeysToAgent = "yes";
-          forwardAgent = true;
-          identitiesOnly = true;
-          identityFile = "${sshdir}/id_ed25519";
-          user = "git";
+          AddKeysToAgent = "yes";
+          ForwardAgent = true;
+          IdentitiesOnly = true;
+          IdentityFile = "${sshdir}/id_ed25519";
+          User = "git";
         };
       in {
         "git.sr.ht" = sharedconfig;
         "github.com" = sharedconfig;
         "gitlab.com" = sharedconfig;
         "forgejo.clarob.uk" = sharedconfig // {
-          user = "forgejo";
-          port = 2222;
+          User = "forgejo";
+          Port = 2222;
         };
       };
     };

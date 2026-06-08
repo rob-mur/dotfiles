@@ -8,7 +8,7 @@ in {
         packages = with pkgs; [
           alejandra
           stylua
-          nodePackages.prettier
+          prettier
           black
         ];
   };
