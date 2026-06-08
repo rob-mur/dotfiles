@@ -11,7 +11,7 @@ in {
           enable = true;
           settings = {
             user = {
-              email = "${osConfig.email}";
+              email = "${osConfig.gitEmail}";
               name = "${osConfig.fullname}";
             };
             init = {

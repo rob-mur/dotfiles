@@ -24,6 +24,12 @@
       description = "Email";
     };
 
+    gitEmail = lib.mkOption {
+      type = lib.types.str;
+      default = "robert.murphy@descartesunderwriting.com";
+      description = "Email used as the author identity for git and jj commits";
+    };
+
     version = lib.mkOption {
       type = lib.types.str;
       default = "25.11";

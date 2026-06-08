@@ -9,7 +9,7 @@
     settings = {
       user = {
         name = "${osConfig.fullname}";
-        email = "${osConfig.email}";
+        email = "${osConfig.gitEmail}";
       };
       remotes."origin".auto-track-bookmarks = "*";
       ui.allow-new = true;
