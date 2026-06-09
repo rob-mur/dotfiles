@@ -1,9 +1,9 @@
 {
   pkgs,
   config,
+  lib,
+  osConfig ? config,
   ...
-}:
-with pkgs; let
-in {
-  home.packages = [steam];
+}: {
+  home.packages = lib.optional osConfig.enableSteam pkgs.steam;
 }

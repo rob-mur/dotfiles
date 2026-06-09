@@ -20,6 +20,8 @@
     group = "users";
     hostname = "work-laptop";
     autoLogin = false;
+    nvidiaForDisplay = false;
+    enableSteam = false;
   };
 in {
   imports = [
@@ -42,6 +44,8 @@ in {
   group = machineConfig.group;
   hostname = machineConfig.hostname;
   autoLogin = machineConfig.autoLogin;
+  nvidiaForDisplay = machineConfig.nvidiaForDisplay;
+  enableSteam = machineConfig.enableSteam;
 
   # Pass machineConfig through _module.args so it's available as osConfig in submodules
   _module.args.osConfig = machineConfig;

@@ -88,5 +88,11 @@
         nvidia-smi works in both modes.
       '';
     };
+
+    enableSteam = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to install Steam in the user profile.";
+    };
   };
 }
