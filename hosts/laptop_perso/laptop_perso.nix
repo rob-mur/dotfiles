@@ -8,6 +8,7 @@
   machineType = "laptop_perso";
   hostDir = "/home/robm/repos/dotfiles/hosts/laptop_perso/";
   name = "robm";
+  autoTimezone = true; # detect timezone from location (this laptop travels)
 
   # machine specific hardware information
   boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc"];

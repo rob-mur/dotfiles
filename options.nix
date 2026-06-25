@@ -45,7 +45,13 @@
     timezone = lib.mkOption {
       type = lib.types.str;
       default = "Europe/Paris";
-      description = "Timezone";
+      description = "Timezone (used when autoTimezone is false)";
+    };
+
+    autoTimezone = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Detect the timezone automatically from location (GeoClue) instead of using the static timezone";
     };
 
     layout = lib.mkOption {
