@@ -17,6 +17,7 @@ in {
           neovim = "nvim.desktop";
           dolphin = "org.kde.dolphin.desktop";
           firefox = "firefox.desktop";
+          protonmail = "proton-mail.desktop";
           zathura = "org.pwmt.zathura.desktop";
         in {
           enable = true;
@@ -64,6 +65,7 @@ in {
             "x-scheme-handler/ftp" = [firefox];
             "x-scheme-handler/http" = [firefox];
             "x-scheme-handler/https" = [firefox];
+            "x-scheme-handler/mailto" = [protonmail];
             "x-scheme-handler/unknown" = [firefox];
           };
           defaultApplications = {
@@ -110,6 +112,7 @@ in {
             "x-scheme-handler/ftp" = [firefox];
             "x-scheme-handler/http" = [firefox];
             "x-scheme-handler/https" = [firefox];
+            "x-scheme-handler/mailto" = [protonmail];
             "x-scheme-handler/unknown" = [firefox];
       };
     };

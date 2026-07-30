@@ -32,16 +32,6 @@ in {
           };
         };
 
-        mbsync = {
-          enable = true;
-          create = "both";
-          expunge = "both";
-          flatten = ".";
-          patterns = ["*"];
-        };
-        msmtp = {
-          enable = true;
-        };
         neomutt = {
           enable = true;
         };

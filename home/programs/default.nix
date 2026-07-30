@@ -7,6 +7,7 @@
     ./glab.nix
     ./dbeaver.nix
     ./proton-auth.nix
+    ./protonmail-desktop.nix
     ./bottles.nix
     ./jellyfin.nix
     ./vlc.nix
@@ -22,7 +23,6 @@
     ./pavucontrol.nix
     ./discord.nix
     ./anki.nix
-    ./aerc.nix
     ./alacritty.nix
     ./aria2.nix
     ./autojump.nix
@@ -54,9 +54,7 @@
     ./jj.nix
     ./darktable.nix
     ./lf.nix
-    ./mbsync.nix
     ./micro.nix
-    ./msmtp.nix
     ./ncmpcpp.nix
     ./neovim.nix
     ./newsboat.nix
