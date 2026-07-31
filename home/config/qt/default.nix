@@ -1,44 +1,26 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }:
 with pkgs; let
   theme = import ./../../../user/theme {};
-  breezeDarkColors = "${kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
+  setColorScheme = import ./color-scheme.nix {inherit pkgs;};
 in {
-  # KDE apps (dolphin, ark, ...) read their palette from ~/.config/kdeglobals,
-  # not from qt5ct/qt6ct. Without this the file keeps whatever colour scheme it
-  # was last written with (Breeze *Light*), so light row backgrounds get paired
-  # with the dark theme's near-white text and become unreadable.
-  # kdeglobals must stay writable — KDE apps persist other settings into it —
-  # so patch the colour groups in on activation rather than symlinking it.
+  # set-color-scheme owns ~/.config/kdeglobals: palette, fonts and icon theme
+  # for every Qt app (qt.platformTheme = "kde" makes that file the single
+  # source of truth). It is also what the Mod4+Shift+d binding in
+  # home/wayland/sway.nix runs to flip dark/light.
+  home.packages = [setColorScheme];
+
+  # "keep" re-pins fonts/icons on every rebuild while preserving whichever
+  # scheme is currently selected, so a rebuild never undoes a toggle. Without
+  # this the file drifts back to whatever last wrote it — Breeze *Light*, which
+  # pairs light row backgrounds with near-white text and makes dolphin's file
+  # names unreadable.
   home.activation.kdeglobalsColorScheme =
     lib.hm.dag.entryAfter ["writeBoundary"] ''
-      kdeglobals="${config.xdg.configHome}/kdeglobals"
-      run mkdir -p "$(dirname "$kdeglobals")"
-      run touch "$kdeglobals"
-      {
-        ${pkgs.gawk}/bin/awk '
-          /^\[/ {
-            group = $0
-            skip = (group ~ /^\[Colors:/ || group ~ /^\[ColorEffects:/ || group ~ /^\[WM\]/)
-            if (group == "[General]") seen_general = 1
-          }
-          # drop the old scheme name and its stale content hash
-          group == "[General]" && /^ColorScheme(Hash)?=/ { next }
-          group == "[General]" && !printed_scheme { print; print "ColorScheme=BreezeDark"; printed_scheme = 1; next }
-          !skip { print }
-          END { if (!seen_general) { print ""; print "[General]"; print "ColorScheme=BreezeDark" } }
-        ' "$kdeglobals"
-        ${pkgs.gawk}/bin/awk '
-          /^#/ { next }
-          /^\[/ { keep = ($0 ~ /^\[Colors:/ || $0 ~ /^\[ColorEffects:/ || $0 ~ /^\[WM\]/) }
-          keep { print }
-        ' ${breezeDarkColors}
-      } > "$kdeglobals.hm-new"
-      run mv "$kdeglobals.hm-new" "$kdeglobals"
+      run ${setColorScheme}/bin/set-color-scheme keep
     '';
 
   xdg = {

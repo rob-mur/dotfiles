@@ -11,6 +11,8 @@ with pkgs; let
 
   theme = import ./../../user/theme {};
 
+  setColorScheme = import ./../config/qt/color-scheme.nix {inherit pkgs;};
+
   mod4 = "Mod4";
   output = "eDP-1";
   opacity = "1";
@@ -176,6 +178,10 @@ in {
             "${mod4}+o" = "exec ${wl-mirror}/bin/wl-present mirror";
             # Toggle keyboard layout: us_qwerty-fr <-> fr AZERTY (exam practice)
             "${mod4}+a" = "exec ${toggleLayout}";
+            # Toggle Breeze Dark / Breeze Light. Only apps started afterwards
+            # pick it up — outside a Plasma session running Qt apps ignore the
+            # kdeglobals change notification.
+            "${mod4}+Shift+d" = ''exec ${notify-desktop}/bin/notify-desktop "Theme" "$(${setColorScheme}/bin/set-color-scheme toggle)"'';
 
             # Terminal
             "${mod4}+Return" = "exec ${kitty}/bin/kitty";
