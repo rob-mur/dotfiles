@@ -1,5 +1,7 @@
 {...}: {
   imports = [
+    ./opencode.nix
+    ./gemini-cli.nix
     ./google-chrome.nix
     ./forgejo-cli.nix
     ./obsidian.nix
