@@ -9,6 +9,7 @@
     ./kanshi.nix
     ./kdeconnect.nix
     ./mako.nix
+    ./mic-denoise.nix
     ./mpd-mpris.nix
     ./mpd.nix
     ./playerctld.nix

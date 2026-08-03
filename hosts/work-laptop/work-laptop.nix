@@ -11,6 +11,7 @@
     hostDir = "/home/robert.murphy/repos/dotfiles/hosts/work-laptop/";
     name = "robert.murphy";
     email = "robert.murphy@descartesunderwriting.com";
+    gitEmail = "robert.murphy@descartesunderwriting.com";
     fullname = "Rob Murphy";
     version = "26.05";
     locale = "en_GB.UTF-8";
