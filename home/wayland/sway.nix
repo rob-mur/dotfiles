@@ -38,6 +38,29 @@ with pkgs; let
   filename = "$(${coreutils-full}/bin/date +%Y%m%d_%Hh%Mm%Ss_@${osConfig.name}";
   pfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir PICTURES)/screenshot/${filename}.png)";
   vfilename = "$(${xdg-user-dirs}/bin/xdg-user-dir VIDEOS)/recording/${filename}.mp4)";
+
+  # Cycle the keyboard layout (us_qwerty-fr <-> fr AZERTY, defined in
+  # home/packages/keyboard/qwerty-fr.nix) and toast the now-active layout name.
+  # For practising real AZERTY ahead of the on-site TCF IRN exam.
+  toggleLayout = ''${sway}/bin/swaymsg input type:keyboard xkb_switch_layout next && ${notify-desktop}/bin/notify-desktop "Clavier" "$(${sway}/bin/swaymsg -t get_inputs | ${jq}/bin/jq -r 'first(.[] | select(.type == "keyboard") | .xkb_active_layout_name)')"'';
+
+  # When exactly one external monitor is plugged in, give it the odd
+  # workspaces (1/3/5/7/9) and keep the laptop panel (${output}) on the even
+  # ones (2/4/6/8). With zero or multiple externals, leave the default layout
+  # untouched.
+  assignWorkspaces = writeShellScript "sway-assign-workspaces" ''
+    externals=$(${sway}/bin/swaymsg -t get_outputs \
+      | ${jq}/bin/jq -r '.[] | select(.name != "${output}") | .name')
+    count=$(printf '%s\n' "$externals" | ${gnugrep}/bin/grep -c .)
+    if [ "$count" -eq 1 ]; then
+      for n in 1 3 5 7 9; do
+        ${sway}/bin/swaymsg workspace number "$n" output "$externals" ${output}
+      done
+      for n in 2 4 6 8; do
+        ${sway}/bin/swaymsg workspace number "$n" output ${output}
+      done
+    fi
+  '';
 in {
   home.packages = [
     wl-kbptr # for using the mouse with the keyboard
@@ -79,6 +102,12 @@ in {
             {command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";}
             {command = "${kitty}/bin/kitty";}
             {command = "${waytrogen}/bin/waytrogen --restore";}
+
+            # Assign odd workspaces to a single external monitor (if any)
+            {
+              command = "${assignWorkspaces}";
+              always = true;
+            }
           ];
           input = {
             "type:touchpad" = {
@@ -145,6 +174,8 @@ in {
             "${mod4}+n" = "exec ${wl-color-picker}/bin/wl-color-picker clipboard";
             # Mirror screen
             "${mod4}+o" = "exec ${wl-mirror}/bin/wl-present mirror";
+            # Toggle keyboard layout: us_qwerty-fr <-> fr AZERTY (exam practice)
+            "${mod4}+a" = "exec ${toggleLayout}";
 
             # Terminal
             "${mod4}+Return" = "exec ${kitty}/bin/kitty";
