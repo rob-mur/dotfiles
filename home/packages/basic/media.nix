@@ -2,6 +2,5 @@
 with pkgs; {
   home.packages = [
     ffmpeg
-    mediainfo
   ];
 }

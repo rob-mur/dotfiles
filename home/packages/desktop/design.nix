@@ -7,7 +7,6 @@ with pkgs; let
 in {
   home = {
         packages = [
-          inkscape
           krita
         ];
   };

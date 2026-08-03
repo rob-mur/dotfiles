@@ -4,7 +4,6 @@
     ./zsh
     ./qt
     ./qutebrowser
-    ./rstudio
     ./vale
     ./wlrwhichkey
   ];

@@ -86,8 +86,6 @@
   nixGLPackageNames = [
     # Terminal emulators
     "kitty"
-    "alacritty"
-    "foot"
     # Browsers
     "firefox"
     # Electron/Chromium apps
@@ -99,16 +97,13 @@
     "anki"
     # Wayland compositor utilities
     "waybar"
-    "wofi"
     "rofi-wayland"
-    "swayimg"
     # Media players and viewers
     "mpv"
     "imv"
     "vlc"
     # Document/image viewers and editors
     "zathura"
-    "sioyek"
     "darktable"
     # Screen recording (GPU is the whole point)
     "gpu-screen-recorder"

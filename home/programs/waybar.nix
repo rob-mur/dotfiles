@@ -74,32 +74,6 @@ in {
             tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
             tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
           };
-          "mpd" = {
-            format = "{stateIcon} ({elapsedTime:%M:%S}/{totalTime:%M:%S})";
-            format-disconnected = "off ";
-            format-stopped = "{randomIcon} pause ";
-            unknown-tag = "n/a";
-            interval = 2;
-            consume-icons = {
-              "on" = " ";
-            };
-            random-icons = {
-              off = "<span color=\"#f53c3c\"></span> ";
-              on = " ";
-            };
-            repeat-icons = {
-              on = "";
-            };
-            single-icons = {
-              on = " ";
-            };
-            state-icons = {
-              paused = "";
-              playing = "";
-            };
-            tooltip-format = "mpd (connected)";
-            tooltip-format-disconnected = "mpd (disconnected)";
-          };
           "tray" = {
             icon-size = 13;
             spacing = 8;
@@ -278,7 +252,6 @@ in {
         #disk,
         #memory,
         #mode,
-        #mpd,
         #network,
         #pulseaudio,
         #temperature,
@@ -382,22 +355,6 @@ in {
           color: ${color.r_foreground};
           background-color: ${color.r_bright_blue};
           border-bottom: 0px solid ${color.r_foreground};
-        }
-
-        #mpd {
-          background-color: transparent;
-        }
-
-        #mpd.disconnected {
-          background-color: transparent;
-        }
-
-        #mpd.stopped {
-          background-color: transparent;
-        }
-
-        #mpd.paused {
-          background-color: transparent;
         }
 
         #network {

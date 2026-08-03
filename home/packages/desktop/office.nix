@@ -8,8 +8,6 @@ in {
   home = {
         packages = [
           libreoffice
-          tipp10
-          zotero
         ];
   };
 }

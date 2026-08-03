@@ -4,42 +4,22 @@
     ./gvfs.nix
     ./kdeconnect.nix
     ./tailscale.nix
-    ./adguardhome.nix
-    ./blueman.nix
-    ./clamav.nix
-    ./clickhouse.nix
     ./dbus.nix
     ./displaymanager.nix
     ./dnscrypt.nix
     ./earlyoom.nix
     ./fstrim.nix
-    ./grafana.nix
-    ./greetd.nix
     ./gnome-keyring.nix
-    ./hdapsd.nix
-    ./languagetool.nix
     ./libinput.nix
-    ./metabase.nix
-    ./mongodb.nix
-    ./mysql.nix
-    ./ollama.nix
-    ./open-webui.nix
     ./openssh.nix
     ./pcscd.nix
     ./pulseaudio.nix
-    ./postgresql.nix
     ./power-profiles.nix
     ./printing.nix
-    ./qemuguest.nix
-    ./redis.nix
-    ./rstudio-server.nix
     ./timesyncd.nix
-    ./syncthing.nix
-    ./tlp.nix
     ./udev.nix
     ./udisks2.nix
     ./upower.nix
-    ./vsftpd.nix
     ./xserver.nix
   ];
 }

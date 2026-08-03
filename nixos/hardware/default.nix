@@ -6,6 +6,5 @@
     ./keyboard.nix
     ./platform.nix
     ./processor.nix
-    ./sane.nix
   ];
 }

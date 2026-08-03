@@ -2,31 +2,15 @@
   abbr = {
     c = "cp";
     d = "doas";
-    f = "fastfetch";
     v = "nvim";
     t = "btop";
 
     cv = "cava";
     da = "lsblk -o name,fstype,fsavail,fsused,size,mountpoint";
-    en = "euporie-notebook";
-    ht = "htop";
-    jp = "jupyter-lab";
-    lg = "libgen-cli -e pdf search";
-    mo = "monero-wallet-cli";
-    nb = "newsboat";
-    nc = "ncmpcpp";
-    sc = "scooter";
-    sf = "superfile";
-
-    ns = "nix-search";
-
-    qp = "quarto preview";
-    qr = "quarto render";
 
     yt = "yt-dlp";
     yv = "yt-dlp -f bestvideo+bestaudio";
     ym = "yt-dlp -f bestaudio -x --audio-format vorbis";
-    te = "tagutil edit";
 
     ust = "systemctl --user start";
     usp = "systemctl --user stop";
@@ -59,11 +43,6 @@
     dnru = "doas nixos-rebuild switch --upgrade";
     dngc = "doas nix-store --gc";
     dngd = "doas nix-collect-garbage --delete-old";
-
-    trab = "trans :ab -b";
-    tren = "trans :en -b";
-    trid = "trans :id -b";
-    trja = "trans :ja -b";
 
     gad = "git add";
     gal = "git add --all";

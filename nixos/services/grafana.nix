@@ -1,7 +1,0 @@
-{ ... }: {
-  services = {
-    grafana = {
-      enable = false;
-    };
-  };
-}

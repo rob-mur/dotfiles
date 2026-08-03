@@ -10,7 +10,6 @@
     ./dbeaver.nix
     ./proton-auth.nix
     ./protonmail-desktop.nix
-    ./bottles.nix
     ./jellyfin.nix
     ./vlc.nix
     ./dolphin.nix
@@ -25,72 +24,31 @@
     ./pavucontrol.nix
     ./discord.nix
     ./anki.nix
-    ./alacritty.nix
-    ./aria2.nix
     ./autojump.nix
     ./bash.nix
-    ./bat.nix
-    ./bottom.nix
-    ./broot.nix
     ./btop.nix
-    ./carapace.nix
     ./cava.nix
-    ./chawan.nix
-    ./comodoro.nix
     ./direnv.nix
-    ./fastfetch.nix
     ./firefox.nix
-    ./foot.nix
     ./fzf.nix
-    ./gh.nix
     ./git.nix
-    ./gitui.nix
-    ./go.nix
-    ./htop.nix
     ./imv.nix
-    ./java.nix
-    ./joshuto.nix
     ./jq.nix
 
     ./kitty.nix
     ./jj.nix
     ./darktable.nix
-    ./lf.nix
-    ./micro.nix
-    ./ncmpcpp.nix
     ./neovim.nix
-    ./newsboat.nix
-    ./nh.nix
-    ./nix-index.nix
-    ./nushell.nix
-    ./obs.nix
-    ./pandoc.nix
     ./password.nix
-    ./pistol.nix
-    ./pyenv.nix
     ./ripgrep.nix
     ./rofi.nix
-    ./rtorrent.nix
-    ./sagemath.nix
-    ./sioyek.nix
-    ./sqls.nix
     ./ssh.nix
-    ./superfile.nix
-    ./swayimg.nix
     ./swaylock.nix
-    ./texlive.nix
     ./tmux.nix
-    ./translate.nix
-    ./thunderbird.nix
-    ./vifm.nix
-    ./visidata.nix
     ./vscode.nix
     ./waybar.nix
-    ./wofi.nix
-    ./xplr.nix
     ./yt-dlp.nix
     ./zathura.nix
-    ./zellij.nix
     ./zoxide.nix
   ];
 }

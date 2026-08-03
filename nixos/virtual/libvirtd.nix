@@ -1,7 +1,0 @@
-{...}: {
-  virtualisation = {
-    libvirtd = {
-      enable = false;
-    };
-  };
-}

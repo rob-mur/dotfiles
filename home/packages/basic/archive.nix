@@ -1,19 +1,12 @@
 {pkgs, ...}:
 with pkgs; {
+  # Only the formats actually reached for by hand. gzip/bzip2/xz/zstd are
+  # already in the system closure via other dependencies, so they are not
+  # listed here.
   home.packages = [
-    atool
-    bzip2
-    gzip
     libarchive
-    lz4
-    lzip
-    lzo
-    lzop
     p7zip
-    rzip
     unzip
-    xz
     zip
-    zstd
   ];
 }
