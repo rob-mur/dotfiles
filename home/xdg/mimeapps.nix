@@ -16,11 +16,11 @@ in {
           dolphin = "org.kde.dolphin.desktop";
           firefox = "firefox.desktop";
           protonmail = "proton-mail.desktop";
-          zathura = "org.pwmt.zathura.desktop";
+          okular = "org.kde.okular.desktop";
         in {
           enable = true;
           associations.added = {
-            "application/pdf" = [zathura];
+            "application/pdf" = [okular];
             "application/vnd.ms-publisher" = [helix neovim];
             "application/x-extension-htm" = [firefox];
             "application/x-extension-html" = [firefox];
@@ -65,7 +65,7 @@ in {
             "x-scheme-handler/unknown" = [firefox];
           };
           defaultApplications = {
-            "application/pdf" = [zathura];
+            "application/pdf" = [okular];
             "application/vnd.ms-publisher" = [helix neovim];
             "application/x-extension-htm" = [firefox];
             "application/x-extension-html" = [firefox];

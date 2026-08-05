@@ -48,7 +48,7 @@
     ./vscode.nix
     ./waybar.nix
     ./yt-dlp.nix
-    ./zathura.nix
+    ./okular.nix
     ./zoxide.nix
   ];
 }

@@ -103,7 +103,7 @@
     "imv"
     "vlc"
     # Document/image viewers and editors
-    "zathura"
+    "okular"
     "darktable"
     # Screen recording (GPU is the whole point)
     "gpu-screen-recorder"
