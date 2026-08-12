@@ -48,8 +48,6 @@
   systemd.user.services.sunshine.environment.LIBVA_DRIVER_NAME = "iHD"; # Intel VAAPI fallback if NVENC fails
 
   boot.kernelModules = [ "uinput" ];
-
-  services.udev.extraRules = ''
-    KERNEL=="uinput", GROUP="input", MODE="0660"
-  '';
+  # /dev/uinput is owned by the "uinput" group via hardware.uinput (pulled in by the
+  # sunshine module); rob is in that group so sunshine can create virtual gamepads.
 }

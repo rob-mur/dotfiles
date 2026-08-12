@@ -25,6 +25,7 @@ in {
           "mysql"
           "postgres"
           "systemd-journal"
+          "uinput"
           "users"
           "video"
           "wheel"
