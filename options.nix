@@ -1,7 +1,7 @@
 {lib, ...}: {
   options = {
     machineType = lib.mkOption {
-      type = lib.types.enum ["desktop" "laptop_perso" "work-laptop"];
+      type = lib.types.enum ["desktop" "laptop_perso" "work-laptop" "phone"];
       default = "desktop";
       description = "Machine profile to use";
     };
