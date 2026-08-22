@@ -12,6 +12,7 @@
     ./packages/basic/node.nix
     ./packages/basic/openssl.nix
     ./packages/basic/archive.nix
+    ./packages/basic/tailscale.nix
     ./programs/git.nix
     ./programs/ssh.nix
     ./programs/zsh.nix
@@ -24,6 +25,7 @@
     ./programs/zoxide.nix
     ./programs/jj.nix
     ./programs/btop.nix
+    ./programs/claude-code.nix
   ];
 
   # Stub options for NixOS-specific services that modules might reference
