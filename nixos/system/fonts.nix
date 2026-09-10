@@ -71,6 +71,15 @@ in {
       vegur
     ];
     fontconfig = {
+      subpixel = {
+        rgba = "rgb";
+        lcdfilter = "default";
+      };
+      hinting = {
+        enable = true;
+        style = "slight";
+      };
+      antialias = true;
       defaultFonts = {
         monospace = ["${theme.font-mono}" "${theme.font-mono-alt}"];
         serif = ["${theme.font-serif}" "${theme.font-serif-alt}"];

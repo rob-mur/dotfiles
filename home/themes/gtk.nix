@@ -31,7 +31,7 @@ in {
             gtk-xft-antialias = 1;
             gtk-xft-hinting = 1;
             gtk-xft-hintstyle = "hintslight";
-            gtk-xft-rgba = "none";
+            gtk-xft-rgba = "rgb";
             gtk-xft-dpi = 98304;
           '';
         };
@@ -41,7 +41,7 @@ in {
             gtk-xft-antialias = 1;
             gtk-xft-hinting = 1;
             gtk-xft-hintstyle = "hintslight";
-            gtk-xft-rgba = "none";
+            gtk-xft-rgba = "rgb";
             gtk-xft-dpi = 98304;
             gtk-overlay-scrolling = "true";
             gtk-key-theme-name = "Default";
@@ -74,7 +74,7 @@ in {
             gtk-xft-antialias = 1;
             gtk-xft-hinting = 1;
             gtk-xft-hintstyle = "hintslight";
-            gtk-xft-rgba = "none";
+            gtk-xft-rgba = "rgb";
             gtk-xft-dpi = 98304;
             gtk-overlay-scrolling = "true";
           };
