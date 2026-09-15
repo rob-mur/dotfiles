@@ -2,6 +2,7 @@
   imports = [
     ./rclone-onedrive.nix
     ./cliphist.nix
+    ./gcp-pgpass.nix
     ./gnome-keyring.nix
     ./kanshi.nix
     ./kdeconnect.nix
