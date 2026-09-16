@@ -18,6 +18,7 @@
   zone = "europe-west1-b";
   # Every RFC1918 10.x range, so a new database needs no change here.
   defaultSubnets = "10.0.0.0/8";
+  gcloud = "${pkgs.google-cloud-sdk}/bin/gcloud";
 
   vpc = pkgs.writeShellApplication {
     name = "vpc";
@@ -34,7 +35,7 @@
         exit 1
       fi
 
-      proxy="gcloud compute start-iap-tunnel ${instance} 22 --listen-on-stdin"
+      proxy="${gcloud} compute start-iap-tunnel ${instance} 22 --listen-on-stdin"
       proxy="$proxy --project=${project} --zone=${zone}"
 
       # Prime sudo now, so sshuttle does not prompt from the background.

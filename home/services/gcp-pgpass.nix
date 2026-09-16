@@ -16,10 +16,12 @@
   # The Cloud SQL IAM user name is the full account email.
   iamUser = "robert.murphy@descartesunderwriting.com";
 
+  gcloud = "${pkgs.google-cloud-sdk}/bin/gcloud";
+
   pgtoken = pkgs.writeShellApplication {
     name = "pgtoken";
     text = ''
-      exec gcloud auth print-access-token
+      exec ${gcloud} auth print-access-token
     '';
   };
 
@@ -30,7 +32,7 @@
       user="''${PGIAM_USER:-${iamUser}}"
       pgpass="$HOME/.pgpass"
 
-      token=$(gcloud auth print-access-token)
+      token=$(${gcloud} auth print-access-token)
       if [ -z "$token" ]; then
         echo "gcp-pgpass: no token. Run 'gcloud auth login' first." >&2
         exit 1
@@ -56,13 +58,13 @@ in {
     Unit = {
       Description = "Write the Cloud SQL IAM token into ~/.pgpass";
       After = ["network-online.target"];
+      # The path unit can fire several times per login. Do not rate limit it.
+      StartLimitIntervalSec = 0;
     };
 
     Service = {
       Type = "oneshot";
       ExecStart = "${gcp-pgpass}/bin/gcp-pgpass";
-      # gcloud lives outside the nix profile on these machines.
-      Environment = ["PATH=/run/wrappers/bin:/run/current-system/sw/bin:%h/.nix-profile/bin:/usr/bin:/bin"];
     };
   };
 
@@ -77,5 +79,19 @@ in {
     };
 
     Install.WantedBy = ["timers.target"];
+  };
+
+  # Workload identity federation logs us out once a day, the limit Google
+  # allows. gcloud rewrites credentials.db on the next login, so watch it and
+  # refresh ~/.pgpass straight away, rather than waiting for the timer.
+  systemd.user.paths.gcp-pgpass = {
+    Unit.Description = "Refresh the Cloud SQL IAM token after a gcloud login";
+
+    Path = {
+      PathChanged = "%h/.config/gcloud/credentials.db";
+      Unit = "gcp-pgpass.service";
+    };
+
+    Install.WantedBy = ["paths.target"];
   };
 }
