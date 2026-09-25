@@ -41,6 +41,7 @@
   # you gave OCI when creating the instance.
   users.users.${config.name}.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJPoKG+D+RLNZ0c9qh3peXXO94+LNKNMTiVjV1C9fJl robert.murphy@DC-2D7K314"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO3E5ryRLnx1mfBGT8R61BJ2Fqfo6sMuY0Xygj6rGTpI droid@phone"
   ];
 
   # Key-only login and no root SSH (openssh.nix), so there is no password to
