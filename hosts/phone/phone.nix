@@ -63,6 +63,12 @@ in {
     gh
   ];
 
+  # This host has no ssh key; git auth goes through gh's https token instead,
+  # so the shared https->ssh rewrites (git.nix) would break every GitHub /
+  # GitLab / sr.ht fetch and push here. Drop them and let gh serve credentials.
+  programs.git.settings.url = lib.mkForce {};
+  programs.git.settings.credential.helper = "!gh auth git-credential";
+
   # The shared alias set assumes a NixOS host (`snrs` runs nixos-rebuild
   # against a system flake). This is standalone home-manager (which also
   # applies the system-manager half, see system.nix), so point it at
