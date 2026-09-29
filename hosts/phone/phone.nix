@@ -54,10 +54,13 @@ in {
   # Home username
   home.username = machineConfig.name;
 
-  # Install home-manager and system-manager themselves for future rebuilds
+  # Install home-manager and system-manager themselves for future rebuilds.
+  # gh is installed for real (not left to omnibin): agents and scripts call
+  # it by name, and omnibin binaries only resolve inside `omni`'s namespace.
   home.packages = with pkgs; [
     home-manager
     system-manager
+    gh
   ];
 
   # The shared alias set assumes a NixOS host (`snrs` runs nixos-rebuild
@@ -77,7 +80,33 @@ in {
         exec ${config.programs.zsh.package}/bin/zsh -l
       fi
     '';
+    # Unknown commands fall through to omni, so anything in the omnibin tree
+    # works by name — nobody (person, script, or agent) has to know to type
+    # `omni gh`. Lives in bashrcExtra, ahead of the interactive-only guard,
+    # so non-interactive agent shells get it too.
+    bashrcExtra = ''
+      command_not_found_handle() {
+        if command -v omni >/dev/null 2>&1; then
+          omni "$@"
+        else
+          printf 'bash: %s: command not found\n' "$1" >&2
+          return 127
+        fi
+      }
+    '';
   };
+
+  # Same fallback for the interactive zsh sessions.
+  programs.zsh.initContent = lib.mkAfter ''
+    command_not_found_handler() {
+      if command -v omni >/dev/null 2>&1; then
+        omni "$@"
+      else
+        printf 'zsh: command not found: %s\n' "$1" >&2
+        return 127
+      fi
+    }
+  '';
 
   # Debian sets LANG=C.UTF-8 via PAM (/etc/default/locale), but sessions
   # that skip PAM — the system-manager sshd, and therefore any tmux server
