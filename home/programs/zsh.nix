@@ -20,6 +20,18 @@ in {
       theme = "robbyrussell";
       inherit plugins;
     };
+    # Terminals spawned outside a logind login (e.g. the Android VM) miss
+    # pam_systemd's exports; systemctl --user / busctl need them. Guarded so
+    # hosts with a proper login session are untouched.
+    envExtra = ''
+      if [[ -z "$XDG_RUNTIME_DIR" && -d "/run/user/$UID" ]]; then
+        export XDG_RUNTIME_DIR="/run/user/$UID"
+      fi
+      if [[ -z "$DBUS_SESSION_BUS_ADDRESS" && -S "$XDG_RUNTIME_DIR/bus" ]]; then
+        export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+      fi
+    '';
+
     # --- 3. Custom Startup Scripts & Init ---
     initContent = ''
       # Source a local file if it exists
