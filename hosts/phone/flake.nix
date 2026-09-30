@@ -69,6 +69,11 @@
           systemd.tmpfiles.rules = ["f /var/lib/systemd/linger/droid"];
         }
         ./sshd.nix
+        # sshd.nix's users.users.sshd turns on userborn, which rewrites
+        # /etc/shadow every boot and can drop the cloud-init `droid` user on a
+        # hard VM kill. This self-heals droid's login before anything can lock
+        # us out. See the file header for the full story.
+        ./droid-login.nix
       ];
     };
   in {
