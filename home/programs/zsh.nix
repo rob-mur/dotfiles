@@ -19,6 +19,15 @@ in {
       enable = true;
       theme = "robbyrussell";
       inherit plugins;
+      # oh-my-zsh already calls `compinit -i`, i.e. "load completions from
+      # insecure directories anyway", so compaudit only decides whether to
+      # print a warning nothing acts on - and to decide that it stats every
+      # one of the ~2500 files in $fpath. That was 40% of an interactive zsh
+      # start (2.4s of 6s on the phone). What it flags here is the Nix store
+      # being root-owned, which is the point of the Nix store.
+      extraConfig = ''
+        ZSH_DISABLE_COMPFIX=true
+      '';
     };
     # Terminals spawned outside a logind login (e.g. the Android VM) miss
     # pam_systemd's exports; systemctl --user / busctl need them. Guarded so
