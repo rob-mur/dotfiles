@@ -49,15 +49,21 @@ persist_self(){
   chmod +x "$SELF" 2>/dev/null || true
 }
 
-# A fresh app has no git/curl/ssh/gh. Rather than installing them into a
-# profile (which the first switch would then fight over), re-run inside a
-# throwaway nix shell that provides them.
+# A fresh app has only bash, coreutils and nix: no git/curl/ssh/gh, and not
+# even grep/awk/sed. Rather than installing them into a profile (which the
+# first switch would then fight over), re-run inside a throwaway nix shell
+# that provides everything the steps below call. After the switch the same
+# tools come from nix-on-droid.nix's environment.packages.
+NEEDED=(git curl gh ssh ssh-keygen ssh-keyscan grep awk sed find)
 ensure_tools(){
-  command -v git >/dev/null 2>&1 && command -v curl >/dev/null 2>&1 && return 0
-  [ "${WIZARD_IN_NIX_SHELL:-}" = 1 ] && { warn "git/curl still missing inside nix shell"; exit 1; }
-  say "Re-running inside a nix shell with git, curl, gh and openssh"
+  local missing=() c
+  for c in "${NEEDED[@]}"; do command -v "$c" >/dev/null 2>&1 || missing+=("$c"); done
+  [ "${#missing[@]}" -eq 0 ] && return 0
+  [ "${WIZARD_IN_NIX_SHELL:-}" = 1 ] && { warn "still missing inside nix shell: ${missing[*]}"; exit 1; }
+  say "Missing ${missing[*]}; re-running inside a nix shell that provides them"
   WIZARD_IN_NIX_SHELL=1 exec nix "${NIXFLAGS[@]}" shell \
     nixpkgs#git nixpkgs#curl nixpkgs#gh nixpkgs#openssh \
+    nixpkgs#gnugrep nixpkgs#gawk nixpkgs#gnused nixpkgs#findutils \
     --command bash "$SELF"
 }
 
@@ -91,7 +97,7 @@ do_ssh(){
   fi
   touch "$HOME/.ssh/known_hosts" && chmod 600 "$HOME/.ssh/known_hosts"
   for hostspec in "github.com" "-p 2222 forgejo.clarob.uk"; do
-    local h; h=$(printf '%s' "$hostspec" | awk '{print $NF}')
+    local h="${hostspec##* }"
     grep -q "$h" "$HOME/.ssh/known_hosts" 2>/dev/null || ssh-keyscan $hostspec >> "$HOME/.ssh/known_hosts" 2>/dev/null || true
   done
 }

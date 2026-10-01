@@ -5,12 +5,35 @@
   # equivalent; only the home-manager half carries over (nod-home.nix).
   system.stateVersion = "24.05";
 
-  # Base tools present even before / outside home-manager.
+  # nix-on-droid itself only ships bash, coreutils, less and nix, so the
+  # basics every script (and oh-my-zsh, git, the wizard) expect have to be
+  # listed explicitly. Kept here rather than in home-manager so they're on
+  # PATH even if the home-manager activation fails.
   environment.packages = with pkgs; [
+    # what wizard-nod.sh needs
     git
     curl
     openssh
     gh
+    # standard userland a Debian box would have
+    gnugrep
+    gawk
+    gnused
+    findutils
+    diffutils
+    gnutar
+    gzip
+    xz
+    bzip2
+    unzip
+    which
+    file
+    procps
+    hostname
+    iproute2
+    ncurses # tput, clear
+    man
+    nano
   ];
 
   # Phones have little RAM; one build at a time avoids the OOM killer.
