@@ -44,6 +44,20 @@
 
   time.timeZone = "Europe/Paris";
 
+  # The app ships a plain monospace font with no Nerd Font glyph range, so
+  # every icon in the prompt, eza and btop rendered as a replacement box.
+  # Use the same Nerd Font the NixOS host installs (nixos/system/fonts.nix).
+  # Two details worth knowing: the package only ships OTF, and the app
+  # insists on the name ~/.termux/font.ttf - that is fine, Android's font
+  # loader sniffs the file format and ignores the extension. The "Mono" cut
+  # keeps every icon exactly one cell wide, which is what a fixed terminal
+  # grid wants.
+  terminal.font = "${pkgs.nerd-fonts.fira-mono}/share/fonts/opentype/NerdFonts/FiraMono/FiraMonoNerdFontMono-Regular.otf";
+
+  # ...so a font or colour change can be applied with
+  # `termux-reload-settings` instead of killing every session.
+  android-integration.termux-reload-settings.enable = true;
+
   # The app owns the login shell, so no Debian-style bash -> zsh exec dance.
   user.shell = "${pkgs.zsh}/bin/zsh";
 
