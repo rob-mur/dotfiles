@@ -1,5 +1,5 @@
 {
-  description = "Home Manager + system-manager configuration for phone (Android VM, aarch64)";
+  description = "Home Manager + system-manager configuration for phone (Android VM or nix-on-droid, aarch64)";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
@@ -14,6 +14,13 @@
     # Deliberately not following our nixpkgs: its own pin is what upstream
     # builds and caches.
     omnibin.url = "github:fzakaria/omnibin";
+    # Alternative phone setup: the nix-on-droid Android app (proot, no VM,
+    # no root). See nix-on-droid.nix / wizard-nod.sh.
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs = {
@@ -22,6 +29,7 @@
     nixpkgs-unstable,
     system-manager,
     omnibin,
+    nix-on-droid,
     ...
   }: let
     system = "aarch64-linux";
@@ -84,6 +92,18 @@
         ./phone.nix
         ./system.nix
       ];
+    };
+
+    # nix-on-droid app: `nix-on-droid switch --flake .#default`. No VM, root,
+    # systemd or FUSE there, so no system-manager / omnibin; see
+    # nix-on-droid.nix.
+    nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [overlay-unstable];
+      };
+      modules = [./nix-on-droid.nix];
     };
 
     # Still exposed so `system-manager switch --flake .` works standalone.

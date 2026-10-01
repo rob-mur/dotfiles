@@ -32,6 +32,28 @@ Start over from scratch with `rm -rf ~/.local/state/phone-wizard`.
 Rebuild after config changes with the `snrs` alias (runs
 `home-manager switch --flake .#dev` from this directory).
 
+## Alternative: nix-on-droid app
+
+Instead of the Debian VM, the same CLI home config can run under the
+[nix-on-droid](https://github.com/nix-community/nix-on-droid) app (proot, no
+VM, no root). That's the `nixOnDroidConfigurations.default` output:
+`nix-on-droid.nix` for the app side, `nod-home.nix` for home-manager. It has
+no systemd, FUSE or sshd, so system-manager, omnibin and the shadow-lockout fix
+below don't apply.
+
+A fresh app has Nix but no curl, so bootstrap with:
+
+```sh
+nix --extra-experimental-features 'nix-command flakes' run nixpkgs#curl -- \
+  -fsSL https://raw.githubusercontent.com/rob-mur/dotfiles/main/hosts/phone/wizard-nod.sh -o ~/wizard.sh
+bash ~/wizard.sh
+```
+
+`wizard-nod.sh` re-runs itself in a `nix shell` with git/curl/gh/openssh if
+they're missing → enables flakes (`max-jobs = 1`) → SSH keys → clone →
+`nix-on-droid switch --flake hosts/phone#default` → `gh` auth. It's resumable
+the same way as `wizard.sh`. `snrs` runs `nix-on-droid switch` there.
+
 ## The shadow-lockout fix (`droid-login.nix`)
 
 This host used to intermittently lock itself out — `sudo`, `su`, `passwd`, and
