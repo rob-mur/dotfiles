@@ -48,9 +48,11 @@ in {
 
       # Setup nvim as editor
       bindkey -v
-      bind 'set show-mode-in-prompt on' 2>/dev/null
-      bind 'set vi-ins-mode-string \1\e[6 q\2' 2>/dev/null
-      bind 'set vi-cmd-mode-string \1\e[2 q\2' 2>/dev/null
+      # `bind` is bash's readline builtin and has never existed in zsh; these
+      # three lines were dead, their error hidden by the 2>/dev/null. Removed
+      # rather than left alone because with a command-not-found handler
+      # installed (programs/autobin.nix) an unknown command is no longer free:
+      # each one costs a package resolution on every interactive shell start.
       bindkey '^x^e' edit-command-line
       export EDITOR=nvim
     '';
