@@ -27,10 +27,15 @@
 in {
   # Same shared CLI set as the VM host (phone.nix), minus omnibin: it needs a
   # setuid fusermount3 and a systemd user service, neither of which exist
-  # under nix-on-droid's proot.
+  # under nix-on-droid's proot (/dev/fuse is unreadable and `unshare --user`
+  # fails outright). autobin covers the same need without a mount: unknown
+  # commands are fetched from the binary cache on first use and accrue in a
+  # directory on PATH, so nobody — person, script, or agent — has to know a
+  # command wasn't installed.
   imports = [
     ../../options.nix
     ../../home/minimal.nix
+    ../../home/programs/autobin.nix
   ];
 
   inherit
