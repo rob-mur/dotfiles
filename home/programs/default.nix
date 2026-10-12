@@ -2,6 +2,7 @@
   imports = [
     ./opencode.nix
     ./gemini-cli.nix
+    ./herdr.nix
     ./google-chrome.nix
     ./forgejo-cli.nix
     ./obsidian.nix

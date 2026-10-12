@@ -18,6 +18,7 @@
     ./programs/zsh.nix
     ./programs/autojump.nix
     ./programs/tmux.nix
+    ./programs/herdr.nix
     ./programs/fzf.nix
     ./programs/ripgrep.nix
     ./programs/jq.nix
