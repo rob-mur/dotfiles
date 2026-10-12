@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   osConfig ? config,
   ...
@@ -31,8 +32,10 @@ in {
     };
     # Terminals spawned outside a logind login (e.g. the Android VM) miss
     # pam_systemd's exports; systemctl --user / busctl need them. Guarded so
-    # hosts with a proper login session are untouched.
-    envExtra = ''
+    # hosts with a proper login session are untouched. mkBefore: Home Manager's
+    # SSH_AUTH_SOCK init (mkOrder 900) reads $XDG_RUNTIME_DIR, so this must run
+    # first or a Tailscale SSH login gets SSH_AUTH_SOCK=/ssh-agent.
+    envExtra = lib.mkBefore ''
       if [[ -z "$XDG_RUNTIME_DIR" && -d "/run/user/$UID" ]]; then
         export XDG_RUNTIME_DIR="/run/user/$UID"
       fi
