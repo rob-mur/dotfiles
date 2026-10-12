@@ -14,11 +14,12 @@ in {
   nix = {
     gc = {
       automatic = true;
-      dates = "weekly";
+      dates = "Mon 12:30";
+      persistent = false;
       options = "--max-freed 1G --delete-older-than 7d";
     };
     optimise = {
-      automatic = true;
+      automatic = false;
     };
     extraOptions = ''
       experimental-features = nix-command flakes
