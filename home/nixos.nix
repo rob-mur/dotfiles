@@ -21,6 +21,7 @@ in {
         ./fonts
         ./packages
         ./programs
+        ./programs/autobin.nix
         ./services
         ./shell
         ./themes

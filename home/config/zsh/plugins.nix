@@ -5,12 +5,13 @@
 # plugins just load the same hooks a second time and add their directories
 # to $fpath for nothing. On a laptop that's noise; on nix-on-droid, where
 # every file read goes through proot, it was ~260ms of every shell start.
+# command-not-found is absent too: it loads from .zshrc, after .zshenv, and
+# would replace home/programs/autobin.nix's handler with NixOS's hint-only one.
 [
   "git"
   "aliases"
   "alias-finder"
   "branch"
-  "command-not-found"
   "copybuffer"
   "copyfile"
   "copypath"
