@@ -1,0 +1,76 @@
+onboarding = false
+# herdr configuration — see `herdr --default-config` for all options.
+
+[keys]
+# Leader key. Overridden from the default ctrl+b to match tmux.
+prefix = "ctrl+a"
+# Cycle between agents (with agent_panel_sort="priority", this walks the
+# attention queue). Each ralph is its own single-agent workspace, so this jumps
+# straight between running claudes. prefix+a = next (ctrl+a a), prefix+A = prev.
+next_agent = "prefix+a"
+previous_agent = "prefix+shift+a"
+# Jump directly to agent N: ctrl+a alt+1 .. ctrl+a alt+9.
+focus_agent = "prefix+alt+1..9"
+# Jump directly to workspace N: ctrl+a ctrl+1 .. ctrl+a ctrl+9. Not the
+# prefix+shift+1..9 herdr suggests: shift+1 is "!", which break-pane owns.
+switch_workspace = "prefix+ctrl+1..9"
+# tmux last-pane (prefix+;). ctrl+a ctrl+a is reserved: a doubled prefix sends a
+# literal ctrl+a. herdr has no last_workspace, but each ralph is a single-pane
+# workspace, so the global last_pane jumps back to the previous workspace.
+last_pane = "prefix+semicolon"
+# Rename on prefix+r as in tmux. resize_mode, rarely used, takes rename's old
+# default key.
+rename_workspace = "prefix+r"
+resize_mode = "prefix+shift+w"
+
+# Custom commands run through the shell with the herdr server's environment.
+# The herdr-* commands are packaged in ./default.nix and sit on the user
+# profile PATH, which even a bare ssh-login server has.
+
+# tmux break-pane: move the focused pane into a workspace of its own.
+[[keys.command]]
+key = "prefix+!"
+type = "shell"
+command = "herdr-break-pane"
+
+# tmux-fingers / fzf-url: pick a URL or path from the focused pane and copy it
+# (enter), or open it (ctrl-o).
+[[keys.command]]
+key = "prefix+f"
+type = "popup"
+command = "herdr-pick"
+width = "80%"
+height = "60%"
+
+[ui]
+agent_panel_sort = "priority"
+sidebar_max_width = 52
+
+# Agent rows. $subject is a pane metadata token, not a built-in: the subject
+# poller in ralph-code (scripts/herd-subject-poller.sh) copies each agent's
+# last meaningful terminal title onto its pane, so every row is headlined by
+# what that session is about instead of the shared "ralph-work" label.
+#
+# The default rows stay title-free, so a pane with no agent integration (a plain
+# shell, a not-yet-detected agent) still reads sensibly. rows_by_agent overrides
+# them per agent, and the poller seeds $subject from the workspace label, so a
+# claude/codex row is never blank while the agent starts up.
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace"], ["tab"]]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "$subject"], ["workspace", "tab"]]
+codex = [["state_icon", "$subject"], ["workspace", "tab"]]
+
+[terminal]
+# Pin the pane shell. Left empty, herdr (via portable-pty) tries $SHELL, then
+# the passwd-db shell, then /bin/sh — and on this host it lands on /bin/sh
+# (bash 5.3 as `sh`), so panes came up with no zsh config: no autojump `j`, no
+# prompt, no plugins. $SHELL is only as good as the environment the herdr
+# *server* was started with, and the passwd lookup is unreliable from a static
+# binary, so name the shell outright instead of relying on either.
+#
+# Bare name, not an absolute path: herdr resolves it against the pane's PATH,
+# which keeps this working across hosts (nix profile here, Homebrew/system zsh
+# elsewhere) instead of baking in one machine's /nix/store path.
+default_shell = "zsh"

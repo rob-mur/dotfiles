@@ -1,12 +1,12 @@
 {
   pkgs,
   config,
+  osConfig,
   ...
 }: let
   # herdr — terminal workspace manager for AI coding agents. The desktop runs
-  # the server (from ralph-code's devenv); every other host attaches to it
-  # with `herdr --remote`, which needs a local client of the SAME version.
-  # Keep this in step with ralph-code/devenv.nix.
+  # the server; every other host attaches to it with `herdr-desk` (below),
+  # and `herdr --remote` needs a client of the SAME version on both ends.
   herdr = pkgs.stdenv.mkDerivation rec {
     pname = "herdr";
     version = "0.7.4";
@@ -43,11 +43,13 @@
   #   desktop 127.0.0.1:47101 -> bridgeSock  (open / copy requests)
   #   desktop 127.0.0.1:47102 -> local PulseAudio socket (microphone)
   #
-  # TCP on the desktop end, not a unix socket: plain `ssh desktop` lands on
-  # Tailscale SSH, which does not take unix-socket forwards. The desktop side
-  # (relays into the containers, BROWSER shim) lives in hosts/desktop and
-  # ralph-code. The ports are fixed, so only one attached device owns the
-  # bridge at a time; a second one still attaches, just without the forwards.
+  # TCP on the desktop end, not a unix socket: plain ssh to the desktop lands
+  # on Tailscale SSH, and TCP forwards work there as well as with OpenSSH. The desktop side
+  # (relays into the containers) lives in hosts/desktop, and the container
+  # shim in ralph-code. The ports are fixed, so only one attached device owns
+  # the bridge at a time; a second one still attaches, just without the
+  # forwards. herdr-bridge (./bridge.sh) is the desktop end that talks to the
+  # listener.
   bridgePort = 47101;
   pulsePort = 47102;
   bridgeSock = "${config.home.homeDirectory}/.cache/herdr-bridge.sock";
@@ -152,8 +154,27 @@
     trap 'kill $listener 2>/dev/null' EXIT
     ${herdr}/bin/herdr --remote herdr-desktop --remote-keybindings server "$@"
   '';
+
+  # The commands config.toml binds to keys. herdr runs them with the server's
+  # environment, and a server that `herdr --remote` started has only a bare
+  # ssh-login PATH, so each script carries its own tools.
+  script = name: runtimeInputs:
+    pkgs.writeShellApplication {
+      name = "herdr-${name}";
+      inherit runtimeInputs;
+      text = builtins.readFile ./${name}.sh;
+    };
+  herdrBridge = script "bridge" (with pkgs; [python3 wl-clipboard util-linux coreutils]);
+  herdrPick = script "pick" (with pkgs; [herdr herdrBridge jq fzf gnugrep gnused gawk coreutils]);
+  herdrBreakPane = script "break-pane" (with pkgs; [herdr jq]);
 in {
-  home.packages = [herdr herdrDesk];
+  home.packages = [herdr herdrDesk herdrBridge herdrPick herdrBreakPane];
+
+  # Link the checkout's config.toml rather than a store copy: herdr writes back
+  # to it (`onboarding = false` on first run, `herdr config reset-keys`), and
+  # those writes should land in the repo where git can show them.
+  xdg.configFile."herdr/config.toml".source =
+    config.lib.file.mkOutOfStoreSymlink "${osConfig.hostDir}../../home/programs/herdr/config.toml";
 
   programs.ssh.settings."herdr-desktop" = {
     HostName = "dev-1";
