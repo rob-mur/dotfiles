@@ -173,11 +173,19 @@ in {
   # Link the checkout's config.toml rather than a store copy: herdr writes back
   # to it (`onboarding = false` on first run, `herdr config reset-keys`), and
   # those writes should land in the repo where git can show them.
-  xdg.configFile."herdr/config.toml".source =
-    config.lib.file.mkOutOfStoreSymlink "${osConfig.hostDir}../../home/programs/herdr/config.toml";
+  # force: the pre-dotfiles symlink pointed at the ralph-code checkout, so
+  # Home Manager finds an unmanaged file here and refuses to replace it.
+  xdg.configFile."herdr/config.toml" = {
+    force = true;
+    source =
+      config.lib.file.mkOutOfStoreSymlink "${osConfig.hostDir}../../home/programs/herdr/config.toml";
+  };
 
   programs.ssh.settings."herdr-desktop" = {
-    HostName = "dev-1";
+    # The Tailscale IP, not the MagicDNS name: on Android the system Tailscale
+    # app owns the tunnel, and Termux's resolver never sees MagicDNS, so
+    # `dev-1` fails to resolve there. The IP is stable and works on every host.
+    HostName = "100.97.145.107";
     User = "rob";
     RemoteForward = [
       "127.0.0.1:${toString bridgePort} ${bridgeSock}"
