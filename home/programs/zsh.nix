@@ -57,7 +57,6 @@ in {
       # installed (programs/autobin.nix) an unknown command is no longer free:
       # each one costs a package resolution on every interactive shell start.
       bindkey '^x^e' edit-command-line
-      export EDITOR=nvim
     '';
 
     # --- 4. Extra Non-OMZ Plugins ---

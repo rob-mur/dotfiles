@@ -19,6 +19,10 @@ in {
       programs = {
         neovim = {
           enable = true;
+          # Sets EDITOR in home.sessionVariables, which .zshenv loads, so
+          # non-interactive processes such as the herdr server see nvim too
+          # (prefix+e edit_scrollback). /etc/set-environment says nano.
+          defaultEditor = true;
           viAlias = true;
           vimAlias = true;
           vimdiffAlias = true;
