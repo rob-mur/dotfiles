@@ -51,11 +51,9 @@ in {
       # trusted-users via nixos/system/nix.nix).
       #
       # This runner takes every size: it is larger than any Cloud Run size.
-      # The sizes are the Cloud Run jobs in rob/runner-image's infra/. The bare
-      # `nix-host` label stays only while rob/runner-image#12 moves the
-      # workflows to the sized labels.
+      # The sizes are the Cloud Run jobs in rob/runner-image's infra/. There is
+      # no bare `nix-host` label (rob/runner-image#12).
       labels = [
-        "nix-host:docker://forgejo.clarob.uk/rob/nix-ci:latest"
         "nix-host-2cpu-4gb:docker://forgejo.clarob.uk/rob/nix-ci:latest"
         "nix-host-4cpu-8gb:docker://forgejo.clarob.uk/rob/nix-ci:latest"
       ];
