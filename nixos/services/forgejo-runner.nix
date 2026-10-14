@@ -44,13 +44,20 @@ in {
       name = "dev-desktop";
       url = "https://forgejo.clarob.uk";
       tokenFile = "/var/lib/secrets/forgejo-runner-token";
-      # nix-host label: jobs that `runs-on: nix-host` get a minimal Debian
-      # image with /nix bind-mounted from the host. They call the host's
-      # nix daemon over the socket inside /nix/var/nix/daemon-socket/, which
-      # accepts them because UID 1000 maps to host user `rob` (already in
+      # nix-host labels: jobs that `runs-on: nix-host-<n>cpu-<n>gb` get a
+      # minimal Debian image with /nix bind-mounted from the host. They call
+      # the host's nix daemon over the socket inside /nix/var/nix/daemon-socket/,
+      # which accepts them because UID 1000 maps to host user `rob` (already in
       # trusted-users via nixos/system/nix.nix).
+      #
+      # This runner takes every size: it is larger than any Cloud Run size.
+      # The sizes are the Cloud Run jobs in rob/runner-image's infra/. The bare
+      # `nix-host` label stays only while rob/runner-image#12 moves the
+      # workflows to the sized labels.
       labels = [
         "nix-host:docker://forgejo.clarob.uk/rob/nix-ci:latest"
+        "nix-host-2cpu-4gb:docker://forgejo.clarob.uk/rob/nix-ci:latest"
+        "nix-host-4cpu-8gb:docker://forgejo.clarob.uk/rob/nix-ci:latest"
       ];
       settings = {
         runner.capacity = 4;
