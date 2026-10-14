@@ -6,7 +6,7 @@
   cursor-size = 24;
   font = "Fira Sans";
   font-alt = "Source Sans Pro";
-  font-mono = "Fira Mono";
+  font-mono = "Iosevka Nerd Font Mono";
   font-mono-alt = "Source Code Pro";
   font-serif = "Fira Serif";
   font-serif-alt = "Source Serif Pro";

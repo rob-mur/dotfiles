@@ -6,26 +6,26 @@
   # Typeface.createFromFile() loads one file and does no fallback at all, so
   # here a missing glyph is simply a tofu box.
   #
-  # DejaVu Sans Mono Nerd Font covers all of it except U+23F5, which is in no
-  # font on this device - not any of the 208 in /system/fonts, and not any
-  # Nerd Font cut checked (Fira Mono, Fira Code, DejaVu). Swapping fonts
-  # cannot fix that one, so patch-font.py maps it (and four others) onto
-  # glyphs the font already has. cmap-only: no outlines, no metric changes.
+  # Iosevka Nerd Font Mono (3.5.0+34.8.0) covers every codepoint Claude Code
+  # draws, braille included, bar VS15 (U+FE0E). patch-font.py still runs: it
+  # maps VS15 onto a zero-width glyph, and fails the build loudly if a future
+  # Iosevka drops any of the others. cmap-only: no outlines, no metric changes.
+  # DejaVu Sans Mono and Fira Mono, used before, lacked U+23F5 entirely.
   #
-  # nerd-fonts 3.4.0 in nixpkgs 26.05 ships DejaVu without the braille block,
-  # which would leave the spinner broken - pkgs-unstable's 3.5.0 has it, the
-  # same reason claude-code.nix tracks unstable.
+  # pkgs-unstable for the same reason claude-code.nix tracks unstable: nerd-fonts
+  # 3.4.0 in nixpkgs 26.05 shipped DejaVu without the braille block, and the
+  # phone should not lag the host's cut.
   #
-  # The result embeds no store paths, so the 32M base font is a build-time
-  # dependency only and gets collected; what stays resident is one 2.7M file.
+  # The result embeds no store paths, so the base font package is a build-time
+  # dependency only and gets collected; what stays resident is one ~14M file.
   claudeTerminalFont =
-    pkgs.runCommand "dejavu-sans-mono-nf-claude" {
+    pkgs.runCommand "iosevka-nf-claude" {
       nativeBuildInputs = [pkgs.python3Packages.fonttools pkgs.python3];
     } ''
       mkdir -p $out/share/fonts/truetype
       python3 ${./patch-font.py} \
-        ${pkgs.pkgs-unstable.nerd-fonts.dejavu-sans-mono}/share/fonts/truetype/NerdFonts/DejaVuSansM/DejaVuSansMNerdFontMono-Regular.ttf \
-        $out/share/fonts/truetype/DejaVuSansMNerdFontMono-Claude.ttf
+        ${pkgs.pkgs-unstable.nerd-fonts.iosevka}/share/fonts/truetype/NerdFonts/Iosevka/IosevkaNerdFontMono-Regular.ttf \
+        $out/share/fonts/truetype/IosevkaNerdFontMono-Claude.ttf
     '';
 in {
   # nix-on-droid "system" side: the app's proot environment. There is no root,
@@ -75,15 +75,14 @@ in {
 
   # The app ships a plain monospace font with no Nerd Font glyph range, so
   # every icon in the prompt, eza and btop rendered as a replacement box.
-  # This used to be nerd-fonts.fira-mono, matching the NixOS host
-  # (nixos/system/fonts.nix), but Fira has neither U+23F5 nor the braille
-  # block, so Claude Code's bypass-permissions badge and spinner were tofu.
-  # The host only looks fine because fontconfig falls back for it; see the
-  # claudeTerminalFont comment above. The app insists on the name
-  # ~/.termux/font.ttf - that is fine, Android's font loader sniffs the file
-  # format and ignores the extension. The "Mono" cut keeps every icon exactly
+  # This used to be nerd-fonts.fira-mono, then a patched DejaVu Sans Mono;
+  # it now matches the host's `theme.font-mono` (Iosevka), so a session ssh'd
+  # in from the phone looks the same as one in kitty. See the
+  # claudeTerminalFont comment above for why it is patched. The app insists
+  # on the name ~/.termux/font.ttf - that is fine, Android's font loader
+  # sniffs the file format and ignores the extension. The "Mono" cut keeps every icon exactly
   # one cell wide, which is what a fixed terminal grid wants.
-  terminal.font = "${claudeTerminalFont}/share/fonts/truetype/DejaVuSansMNerdFontMono-Claude.ttf";
+  terminal.font = "${claudeTerminalFont}/share/fonts/truetype/IosevkaNerdFontMono-Claude.ttf";
 
   # ...so a font or colour change can be applied with
   # `termux-reload-settings` instead of killing every session.
