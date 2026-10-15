@@ -155,6 +155,40 @@
     ${herdr}/bin/herdr --remote herdr-desktop --remote-keybindings server "$@"
   '';
 
+  # A server the client spawns lands in the terminal's cgroup scope, and so
+  # does every pane under it. That scope has the default TasksMax (57480,
+  # threads included): when agents fork past it, the kernel refuses every new
+  # thread in the scope, and the server and all its agents die together. So
+  # start the server in a scope of its own, without the limit, before the
+  # client attaches. Falls through to plain herdr where there is no systemd
+  # user manager (Termux).
+  herdrLauncher = pkgs.writeShellScriptBin "herdr" ''
+    real=${herdr}/bin/herdr
+    session=() unit=herdr-server
+    if [ "''${1-}" = --session ] && [ -n "''${2-}" ]; then
+      session=(--session "$2")
+      unit="herdr-server-$(systemd-escape "$2" 2>/dev/null)"
+      shift 2
+    fi
+
+    if command -v systemd-run >/dev/null && [ -S "''${XDG_RUNTIME_DIR-}/bus" ]; then
+      if [ "$*" = server ]; then
+        exec systemd-run --user --scope --quiet --collect \
+          --unit="$unit" -p TasksMax=infinity "$real" "''${session[@]}" server
+      fi
+      # setsid: in the client's process group, the server would take the
+      # terminal's hangup when the window closes.
+      if [ "$#" -eq 0 ] && ! "$real" "''${session[@]}" status server | grep -q 'status: running'; then
+        ${pkgs.util-linux}/bin/setsid -f "$0" "''${session[@]}" server </dev/null >/dev/null 2>&1
+        for _ in $(seq 40); do
+          "$real" "''${session[@]}" status server | grep -q 'status: running' && break
+          sleep 0.25
+        done
+      fi
+    fi
+    exec "$real" "''${session[@]}" "$@"
+  '';
+
   # The commands config.toml binds to keys. herdr runs them with the server's
   # environment, and a server that `herdr --remote` started has only a bare
   # ssh-login PATH, so each script carries its own tools.
@@ -168,7 +202,7 @@
   herdrPick = script "pick" (with pkgs; [herdr herdrBridge jq fzf gnugrep gnused gawk coreutils]);
   herdrBreakPane = script "break-pane" (with pkgs; [herdr jq]);
 in {
-  home.packages = [herdr herdrDesk herdrBridge herdrPick herdrBreakPane];
+  home.packages = [herdrLauncher herdrDesk herdrBridge herdrPick herdrBreakPane];
 
   # Link the checkout's config.toml rather than a store copy: herdr writes back
   # to it (`onboarding = false` on first run, `herdr config reset-keys`), and
