@@ -47,9 +47,15 @@ agent_panel_sort = "priority"
 sidebar_max_width = 52
 
 # Agent rows. $subject is a pane metadata token, not a built-in: the subject
-# poller in ralph-code (scripts/herd-subject-poller.sh) copies each agent's
-# last meaningful terminal title onto its pane, so every row is headlined by
-# what that session is about instead of the shared "ralph-work" label.
+# poller (./subject-poller.sh, run as the herdr-subject-poller user service)
+# copies each agent's last meaningful terminal title onto its pane, so every
+# row is headlined by what that session is about instead of the shared
+# "ralph-work" label.
+#
+# herdr draws custom tokens in the muted overlay0 colour and the workspace in
+# bold subtext0, which puts the weight on the wrong line. Per-token styles swap
+# it: the subject is the headline, the workspace and tab are context. The hex
+# values are catppuccin mocha's text and overlay0 (the default theme).
 #
 # The default rows stay title-free, so a pane with no agent integration (a plain
 # shell, a not-yet-detected agent) still reads sensibly. rows_by_agent overrides
@@ -59,8 +65,14 @@ sidebar_max_width = 52
 rows = [["state_icon", "workspace"], ["tab"]]
 
 [ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", "$subject"], ["workspace", "tab"]]
-codex = [["state_icon", "$subject"], ["workspace", "tab"]]
+claude = [
+  ["state_icon", {token = "$subject", fg = "#cdd6f4", bold = true}],
+  [{token = "workspace", fg = "#6c7086", bold = false}, "tab"],
+]
+codex = [
+  ["state_icon", {token = "$subject", fg = "#cdd6f4", bold = true}],
+  [{token = "workspace", fg = "#6c7086", bold = false}, "tab"],
+]
 
 [terminal]
 # Pin the pane shell. Left empty, herdr (via portable-pty) tries $SHELL, then

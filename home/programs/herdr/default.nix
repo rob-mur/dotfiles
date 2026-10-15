@@ -9,16 +9,16 @@
   # and `herdr --remote` needs a client of the SAME version on both ends.
   herdr = pkgs.stdenv.mkDerivation rec {
     pname = "herdr";
-    version = "0.7.4";
+    version = "0.9.5";
     src = let
       assets = {
         aarch64-linux = {
           suffix = "linux-aarch64";
-          hash = "sha256-VE4AAt5CgG0atkzN7zp+dBTyRxewtrAivJ5X0u79JqI=";
+          hash = "sha256-F9dTby2lCFlSNoDvJ53/ysjkojX05G/o2mwuxEFBiXw=";
         };
         x86_64-linux = {
           suffix = "linux-x86_64";
-          hash = "sha256-vA/ALUulAPnKwjU6Q+Z/4DZ4Xsym61U3jgUPrDwQMFk=";
+          hash = "sha256-FNnovItKngEY13wyJm921GHwm0A0LrI3UpYL2J9Zkp0=";
         };
       };
       inherit (pkgs.stdenv.hostPlatform) system;
@@ -201,8 +201,22 @@
   herdrBridge = script "bridge" (with pkgs; [python3 wl-clipboard util-linux coreutils]);
   herdrPick = script "pick" (with pkgs; [herdr herdrBridge jq fzf gnugrep gnused gawk coreutils]);
   herdrBreakPane = script "break-pane" (with pkgs; [herdr jq]);
+  herdrSubjectPoller = script "subject-poller" (with pkgs; [herdr jq coreutils]);
 in {
   home.packages = [herdrLauncher herdrDesk herdrBridge herdrPick herdrBreakPane];
+
+  # Headlines each agent row with its session subject (./subject-poller.sh).
+  # It waits while no server runs, so one service covers every server this
+  # host starts, wherever it was started from.
+  systemd.user.services.herdr-subject-poller = {
+    Unit.Description = "herdr agent subject poller";
+    Service = {
+      ExecStart = "${herdrSubjectPoller}/bin/herdr-subject-poller";
+      Restart = "always";
+      RestartSec = 5;
+    };
+    Install.WantedBy = ["default.target"];
+  };
 
   # Link the checkout's config.toml rather than a store copy: herdr writes back
   # to it (`onboarding = false` on first run, `herdr config reset-keys`), and
