@@ -2,44 +2,64 @@
 #
 #   herdr-bridge open <url>
 #   herdr-bridge copy [text]        (reads stdin when no text is given)
+#   herdr-bridge forward            (relay one raw request from stdin)
 #
-# `herdr-desk` on a laptop/phone reverse-forwards 127.0.0.1:47101 on the
-# desktop to a listener on that device (see default.nix). Nothing attached,
-# or the device can't do it (no clipboard tool, a host path to open): fall
-# back to doing it here.
+# `herdr-desk` on a laptop/phone reverse-forwards a desktop port of its own
+# (HERDR_BRIDGE_PORTS, one per device, see default.nix) to a listener on that
+# device. Try each in turn: with several devices attached, the first that
+# acts wins. Nothing attached, or no device can do it (no clipboard tool, a
+# host path to open): fall back to doing it here.
+#
+# `forward` is the ralph containers' way in (the desktop relays their unix
+# socket to it): pass the request on as-is, print the reply, no fallback.
 
 op="${1:-}"
 case "$op" in
   open) payload="${2:?usage: herdr-bridge open <url>}" ;;
   copy) if [ $# -ge 2 ]; then payload="$2"; else payload="$(cat)"; fi ;;
-  *) echo "usage: herdr-bridge open <url> | herdr-bridge copy [text]" >&2; exit 2 ;;
+  forward) payload="$(cat; echo .)" payload="${payload%.}" ;;
+  *) echo "usage: herdr-bridge open <url> | herdr-bridge copy [text] | herdr-bridge forward" >&2; exit 2 ;;
 esac
 
-addr="${HERDR_BRIDGE:-tcp:127.0.0.1:47101}"
+if [ -n "${HERDR_BRIDGE:-}" ]; then
+  addrs=("$HERDR_BRIDGE")
+else
+  addrs=()
+  for port in ${HERDR_BRIDGE_PORTS:-47101}; do addrs+=("tcp:127.0.0.1:$port"); done
+fi
 
 # The listener answers "ok" only once it has acted. A relay or forward with
 # nothing behind it accepts and then hangs up, which reads as a failure.
 send_py='
 import socket, sys
-addr, op = sys.argv[1], sys.argv[2]
+op, addrs = sys.argv[1], sys.argv[2:]
 data = sys.stdin.buffer.read()
-kind, _, rest = addr.partition(":")
-try:
-    if kind == "unix":
-        s = socket.socket(socket.AF_UNIX)
-        s.settimeout(3)
-        s.connect(rest)
-    else:
-        host, _, port = rest.rpartition(":")
-        s = socket.create_connection((host, int(port)), timeout=3)
-    s.sendall(op.encode() + b"\n" + data)
-    s.shutdown(socket.SHUT_WR)
-    reply = s.recv(16)
-except OSError:
-    sys.exit(1)
+req = data if op == "forward" else op.encode() + b"\n" + data
+reply = b"no\n"
+for addr in addrs:
+    kind, _, rest = addr.partition(":")
+    try:
+        if kind == "unix":
+            s = socket.socket(socket.AF_UNIX)
+            s.settimeout(3)
+            s.connect(rest)
+        else:
+            host, _, port = rest.rpartition(":")
+            s = socket.create_connection((host, int(port)), timeout=3)
+        with s:
+            s.sendall(req)
+            s.shutdown(socket.SHUT_WR)
+            reply = s.recv(16)
+    except OSError:
+        continue
+    if reply.startswith(b"ok"):
+        break
+if op == "forward":
+    sys.stdout.buffer.write(reply if reply.startswith(b"ok") else b"no\n")
 sys.exit(0 if reply.startswith(b"ok") else 1)
 '
-if printf %s "$payload" | python3 -c "$send_py" "$addr" "$op" 2>/dev/null; then exit 0; fi
+if printf %s "$payload" | python3 -c "$send_py" "$op" "${addrs[@]}" 2>/dev/null; then exit 0; fi
+[ "$op" = forward ] && exit 1
 
 # Local fallback.
 if [ "$op" = open ]; then

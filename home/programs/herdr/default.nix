@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   osConfig,
@@ -40,17 +41,26 @@
   # you are attached from here. The ssh session for `herdr-desk` carries two
   # reverse forwards back to this device:
   #
-  #   desktop 127.0.0.1:47101 -> bridgeSock  (open / copy requests)
-  #   desktop 127.0.0.1:47102 -> local PulseAudio socket (microphone)
+  #   desktop 127.0.0.1:<bridgePort> -> bridgeSock  (open / copy requests)
+  #   desktop 127.0.0.1:47102        -> local PulseAudio socket (microphone)
   #
   # TCP on the desktop end, not a unix socket: plain ssh to the desktop lands
-  # on Tailscale SSH, and TCP forwards work there as well as with OpenSSH. The desktop side
-  # (relays into the containers) lives in hosts/desktop, and the container
-  # shim in ralph-code. The ports are fixed, so only one attached device owns
-  # the bridge at a time; a second one still attaches, just without the
-  # forwards. herdr-bridge (./bridge.sh) is the desktop end that talks to the
-  # listener.
-  bridgePort = 47101;
+  # on Tailscale SSH, and TCP forwards work there as well as with OpenSSH.
+  # Each device forwards the bridge to a port of its own: with one shared
+  # port, the first device to attach (a phone left attached, say) held it,
+  # and every other device's copies landed on the desktop clipboard instead.
+  # herdr-bridge (./bridge.sh) is the desktop end: it tries every port until
+  # a listener acts. The microphone port is still shared, so only one device
+  # owns it at a time; a second one still attaches, just without it. The
+  # container relays live below and in hosts/desktop, the container shim in
+  # ralph-code.
+  bridgePorts = {
+    desktop = 47101;
+    work-laptop = 47111;
+    laptop_perso = 47121;
+    phone = 47131;
+  };
+  bridgePort = bridgePorts.${osConfig.machineType};
   pulsePort = 47102;
   bridgeSock = "${config.home.homeDirectory}/.cache/herdr-bridge.sock";
 
@@ -198,7 +208,12 @@
       inherit runtimeInputs;
       text = builtins.readFile ./${name}.sh;
     };
-  herdrBridge = script "bridge" (with pkgs; [python3 wl-clipboard util-linux coreutils]);
+  herdrBridge = pkgs.writeShellApplication {
+    name = "herdr-bridge";
+    runtimeInputs = with pkgs; [python3 wl-clipboard util-linux coreutils];
+    runtimeEnv.HERDR_BRIDGE_PORTS = toString (builtins.attrValues bridgePorts);
+    text = builtins.readFile ./bridge.sh;
+  };
   herdrPick = script "pick" (with pkgs; [herdr herdrBridge jq fzf gnugrep gnused gawk coreutils]);
   herdrBreakPane = script "break-pane" (with pkgs; [herdr jq]);
   herdrSubjectPoller = script "subject-poller" (with pkgs; [herdr jq coreutils]);
@@ -208,6 +223,19 @@ in {
   # Headlines each agent row with its session subject (./subject-poller.sh).
   # It waits while no server runs, so one service covers every server this
   # host starts, wherever it was started from.
+  # ralph containers sit on their own docker network, where the desktop's
+  # loopback is out of reach, so relay a unix socket that ralph.sh
+  # bind-mounts into every container onto the device ports.
+  systemd.user.services.herdr-remote-bridge = lib.mkIf (osConfig.machineType == "desktop") {
+    Unit.Description = "herdr remote bridge relay";
+    Service = {
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p -m 700 %t/herdr-remote";
+      ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:%t/herdr-remote/bridge.sock,fork,unlink-early,mode=600 EXEC:'${herdrBridge}/bin/herdr-bridge forward'";
+      Restart = "always";
+    };
+    Install.WantedBy = ["default.target"];
+  };
+
   systemd.user.services.herdr-subject-poller = {
     Unit.Description = "herdr agent subject poller";
     Service = {

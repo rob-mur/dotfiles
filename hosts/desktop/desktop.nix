@@ -114,23 +114,19 @@
   # services and run before, and without, any graphical login.
   autoLogin = false;
 
-  # herdr --remote bridge (see home/programs/herdr.nix). An attached device
-  # reverse-forwards 127.0.0.1:47101 (open/copy) and :47102 (its microphone)
-  # here. ralph containers sit on their own docker network, where the host's
-  # loopback is out of reach, so relay each port onto a unix socket that
-  # ralph.sh bind-mounts into every container.
-  home-manager.users.rob.systemd.user.services = let
-    relay = name: port: {
-      Unit.Description = "herdr remote ${name} relay";
-      Service = {
-        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p -m 700 %t/herdr-remote";
-        ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:%t/herdr-remote/${name}.sock,fork,unlink-early,mode=600 TCP:127.0.0.1:${toString port}";
-        Restart = "always";
-      };
-      Install.WantedBy = ["default.target"];
+  # herdr --remote microphone (see home/programs/herdr). An attached device
+  # reverse-forwards its PulseAudio socket to 127.0.0.1:47102 here. ralph
+  # containers sit on their own docker network, where the host's loopback is
+  # out of reach, so relay the port onto a unix socket that ralph.sh
+  # bind-mounts into every container. The open/copy relay lives with the
+  # bridge in home/programs/herdr.
+  home-manager.users.rob.systemd.user.services.herdr-remote-pulse = {
+    Unit.Description = "herdr remote pulse relay";
+    Service = {
+      ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p -m 700 %t/herdr-remote";
+      ExecStart = "${pkgs.socat}/bin/socat UNIX-LISTEN:%t/herdr-remote/pulse.sock,fork,unlink-early,mode=600 TCP:127.0.0.1:47102";
+      Restart = "always";
     };
-  in {
-    herdr-remote-bridge = relay "bridge" 47101;
-    herdr-remote-pulse = relay "pulse" 47102;
+    Install.WantedBy = ["default.target"];
   };
 }
