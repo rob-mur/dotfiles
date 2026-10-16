@@ -166,12 +166,16 @@
   '';
 
   # A server the client spawns lands in the terminal's cgroup scope, and so
-  # does every pane under it. That scope has the default TasksMax (57480,
-  # threads included): when agents fork past it, the kernel refuses every new
-  # thread in the scope, and the server and all its agents die together. So
-  # start the server in a scope of its own, without the limit, before the
-  # client attaches. Falls through to plain herdr where there is no systemd
+  # does every pane under it, all sharing that scope's task limit with the
+  # terminal. So start the server in a scope of its own, with a limit of its
+  # own, before the client attaches. Falls through to plain herdr where there is no systemd
   # user manager (Termux).
+  #
+  # The scope keeps a task limit. On 15 Oct agents hit the default (57480)
+  # and the limit was lifted; the cause was a fork bomb (autobin resolving
+  # its own `mkdir` through itself), and with no limit the next one on 16 Oct
+  # filled RAM and swap and locked up the machine. 16384 tasks stop a fork
+  # bomb at a few GiB and leave room for every agent's normal load.
   herdrLauncher = pkgs.writeShellScriptBin "herdr" ''
     real=${herdr}/bin/herdr
     session=() unit=herdr-server
@@ -184,7 +188,7 @@
     if command -v systemd-run >/dev/null && [ -S "''${XDG_RUNTIME_DIR-}/bus" ]; then
       if [ "$*" = server ]; then
         exec systemd-run --user --scope --quiet --collect \
-          --unit="$unit" -p TasksMax=infinity "$real" "''${session[@]}" server
+          --unit="$unit" -p TasksMax=16384 "$real" "''${session[@]}" server
       fi
       # setsid: in the client's process group, the server would take the
       # terminal's hangup when the window closes.

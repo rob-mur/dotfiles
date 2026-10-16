@@ -54,7 +54,10 @@
 
     notfound() { printf '%s: command not found\n' "$cmd" >&2; exit 127; }
 
-    [ -x "$bin/$cmd" ] && exec "$bin/$cmd" "$@"
+    # The handler sets AUTOBIN_ACTIVE so this script cannot resolve its own
+    # commands through itself. The command it hands over to gets the
+    # handler back.
+    [ -x "$bin/$cmd" ] && { unset AUTOBIN_ACTIVE; exec "$bin/$cmd" "$@"; }
 
     # Negative cache: an agent with a typo in a loop must not re-evaluate
     # nixpkgs every time. Entries go stale after an hour, so a resolution
@@ -66,7 +69,7 @@
       notfound
     fi
 
-    mkdir -p "$bin" "$roots" "$misses" || notfound
+    ${pkgs.coreutils}/bin/mkdir -p "$bin" "$roots" "$misses" || notfound
     command -v nix >/dev/null 2>&1 || notfound
 
     # The pin is a plain string with no nix dependency on it (see `flake`
@@ -166,10 +169,11 @@
       [ -d "$path/bin" ] || continue
       for f in "$path"/bin/*; do
         [ -x "$f" ] || continue
-        ln -sfn "$f" "$bin/''${f##*/}"
+        ${pkgs.coreutils}/bin/ln -sfn "$f" "$bin/''${f##*/}"
       done
     done
 
+    unset AUTOBIN_ACTIVE
     exec "$bin/$cmd" "$@"
   '';
 
@@ -183,11 +187,25 @@
     export PATH
   '';
 
+  # autobin is itself a bash script, so it reads BASH_ENV and gets this
+  # handler too. Without the AUTOBIN_ACTIVE guard, a PATH with no coreutils
+  # made autobin resolve its own `mkdir` through autobin, without end: on
+  # 16 Oct that was 80,000 processes and a machine out of memory.
+  handler = ''
+    if [ -n "''${AUTOBIN_ACTIVE-}" ]; then
+      printf '%s: command not found\n' "$1" >&2
+      return 127
+    fi
+    AUTOBIN_ACTIVE=1 ${autobin}/bin/autobin "$@"
+  '';
+
   # Non-interactive bash reads neither .bashrc nor .profile, so BASH_ENV is
   # the only hook that reaches `bash -c`, which is the shape agents use.
   bashEnv = pkgs.writeText "autobin-bash-env.sh" ''
     ${pathInit}
-    command_not_found_handle() { ${autobin}/bin/autobin "$@"; }
+    command_not_found_handle() {
+      ${handler}
+    }
   '';
 in {
   # nix-locate is installed, not just referenced: the same lookup is useful by
@@ -199,7 +217,9 @@ in {
   # unlike .zshrc it survives the shell Claude Code's Bash tool spawns.
   programs.zsh.envExtra = ''
     ${pathInit}
-    command_not_found_handler() { ${autobin}/bin/autobin "$@"; }
+    command_not_found_handler() {
+      ${handler}
+    }
   '';
 
   home.sessionVariables.BASH_ENV = "${bashEnv}";
