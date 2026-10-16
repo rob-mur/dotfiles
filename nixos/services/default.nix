@@ -7,6 +7,7 @@
     ./dbus.nix
     ./displaymanager.nix
     ./dnscrypt.nix
+    ./below.nix
     ./earlyoom.nix
     ./fstrim.nix
     ./gnome-keyring.nix

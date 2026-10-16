@@ -4,6 +4,10 @@
   ...
 }: {
   boot = {
+    # Allow every SysRq key, so Alt+SysRq+F runs the kernel OOM killer when
+    # the desktop locks up under memory pressure.
+    kernel.sysctl."kernel.sysrq" = 1;
+
     kernelPackages = pkgs.linuxPackages;
 
     loader = {
