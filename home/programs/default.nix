@@ -6,7 +6,7 @@
     ./google-chrome.nix
     ./forgejo-cli.nix
     ./obsidian.nix
-    ./claude-code.nix
+    ./claude-code
     ./glab.nix
     ./dbeaver.nix
     ./proton-auth.nix

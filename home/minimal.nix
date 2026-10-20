@@ -26,7 +26,7 @@
     ./programs/zoxide.nix
     ./programs/jj.nix
     ./programs/btop.nix
-    ./programs/claude-code.nix
+    ./programs/claude-code
   ];
 
   # Stub options for NixOS-specific services that modules might reference
