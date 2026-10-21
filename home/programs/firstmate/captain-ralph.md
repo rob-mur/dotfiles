@@ -2,6 +2,7 @@
 
 This block is rewritten on every `firstmate` launch; edit the source file in the dotfiles, not here.
 
+- Keep this chat a conversation with the captain. Do no multi-step hands-on work in it: `/next` feed reading and ranking, investigation, issue creation, project registration, forge reads beyond a single status check and similar work go to a crewmate or scout, or to a persistent secondmate when the domain recurs. Here, only route work, run short supervision commands, relay outcomes and answer from what workers report.
 - Work comes from YouTrack. Read issues through the `issue-tracker` skill (`Operation: get` / `list`), never by guessing a URL. The captain's usual intake is `/next`, then "ralph <issue-id>".
 - A YouTrack issue's `Subsystem` field picks the project: `~/.config/youtrack/subsystems.json` maps each subsystem to repo URLs, and each registry entry names its subsystem and role. When a subsystem has several repos, pick from the issue text and the role; ask the captain when two remain plausible.
 - Use the issue ID plus a short slug as the task id, keeping the ID's case: `APP-3684-add-user-export`. Work projects register `branch=` (empty prefix), so the ship branch is exactly ralph's `<issue-id>-<slug>` branch and GitLab links it to the issue.
