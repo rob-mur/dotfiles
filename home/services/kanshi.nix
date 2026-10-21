@@ -2,8 +2,32 @@
   config,
   lib,
   osConfig,
+  pkgs,
   ...
 }: let
+  laptopScreen = "AU Optronics 0x18A7 Unknown";
+
+  # Put odd workspaces on the first non-laptop output and even ones on the
+  # laptop. The external output's connector name (DP-1, DP-2, HDMI-A-1, ...)
+  # depends on the port and dock, so look it up at runtime instead of
+  # hardcoding it.
+  splitWorkspacesWithLaptop = pkgs.writeShellScript "kanshi-split-workspaces" ''
+    laptop=eDP-1
+    external=$(${pkgs.sway}/bin/swaymsg -t get_outputs -r \
+      | ${pkgs.jq}/bin/jq -r --arg laptop "$laptop" \
+        '[.[] | select(.active and .name != $laptop) | .name][0] // empty')
+    [ -n "$external" ] || exit 0
+
+    for ws in 1 2 3 4 5 6 7 8 9 10; do
+      if [ $((ws % 2)) -eq 0 ]; then out=$laptop; else out=$external; fi
+      ${pkgs.sway}/bin/swaymsg "workspace $ws output $out" >/dev/null
+    done
+    # Create and move workspaces in reverse order so workspace 1 ends focused
+    for ws in 10 9 8 7 6 5 4 3 2 1; do
+      if [ $((ws % 2)) -eq 0 ]; then out=$laptop; else out=$external; fi
+      ${pkgs.sway}/bin/swaymsg "workspace $ws, move workspace to output $out" >/dev/null
+    done
+  '';
 in {
   services = {
     kanshi = {
@@ -15,7 +39,7 @@ in {
           profile.outputs = [
             {
               adaptiveSync = true;
-              criteria = "AU Optronics 0x18A7 Unknown";
+              criteria = laptopScreen;
               mode = "1920x1200@60.00Hz";
               position = "0,0";
               scale = 1.0;
@@ -29,7 +53,7 @@ in {
           profile.outputs = [
             {
               adaptiveSync = true;
-              criteria = "AU Optronics 0x18A7 Unknown";
+              criteria = laptopScreen;
               mode = "1920x1200@60.00Hz";
               position = "1920,0";
               scale = 1.0;
@@ -70,6 +94,29 @@ in {
             "swaymsg workspace 2, move workspace to output eDP-1"
             "swaymsg workspace 1, move workspace to output DP-1"
           ];
+        }
+        {
+          # Fallback for any single external monitor plugged into the work
+          # laptop (hot desks, other docks). Listed after the Dell profile so
+          # the exact match wins when it applies.
+          profile.name = "work_laptop_any_external";
+          profile.outputs = [
+            {
+              adaptiveSync = true;
+              criteria = laptopScreen;
+              mode = "1920x1200@60.00Hz";
+              position = "0,0";
+              scale = 1.0;
+              status = "enable";
+              transform = "normal";
+            }
+            {
+              criteria = "*";
+              position = "1920,0";
+              status = "enable";
+            }
+          ];
+          profile.exec = ["${splitWorkspacesWithLaptop}"];
         }
         {
           profile.name = "home_laptop_plugged_in";
