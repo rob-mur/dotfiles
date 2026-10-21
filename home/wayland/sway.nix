@@ -163,7 +163,7 @@ in {
             # Rofi: menu
             "${mod4}+d" = "exec PATH=$HOME/.nix-profile/bin:$PATH XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS ${rofi}/bin/rofi -show drun";
             # Rofi: bluetooth
-            "${mod4}+y" = "exec ${rofi-bluetooth}/bin/rofi-bluetooth";
+            "${mod4}+y" = "exec PATH=${rofi}/bin:$PATH ${rofi-bluetooth}/bin/rofi-bluetooth";
             # Rofi: clipboard manager
             "${mod4}+c" = "exec ${cliphist}/bin/cliphist list | ${rofi}/bin/rofi -dmenu | ${cliphist}/bin/cliphist decode | ${wl-clipboard}/bin/wl-copy";
             # Rofi: power menu
