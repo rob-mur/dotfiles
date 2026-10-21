@@ -83,6 +83,20 @@ in {
     };
   };
 
+  # The runner does not notice a suspend. On resume it keeps its old
+  # connection, logs `deadline exceeded` until Forgejo marks it offline, and
+  # runner-dispatcher sends this host's jobs to Cloud Run. A restart makes it
+  # connect again at once. --no-block: the resume hook runs in the stop of
+  # sleep-actions.service, so a slow runner stop must not hold or fail it;
+  # Restart=on-failure covers a start that fails before the network is back.
+  powerManagement.resumeCommands = ''
+    systemctl restart --no-block gitea-runner-dev.service
+  '';
+  # The daemon exits when its first call to Forgejo fails, and the network
+  # can take seconds to return after resume. Upstream retries every 2s; the
+  # default start limit (5 in 10s) would then leave the unit failed for good.
+  systemd.services.gitea-runner-dev.unitConfig.StartLimitIntervalSec = 0;
+
   # The upstream module runs as DynamicUser=yes — no extra user/group plumbing
   # needed. Container processes appear as UID 1000 to the host nix daemon
   # regardless of the runner's own dynamic UID.
