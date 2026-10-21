@@ -3,6 +3,7 @@
     ./opencode.nix
     ./gemini-cli.nix
     ./herdr
+    ./firstmate
     ./google-chrome.nix
     ./forgejo-cli.nix
     ./obsidian.nix

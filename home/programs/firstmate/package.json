@@ -1,0 +1,11 @@
+{
+  "name": "firstmate-tools",
+  "private": true,
+  "description": "The AXI CLIs firstmate's bootstrap requires, pinned for the dotfiles firstmate module.",
+  "dependencies": {
+    "chrome-devtools-axi": "0.1.44",
+    "gh-axi": "0.1.43",
+    "quota-axi": "0.1.65",
+    "tasks-axi": "0.2.6"
+  }
+}

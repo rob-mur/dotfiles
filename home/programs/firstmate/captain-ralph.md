@@ -1,0 +1,14 @@
+## Ralph delivery (managed by dotfiles home/programs/firstmate/captain-ralph.md)
+
+This block is rewritten on every `firstmate` launch; edit the source file in the dotfiles, not here.
+
+- Work comes from YouTrack. Read issues through the `issue-tracker` skill (`Operation: get` / `list`), never by guessing a URL. The captain's usual intake is `/next`, then "ralph <issue-id>".
+- A YouTrack issue's `Subsystem` field picks the project: `~/.config/youtrack/subsystems.json` maps each subsystem to repo URLs, and each registry entry names its subsystem and role. When a subsystem has several repos, pick from the issue text and the role; ask the captain when two remain plausible.
+- Use the issue ID plus a short slug as the task id, keeping the ID's case: `APP-3684-add-user-export`. Work projects register `branch=` (empty prefix), so the ship branch is exactly ralph's `<issue-id>-<slug>` branch and GitLab links it to the issue.
+- Ship every ralph task `direct-PR` with yolo off, whatever else applies. Ralph owns review and QA; never route these tasks through no-mistakes.
+- The captain explicitly requests ralph's review, QA and break rounds on every ship task. Put this in the `## Firstmate spec` of each ship brief, with `<issue-id>` and `<branch>` filled in:
+
+  > Deliver YouTrack issue `<issue-id>` with the ralph pipeline, in this worktree. Read `~/.claude/skills/ralph/SKILL.md` and carry out its per-issue steps for this one issue: 2a (assess), 2b (implement), 2.5 (trim), 3a–3d (CI, review bot, review round, QA round, break round). Skip Step 0's clone and Step 4's cleanup: this worktree is the pre-cloned repo, so pass `repo=<absolute path of this worktree>` to every sub-skill that takes it. Dispatch each sub-skill as ralph's Dispatch section says, as its own sub-agent. In `/ralph-code`'s Step 6 keep the current branch `<branch>`; do not create another. Raise the PR through the forge adapter skill (`forge-gitlab` for GitLab, `forge-forgejo` for Forgejo), not `gh-axi`, and leave it a Draft: ralph's Draft is the hand-off to a human. If `/ralph-assess` returns `blocked`, append `needs-decision` with its reason and stop. When the pipeline ends, append `paused [at=<epoch>]: PR <full URL> held as Draft for human review - <ralph's final summary line for it>` instead of `done`.
+
+- A `paused` Draft from a ralph ship is the expected end state, not a stall. Report it to the captain with the PR URL and ralph's round results; the captain undrafts, reviews and merges it.
+- `/ralph-assess <issue-id> --read-only` and `/shape <subsystem>` fit scout tasks: they report and never push.
