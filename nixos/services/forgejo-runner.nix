@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # The job container does not inherit the host's nix.conf, so every new-CLI
   # `nix` subcommand fails inside a job unless the workflow passes
   # --extra-experimental-features itself. Bind this in at /etc/nix/nix.conf so
@@ -86,4 +91,16 @@ in {
   # The upstream module runs as DynamicUser=yes — no extra user/group plumbing
   # needed. Container processes appear as UID 1000 to the host nix daemon
   # regardless of the runner's own dynamic UID.
+
+  # The runner does not notice a suspend. On resume it keeps its old
+  # connection, logs `deadline exceeded` until Forgejo marks it offline, and
+  # runner-dispatcher sends this host's jobs to Cloud Run. A restart makes it
+  # connect again at once. --no-block: the resume hook runs in the stop of
+  # sleep-actions.service, so a slow runner stop must not hold or fail it;
+  # Restart=on-failure covers a start that fails before the network is back.
+  # mkIf: a disabled instance leaves a masked unit, and systemctl then fails
+  # the `set -e` resume script, so skip the line when the runner is off.
+  powerManagement.resumeCommands = lib.mkIf config.services.gitea-actions-runner.instances.dev.enable ''
+    systemctl restart --no-block gitea-runner-dev.service
+  '';
 }
