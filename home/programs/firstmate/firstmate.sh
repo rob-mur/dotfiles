@@ -15,7 +15,7 @@
 #     `direct-PR branch=` project, so ship branches are ralph's <issue-id>-<slug>
 #
 # The first mate runs on $FIRSTMATE_MODEL (default haiku) and only routes work;
-# crewmates, secondmates and firstmate-desk sessions take the system default
+# crewmates and secondmates take the system default
 # model. Pass it as --model, never as an exported variable, so none of them
 # inherits it.
 #

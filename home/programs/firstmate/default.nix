@@ -51,14 +51,9 @@
     text = builtins.readFile ./firstmate.sh;
   };
 
-  firstmate-desk = pkgs.writeShellApplication {
-    name = "firstmate-desk";
-    runtimeInputs = with pkgs; [jq coreutils];
-    text = builtins.readFile ./firstmate-desk.sh;
-  };
 in {
   # The toolchain goes on the user's PATH as well as the launcher's: each
   # crewmate runs in a herdr pane that starts a fresh login shell, which sees
   # home.packages and nothing the launcher put on its own PATH.
-  home.packages = [firstmate firstmate-desk] ++ toolchain;
+  home.packages = [firstmate] ++ toolchain;
 }
