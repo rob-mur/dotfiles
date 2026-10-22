@@ -14,12 +14,18 @@
 #   - registers and clones every repo in ~/.config/youtrack/subsystems.json as a
 #     `direct-PR branch=` project, so ship branches are ralph's <issue-id>-<slug>
 #
+# The first mate runs on $FIRSTMATE_MODEL (default haiku) and only routes work;
+# crewmates, secondmates and firstmate-desk sessions take the system default
+# model. Pass it as --model, never as an exported variable, so none of them
+# inherits it.
+#
 # Usage:  firstmate           seed, then open the first mate in a herdr workspace
 #         firstmate --here    seed, then run the first mate in this terminal
 #         firstmate --seed    seed only
 
 root="${FIRSTMATE_ROOT:-$HOME/repos/firstmate}"
 subsystems="$HOME/.config/youtrack/subsystems.json"
+model="${FIRSTMATE_MODEL:-haiku}"
 mode="${1:-herdr}"
 
 [ -d "$root/.git" ] || git clone https://github.com/kunchenguid/firstmate "$root"
@@ -59,8 +65,8 @@ fi
 
 [ "$mode" = --seed ] && exit 0
 
-# shellcheck disable=SC2016 # $0 expands in the inner bash, not here.
-launch=(env FM_BACKEND=herdr bash -c 'cd "$0" && exec claude' "$root")
+# shellcheck disable=SC2016 # $0 and $1 expand in the inner bash, not here.
+launch=(env FM_BACKEND=herdr bash -c 'cd "$0" && exec claude --model "$1"' "$root" "$model")
 
 if [ "$mode" = --here ]; then
   exec "${launch[@]}"
