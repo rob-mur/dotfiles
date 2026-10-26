@@ -34,11 +34,17 @@
     npmRoot = ./.;
     nodejs = pkgs.nodejs;
   };
-  axiTools = pkgs.runCommand "firstmate-axi-tools" {} ''
+  axiTools = pkgs.runCommand "firstmate-axi-tools" {nativeBuildInputs = [pkgs.makeWrapper];} ''
     mkdir -p $out/bin
     for bin in ${axiModules}/node_modules/.bin/*; do
       ln -s "$(readlink -f "$bin")" "$out/bin/$(basename "$bin")"
     done
+
+    # chrome-devtools-mcp looks for Chrome only at /opt/google/chrome/chrome,
+    # which NixOS lacks, so point it at the Nix-built one.
+    rm $out/bin/chrome-devtools-axi
+    makeWrapper "$(readlink -f ${axiModules}/node_modules/.bin/chrome-devtools-axi)" $out/bin/chrome-devtools-axi \
+      --set-default CHROME_DEVTOOLS_AXI_EXECUTABLE_PATH ${pkgs.google-chrome}/bin/google-chrome-stable
   '';
 
   toolchain = [treehouse no-mistakes pkgs.tea axiTools];
