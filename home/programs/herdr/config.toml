@@ -86,3 +86,10 @@ codex = [
 # which keeps this working across hosts (nix profile here, Homebrew/system zsh
 # elsewhere) instead of baking in one machine's /nix/store path.
 default_shell = "zsh"
+
+[session]
+# Restore panes as plain shells. Resuming agents restarted each firstmate
+# worker's claude in the pane's creation folder (the main clone) instead of its
+# isolated worktree; firstmate's own recovery relaunches workers in the right
+# place.
+resume_agents_on_restore = false
