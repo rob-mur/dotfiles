@@ -26,6 +26,10 @@ with pkgs; {
         sway = {
           default = ["wlr" "gtk"];
           "org.freedesktop.impl.portal.FileChooser" = ["gtk"];
+          # The gtk portal forwards idle inhibits to an unowned
+          # org.freedesktop.ScreenSaver and still reports success, so sway never
+          # sees them. "none" makes Firefox fall back to the Wayland idle inhibitor.
+          "org.freedesktop.impl.portal.Inhibit" = ["none"];
           "org.freedesktop.impl.portal.OpenURI" = ["gtk"];
           "org.freedesktop.impl.portal.RemoteDesktop" = ["hypr-remote"];
           "org.freedesktop.impl.portal.ScreenCast" = ["wlr"];
