@@ -88,6 +88,14 @@ in {
   # `termux-reload-settings` instead of killing every session.
   android-integration.termux-reload-settings.enable = true;
 
+  # URLs from the desktop open here: herdr-desk's bridge listener opens them
+  # with termux-open-url, and herdr's own Ctrl-click runs xdg-open in the
+  # client, which is this phone. nix-on-droid provides neither by default,
+  # and without them both fail silently. Copying needs nothing here: the
+  # desktop sends OSC 52 for the terminal to apply.
+  android-integration.termux-open-url.enable = true;
+  android-integration.xdg-open.enable = true;
+
   # The app owns the login shell, so no Debian-style bash -> zsh exec dance.
   user.shell = "${pkgs.zsh}/bin/zsh";
 

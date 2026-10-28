@@ -67,7 +67,9 @@
   # Listens on bridgeSock and acts on what the desktop sends: a line naming
   # the op, then the payload. Replies "ok" when it handled the request and
   # "no" when this device can't (no clipboard tool, a host path to open), so
-  # the desktop falls back to doing it itself.
+  # the desktop falls back (./bridge.sh). termux-open-url comes first: it
+  # only exists on the phone (hosts/phone/nix-on-droid.nix), where it is the
+  # direct way into Android.
   bridgeListen = pkgs.writers.writePython3Bin "herdr-bridge-listen" {flakeIgnore = ["E501"];} ''
     import glob
     import os
@@ -109,7 +111,7 @@
         # A path names a file on the desktop, which doesn't exist here.
         if "://" not in url:
             return False
-        for cmd in ("xdg-open", "open", "termux-open-url"):
+        for cmd in ("termux-open-url", "xdg-open", "open"):
             if shutil.which(cmd):
                 subprocess.Popen(
                     [cmd, url], env=env_with_wayland(), start_new_session=True,
@@ -221,8 +223,62 @@
   herdrPick = script "pick" (with pkgs; [herdr herdrBridge jq fzf gnugrep gnused gawk coreutils]);
   herdrBreakPane = script "break-pane" (with pkgs; [herdr jq]);
   herdrSubjectPoller = script "subject-poller" (with pkgs; [herdr jq coreutils]);
+
+  # Programs in a pane run here, in the desktop's Wayland session, so their
+  # "open this URL" (gcloud, gh, Claude Code) and "copy this" (nvim, zsh)
+  # land on the desktop even when you are attached from the phone. herdr
+  # passes neither back. Put ahead of the real tools on a pane's PATH (zsh
+  # below), these route both through herdr-bridge to the device you are on.
+  # herdr-bridge sets HERDR_BRIDGE_ACTIVE for its own local fallback, which
+  # must reach the real tools.
+  paneTools = pkgs.symlinkJoin {
+    name = "herdr-pane-tools";
+    paths = [
+      (pkgs.writeShellScriptBin "xdg-open" ''
+        # BROWSER points here too, and the real xdg-open falls back to it.
+        unset BROWSER
+        # Only URLs: a path names a file here, which only the desktop can open.
+        if [ -z "''${HERDR_BRIDGE_ACTIVE-}" ] && [ $# -eq 1 ] && [[ $1 == *://* ]]; then
+          exec ${herdrBridge}/bin/herdr-bridge open "$1"
+        fi
+        exec ${pkgs.xdg-utils}/bin/xdg-open "$@"
+      '')
+      (pkgs.writeShellScriptBin "wl-copy" ''
+        # Only a plain text copy. Anything else (--primary, --clear, an image
+        # --type) goes to the real wl-copy.
+        real=${pkgs.wl-clipboard}/bin/wl-copy
+        [ -n "''${HERDR_BRIDGE_ACTIVE-}" ] && exec "$real" "$@"
+        args=("$@")
+        while [ $# -gt 0 ]; do
+          case $1 in
+            -n | --trim-newline | -f | --foreground | --type=text/*) shift ;;
+            -t | --type) [[ ''${2-} == text/* ]] || exec "$real" "''${args[@]}"; shift 2 ;;
+            --) shift; break ;;
+            -*) exec "$real" "''${args[@]}" ;;
+            *) break ;;
+          esac
+        done
+        if [ $# -gt 0 ]; then
+          exec ${herdrBridge}/bin/herdr-bridge copy "$*"
+        fi
+        exec ${herdrBridge}/bin/herdr-bridge copy
+      '')
+    ];
+  };
 in {
   home.packages = [herdrLauncher herdrDesk herdrBridge herdrPick herdrBreakPane];
+
+  # HERDR_ENV is herdr's mark on every pane and popup it starts. zshenv, so
+  # `zsh -c` from an agent gets the tools as well.
+  programs.zsh.envExtra = lib.mkIf (osConfig.machineType == "desktop") ''
+    if [[ -n "''${HERDR_ENV-}" ]]; then
+      case ":$PATH:" in
+        *:${paneTools}/bin:*) ;;
+        *) export PATH="${paneTools}/bin:$PATH" ;;
+      esac
+      export BROWSER=${paneTools}/bin/xdg-open
+    fi
+  '';
 
   # Headlines each agent row with its session subject (./subject-poller.sh).
   # It waits while no server runs, so one service covers every server this
