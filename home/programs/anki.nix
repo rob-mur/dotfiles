@@ -5,5 +5,5 @@
 }:
 with pkgs; let
 in {
-  home.packages = [anki];
+  home.packages = [pkgs-unstable.anki];
 }
