@@ -33,5 +33,6 @@ with pkgs; {
   home.activation.claudeSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
     run mkdir -p "$HOME/.claude"
     run ln -sfn "${osConfig.hostDir}../../home/programs/claude-code/settings.json" "$HOME/.claude/settings.json"
+    run ln -sfn "${osConfig.hostDir}../../home/programs/claude-code/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
   '';
 }
