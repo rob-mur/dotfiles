@@ -31,8 +31,9 @@ with pkgs; {
   # second symlink in the store, and Claude Code saves by writing a temp file
   # beside its link target, which fails there with EROFS.
   home.activation.claudeSettings = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    run mkdir -p "$HOME/.claude"
+    run mkdir -p "$HOME/.claude/hooks"
     run ln -sfn "${osConfig.hostDir}../../home/programs/claude-code/settings.json" "$HOME/.claude/settings.json"
     run ln -sfn "${osConfig.hostDir}../../home/programs/claude-code/statusline-command.sh" "$HOME/.claude/statusline-command.sh"
+    run ln -sfn "${osConfig.hostDir}../../home/programs/claude-code/subagent-wait-guard.sh" "$HOME/.claude/hooks/subagent-wait-guard.sh"
   '';
 }
