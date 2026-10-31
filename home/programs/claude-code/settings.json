@@ -34,7 +34,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": "Bash|Monitor|Agent|SendMessage",
         "hooks": [
           {
             "type": "command",
@@ -100,6 +100,8 @@
     "anthropic-skills:pdf": "user-invocable-only",
     "anthropic-skills:pptx": "user-invocable-only",
     "anthropic-skills:skill-creator": "user-invocable-only",
-    "anthropic-skills:xlsx": "user-invocable-only"
+    "anthropic-skills:xlsx": "user-invocable-only",
+    "sentry": "name-only",
+    "vault": "name-only"
   }
 }
