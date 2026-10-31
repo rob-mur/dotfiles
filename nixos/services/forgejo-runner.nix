@@ -40,7 +40,9 @@ in {
   # /nix/var/nix/profiles/system/sw/bin/devenv — a symlink chain that lives
   # entirely under /nix/store, so the /nix bind-mount makes it reachable from
   # the container. The image's PATH must include this directory.
-  environment.systemPackages = [pkgs.devenv];
+  # Unstable, because 26.05 ships devenv 2.1.2 and project locks pin newer
+  # releases, which makes every shell entry print an out-of-date notice.
+  environment.systemPackages = [pkgs.pkgs-unstable.devenv];
 
   services.gitea-actions-runner = {
     package = pkgs.forgejo-runner;
