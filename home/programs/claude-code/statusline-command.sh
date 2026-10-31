@@ -74,10 +74,63 @@ ctx_tokens=$(echo "$input" | jq -r '
       then ((.context_window.context_window_size) * (.context_window.used_percentage) / 100 | floor)
     else empty end')
 
-# Rate limits
+# Rate limits. Prefer the Anthropic-subscription fields when the incoming JSON
+# carries them; only when they are absent (Claude Code routed through z.ai's
+# GLM endpoint) fall back to z.ai's coding-plan quota endpoint, which returns
+# data.limits[] entries: CREDIT_LIMIT with unit:3 is the 5-hour window, unit:6
+# the weekly one. percentage is used percent, nextResetTime is epoch
+# milliseconds.
 five_h=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 seven_d=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 seven_d_resets_at=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
+
+if [ -z "$five_h" ] && [ -z "$seven_d" ] && [ -z "$seven_d_resets_at" ]; then
+# Fail soft: any missing key/failure/parse gap leaves five_h etc. empty, which
+# the panels below already handle by omitting themselves silently.
+zai_cache="${XDG_RUNTIME_DIR:-/tmp}/zai-quota-cache.$UID.json"
+zai_json=""
+
+zai_fetch() {
+  local key hdr
+  [ -r "$HOME/.config/zai/key" ] || return 1
+  IFS= read -r key < "$HOME/.config/zai/key" || return 1
+  [ -n "$key" ] || return 1
+  # Pass the key to curl via a temp config file so it never appears on the
+  # command line (visible in ps) or in this script's output.
+  hdr=$(mktemp) || return 1
+  {
+    printf 'silent\n'
+    printf 'max-time = 5\n'
+    printf 'header = "Authorization: %s"\n' "$key"
+  } > "$hdr"
+  curl --config "$hdr" -s --max-time 5 \
+    'https://api.z.ai/api/monitor/usage/quota/limit' > "$zai_cache.tmp.$$" \
+    && mv "$zai_cache.tmp.$$" "$zai_cache"
+  local rc=$?
+  rm -f "$hdr" "$zai_cache.tmp.$$"
+  [ "$rc" -eq 0 ]
+}
+
+if [ -r "$zai_cache" ] && [ -n "$(find "$zai_cache" -mmin -1 2>/dev/null)" ]; then
+  # Fresh cache: serve it without touching the endpoint.
+  zai_json=$(cat "$zai_cache")
+else
+  if zai_fetch && jq -e '.code == 200' "$zai_cache" >/dev/null 2>&1; then
+    zai_json=$(cat "$zai_cache")
+  elif [ -r "$zai_cache" ]; then
+    # Stale cache beats dropping the panels entirely.
+    zai_json=$(cat "$zai_cache")
+  fi
+fi
+
+five_h=$(printf '%s' "$zai_json" | jq -r '
+  (.data.limits[]? | select(.type == "CREDIT_LIMIT" and .unit == 3) | .percentage) // empty')
+seven_d=$(printf '%s' "$zai_json" | jq -r '
+  (.data.limits[]? | select(.type == "CREDIT_LIMIT" and .unit == 6) | .percentage) // empty')
+# nextResetTime is epoch milliseconds; the burndown math wants seconds.
+seven_d_resets_at=$(printf '%s' "$zai_json" | jq -r '
+  (.data.limits[]? | select(.type == "CREDIT_LIMIT" and .unit == 6) | (.nextResetTime / 1000 | floor)) // empty')
+fi
 
 parts=()
 
