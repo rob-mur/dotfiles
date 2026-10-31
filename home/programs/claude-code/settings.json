@@ -81,7 +81,7 @@
   "effortLevel": "medium",
   "modelSettings": {
     "claude-opus-5-5": {
-      "autoCompactWindow": 200000
+      "autoCompactWindow": 140000
     }
   },
   "autoMemoryEnabled": false,
