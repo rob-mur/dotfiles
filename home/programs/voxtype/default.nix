@@ -48,9 +48,10 @@ in {
   };
 
   # Hold Super+V to dictate, release to transcribe and type.
-  # mkOptionDefault so these merge with the sway defaults instead of replacing them.
-  wayland.windowManager.sway.config.keybindings = lib.mkOptionDefault {
-    "--no-repeat Mod4+v" = "exec voxtype record start";
-    "--release Mod4+v" = "exec voxtype record stop";
-  };
+  # extraConfig (not keybindings) so unbindsym can drop the default Mod4+v splitv without losing other defaults.
+  wayland.windowManager.sway.extraConfig = ''
+    unbindsym Mod4+v
+    bindsym --no-repeat Mod4+v exec voxtype record start
+    bindsym --release Mod4+v exec voxtype record stop
+  '';
 }
