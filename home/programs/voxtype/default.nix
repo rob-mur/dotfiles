@@ -47,11 +47,11 @@ in {
     text.replacements = vocab.replacements;
   };
 
-  # Hold Super+V to dictate, release to transcribe and type.
-  # extraConfig (not keybindings) so unbindsym can drop the default Mod4+v splitv without losing other defaults.
+  # Hold Super+Space to dictate, release to transcribe and type.
+  # extraConfig (not keybindings) so unbindsym can drop the default Mod4+space focus mode_toggle without losing other defaults.
   wayland.windowManager.sway.extraConfig = ''
-    unbindsym Mod4+v
-    bindsym --no-repeat Mod4+v exec voxtype record start
-    bindsym --release Mod4+v exec voxtype record stop
+    unbindsym Mod4+space
+    bindsym --no-repeat Mod4+space exec voxtype record start
+    bindsym --release Mod4+space exec voxtype record stop
   '';
 }
