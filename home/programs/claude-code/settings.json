@@ -18,6 +18,19 @@
   },
   "model": "opus",
   "disableClaudeAiConnectors": true,
+  "skillOverrides": {
+    "anthropic-skills:docs": "user-invocable-only",
+    "anthropic-skills:docx": "user-invocable-only",
+    "anthropic-skills:google-workspace": "user-invocable-only",
+    "anthropic-skills:import-memory": "user-invocable-only",
+    "anthropic-skills:morning": "user-invocable-only",
+    "anthropic-skills:pdf": "user-invocable-only",
+    "anthropic-skills:pptx": "user-invocable-only",
+    "anthropic-skills:skill-creator": "user-invocable-only",
+    "anthropic-skills:xlsx": "user-invocable-only",
+    "sentry": "name-only",
+    "vault": "name-only"
+  },
   "disableBundledSkills": true,
   "hooks": {
     "SessionStart": [
@@ -90,18 +103,8 @@
   "theme": "dark",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "skillOverrides": {
-    "anthropic-skills:docs": "user-invocable-only",
-    "anthropic-skills:docx": "user-invocable-only",
-    "anthropic-skills:google-workspace": "user-invocable-only",
-    "anthropic-skills:import-memory": "user-invocable-only",
-    "anthropic-skills:morning": "user-invocable-only",
-    "anthropic-skills:pdf": "user-invocable-only",
-    "anthropic-skills:pptx": "user-invocable-only",
-    "anthropic-skills:skill-creator": "user-invocable-only",
-    "anthropic-skills:xlsx": "user-invocable-only",
-    "sentry": "name-only",
-    "vault": "name-only"
+  "voiceEnabled": false,
+  "voice": {
+    "enabled": false
   }
 }
