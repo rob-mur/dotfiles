@@ -19,6 +19,7 @@
     "Sentry"
     "bordereau"
     "cedant"
+    "dotfiles"
   ];
 
   # Case-insensitive de-dup, hand-picked spelling wins over the mined one.
@@ -45,5 +46,6 @@ in
       "nix os" = "NixOS";
       "sonar cube" = "SonarQube";
       "forge jo" = "Forgejo";
+      ".files" = "dotfiles";
     };
   }
