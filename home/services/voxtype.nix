@@ -10,7 +10,11 @@
     Service = {
       ExecStart = "${pkgs.pkgs-unstable.voxtype-vulkan}/bin/voxtype daemon";
       # wtype must be on PATH for the typing driver.
-      Environment = "PATH=${pkgs.wtype}/bin:${pkgs.wl-clipboard}/bin:${pkgs.ydotool}/bin";
+      # Restrict Vulkan to the NVIDIA ICD so ggml doesn't pick the Intel iGPU.
+      Environment = [
+        "PATH=${pkgs.wtype}/bin:${pkgs.wl-clipboard}/bin:${pkgs.ydotool}/bin"
+        "VK_ICD_FILENAMES=/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.json"
+      ];
       Restart = "on-failure";
       RestartSec = 3;
     };
