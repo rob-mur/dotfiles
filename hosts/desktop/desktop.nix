@@ -114,6 +114,13 @@
   # services and run before, and without, any graphical login.
   autoLogin = false;
 
+  # Local dictation (voxtype, Vulkan, Whisper large-v3-turbo). Desktop only:
+  # the other hosts share home/programs and home/wayland but have no use for it.
+  home-manager.users.rob.imports = [
+    ../../home/programs/voxtype
+    ../../home/services/voxtype.nix
+  ];
+
   # herdr --remote microphone (see home/programs/herdr). An attached device
   # reverse-forwards its PulseAudio socket to 127.0.0.1:47102 here. ralph
   # containers sit on their own docker network, where the host's loopback is
