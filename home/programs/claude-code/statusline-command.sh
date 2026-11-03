@@ -6,6 +6,11 @@
 #
 # Linked to ~/.claude/statusline-command.sh by default.nix in this directory.
 
+# The burndown arithmetic lives in burndown.sh next to the real file, shared
+# with the cswap switcher. Resolve through the symlink to find it.
+# shellcheck source=burndown.sh
+source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/burndown.sh"
+
 input=$(cat)
 
 # ANSI colors (will appear dimmed in the status line as Claude Code dims them)
@@ -162,16 +167,11 @@ fi
 # Window start = resets_at - 7 days. If 7d used% > linear expectation => burning fast
 # (over budget for how much of the window has elapsed), else under budget.
 if [ -n "$seven_d" ] && [ -n "$seven_d_resets_at" ]; then
-  now_epoch=$(date +%s)
-  window_seconds=$((7 * 24 * 60 * 60))
+  window_seconds=$BURNDOWN_WINDOW_SECONDS
   window_start=$((seven_d_resets_at - window_seconds))
-  elapsed=$((now_epoch - window_start))
-  # clamp elapsed into [0, window_seconds] in case of clock skew
-  if [ "$elapsed" -lt 0 ]; then elapsed=0; fi
-  if [ "$elapsed" -gt "$window_seconds" ]; then elapsed=$window_seconds; fi
-  linear_pct=$(echo "$elapsed $window_seconds" | awk '{printf "%.1f", ($1 / $2) * 100}')
+  elapsed=$(burndown_elapsed "$seven_d_resets_at")
   # difference: positive means over budget (burning fast), negative means under budget
-  diff_val=$(echo "$seven_d $linear_pct" | awk '{printf "%.1f", $1 - $2}')
+  diff_val=$(burndown_diff "$seven_d" "$seven_d_resets_at")
   diff_label=$(echo "$diff_val" | awk '{
     if ($1 >= 0) { printf "📊 burndown:+%.0f%%", $1 }
     else         { printf "📊 burndown:%.0f%%",  $1 }
