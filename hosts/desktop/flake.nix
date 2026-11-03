@@ -61,9 +61,15 @@
       };
     };
   in {
-    # nix flake check ./hosts/desktop: herdr prefix+f, ctrl-o reaches the opener.
-    checks.${system}.herdr-pick-open =
-      import ../../home/programs/herdr/check-pick-open.nix {pkgs = nixpkgs.legacyPackages.${system};};
+    # nix flake check ./hosts/desktop:
+    #   herdr-pick-open: herdr prefix+f, ctrl-o reaches the opener.
+    #   cswap-autoswitch: the login follows the weekly burndown.
+    checks.${system} = {
+      herdr-pick-open =
+        import ../../home/programs/herdr/check-pick-open.nix {pkgs = nixpkgs.legacyPackages.${system};};
+      cswap-autoswitch =
+        import ../../home/programs/cswap/check.nix {pkgs = nixpkgs.legacyPackages.${system};};
+    };
 
     nixosConfigurations.dev = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";

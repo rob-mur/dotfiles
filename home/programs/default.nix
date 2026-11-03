@@ -8,6 +8,7 @@
     ./forgejo-cli.nix
     ./obsidian.nix
     ./claude-code
+    ./cswap
     ./glab.nix
     ./dbeaver.nix
     ./proton-auth.nix
