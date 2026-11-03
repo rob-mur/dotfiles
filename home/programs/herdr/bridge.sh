@@ -91,9 +91,13 @@ if [ "$op" = open ]; then
     [ -t 2 ] && link=$(printf '\e]8;;%s\a%s\e]8;;\a' "$payload" "$payload")
     echo "herdr-bridge: no attached device could open it, copied it to your clipboard: $link" >&2
   fi
+  # Detach the opener from this terminal entirely, stdin included. In the
+  # herdr-pick popup we exit straight away, the popup closes, and herdr
+  # hangs up anything still holding its terminal, long before xdg-open
+  # (~0.2 s) reaches the browser. check-pick-open.nix covers this.
   for opener in xdg-open open; do
     if command -v "$opener" >/dev/null; then
-      setsid -f "$opener" "$payload" >/dev/null 2>&1 && exit 0
+      setsid -f "$opener" "$payload" </dev/null >/dev/null 2>&1 && exit 0
     fi
   done
   [ -n "$term" ] && exit 0

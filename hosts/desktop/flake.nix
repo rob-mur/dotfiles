@@ -61,6 +61,10 @@
       };
     };
   in {
+    # nix flake check ./hosts/desktop: herdr prefix+f, ctrl-o reaches the opener.
+    checks.${system}.herdr-pick-open =
+      import ../../home/programs/herdr/check-pick-open.nix {pkgs = nixpkgs.legacyPackages.${system};};
+
     nixosConfigurations.dev = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {inherit inputs;};
