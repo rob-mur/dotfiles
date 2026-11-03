@@ -20,6 +20,7 @@
     "bordereau"
     "cedant"
     "dotfiles"
+    "YouTrack"
   ];
 
   # Case-insensitive de-dup, hand-picked spelling wins over the mined one.
@@ -38,6 +39,10 @@ in
     # Only predictable misses are seeded; add the rest as they happen.
     replacements = {
       "you track" = "YouTrack";
+      "you-track" = "YouTrack";
+      "u track" = "YouTrack";
+      "u-track" = "YouTrack";
+      "youtrak" = "YouTrack";
       "git lab" = "GitLab";
       "key cloak" = "Keycloak";
       "first mate" = "Firstmate";
