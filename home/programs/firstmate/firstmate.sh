@@ -60,7 +60,7 @@ fi
 [ "$mode" = --seed ] && exit 0
 
 # shellcheck disable=SC2016 # $0 expands in the inner bash, not here.
-launch=(env FM_BACKEND=herdr bash -c 'cd "$0" && exec claude' "$root")
+launch=(env FM_BACKEND=herdr bash -c 'cd "$0" && exec claude --dangerously-skip-permissions' "$root")
 
 if [ "$mode" = --here ]; then
   exec "${launch[@]}"
