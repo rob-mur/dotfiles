@@ -10,7 +10,6 @@
         443 # https
         3000 # adguard
         8384 22000 # syncthing
-        18080 18081 # monero
       ];
       allowedUDPPorts = [
         22000 21027  # syncthing

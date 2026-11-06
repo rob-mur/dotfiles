@@ -27,6 +27,14 @@
     options = ["fmask=0077" "dmask=0077"];
   };
 
+  # Second NVMe (KIOXIA KXG60ZNV512G, serial Z9OA71B6K81L). Was the other half
+  # of a Windows Intel RST RAID-0 volume; reformatted as a dedicated /home.
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/884f6233-b5e7-4468-a460-aec51b3b85c7";
+    fsType = "ext4";
+    options = ["defaults" "noatime"];
+  };
+
   swapDevices = [
     {device = "/dev/disk/by-uuid/214a241c-ab3d-4115-bb9d-494b1fa38ae7";}
   ];
