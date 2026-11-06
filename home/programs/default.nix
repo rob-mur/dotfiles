@@ -48,7 +48,6 @@
     ./ssh.nix
     ./swaylock.nix
     ./tmux.nix
-    ./vscode.nix
     ./waybar.nix
     ./yt-dlp.nix
     ./okular.nix
